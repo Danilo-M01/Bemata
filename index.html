@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <script>
+    (function () {
+        if (location.protocol === 'file:') return;
+        var b = document.createElement('base');
+        b.href = '/';
+        document.head.insertBefore(b, document.head.firstChild);
+    })();
+    </script>
     <title>BEMATA | Super Food Restaurant</title>
     <link rel="icon" href="bemata-logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,7 +157,8 @@
     <!-- ═══════════ HERO ═══════════ -->
     <section class="hero" id="home">
         <div class="hero-bg-layers">
-            <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="images/hero-bg.webp" aria-hidden="true">
+                <source src="videos/hero.mp4" type="video/mp4">
                 <source src="videos/hero.webm" type="video/webm">
             </video>
             <div class="hero-nebula" aria-hidden="true"></div>

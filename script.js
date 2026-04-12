@@ -187,8 +187,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ═══════ LOADING ═══════
     document.body.classList.add('no-scroll');
     const start = Date.now();
-    window.addEventListener('load', () => {
-        const wait = Math.max(0, 3600 - (Date.now() - start));
+    const MIN_SPLASH_MS = 3600;
+    const LOAD_FAILSAFE_MS = 12000;
+
+    const finishSplash = () => {
+        if (!loadingScreen || loadingScreen.dataset.splashDone === '1') return;
+        loadingScreen.dataset.splashDone = '1';
+        const wait = Math.max(0, MIN_SPLASH_MS - (Date.now() - start));
         setTimeout(() => {
             loadingScreen.classList.add('fade-out');
             document.body.classList.remove('no-scroll');
@@ -202,7 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 syncLenisScrollLock();
             }, 800);
         }, wait);
-    });
+    };
+
+    window.addEventListener('load', finishSplash);
+    setTimeout(finishSplash, LOAD_FAILSAFE_MS);
 
     // ═══════ SCROLL EVENTS ═══════
     /* Header / floating — Lenis lenis.on('scroll') ili fallback window scroll iznad */
