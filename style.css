@@ -1158,6 +1158,23 @@ html.immersive-cursor.cursor-hover .cursor-ring{
 }
 html.immersive-cursor.cursor-hover .cursor-dot{opacity:0}
 
+/* Tamne sekcije (hero video, meni, trust) — svetliji kursor da se vidi na braon / ljubičastoj podlozi */
+html.immersive-cursor.cursor-on-dark .cursor-dot{
+    background:var(--honey);
+    box-shadow:0 0 0 1.5px rgba(26,20,36,.45),0 0 14px rgba(232,180,77,.4);
+}
+html.immersive-cursor.cursor-on-dark .cursor-ring{
+    border:2px solid rgba(255,255,255,.55);
+    background:rgba(255,255,255,.06);
+    box-shadow:0 0 0 1px rgba(0,0,0,.15);
+}
+html.immersive-cursor.cursor-on-dark.cursor-hover .cursor-ring{
+    border-color:rgba(255,255,255,.88);
+    background:rgba(232,180,77,.2);
+    box-shadow:0 0 24px rgba(232,180,77,.25);
+}
+html.immersive-cursor.cursor-on-dark.cursor-hover .cursor-dot{opacity:0}
+
 .text-reveal-wrapper{
     overflow:hidden;
     display:block;

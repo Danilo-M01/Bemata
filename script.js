@@ -144,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let ringX = 0;
     let ringY = 0;
 
+    const cursorDarkBgSel = '.hero, .menu-section, .trust-immersive';
+
     if (finePointer && !reduceMotion && cursorDot && cursorRing) {
         document.documentElement.classList.add('immersive-cursor');
         window.addEventListener('mousemove', (e) => {
@@ -151,6 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
             mouseY = e.clientY;
             cursorDot.style.left = `${mouseX}px`;
             cursorDot.style.top = `${mouseY}px`;
+            const t = e.target;
+            const onDark = t && t.closest && t.closest(cursorDarkBgSel);
+            document.documentElement.classList.toggle('cursor-on-dark', Boolean(onDark));
         });
         const renderCursor = () => {
             ringX += (mouseX - ringX) * 0.14;
