@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const anyCoarsePointer = window.matchMedia('(any-pointer: coarse)').matches;
     /* Lenis + ScrollTrigger na touch-first uređajima pravi skokove; hover+miš = desktop. (Na nekim Windows touch laptopovima `pointer: coarse` i `fine` mogu oba biti true — zato hover.) */
     const preferLenisPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const useLenis = !reduceMotion && typeof Lenis !== 'undefined' && preferLenisPointer;
@@ -39,16 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const atmo = $('heroAtmosphere');
         const mol = $('moleculeField');
         const trustGrid = $('trustGrid');
-        const mx = finePointer ? parallaxX * 16 : 0;
-        const my = finePointer ? parallaxY * 12 : 0;
+        const pScale = anyCoarsePointer ? 0.5 : 1;
+        const px = parallaxX * pScale;
+        const py = parallaxY * pScale;
+        const mx = px * 16;
+        const my = py * 12;
         if (atmo) atmo.style.transform = `translate3d(${mx}px,${my + sy}px,0)`;
-        if (mol) {
-            if (finePointer) mol.style.transform = `translate3d(${parallaxX * -10}px,${parallaxY * -8}px,0)`;
-            else mol.style.transform = '';
-        }
-        if (trustGrid && finePointer) {
-            trustGrid.style.transform = `translate3d(${parallaxX * 5}px,${parallaxY * 4}px,0)`;
-        } else if (trustGrid) trustGrid.style.transform = '';
+        if (mol) mol.style.transform = `translate3d(${px * -10}px,${py * -8}px,0)`;
+        if (trustGrid) trustGrid.style.transform = `translate3d(${px * 5}px,${py * 4}px,0)`;
     };
 
     const syncLenisScrollLock = () => {
@@ -104,6 +103,19 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             { passive: true }
         );
+    }
+
+    if (!reduceMotion && anyCoarsePointer) {
+        document.documentElement.classList.add('immersive-touch');
+        const applyTouchParallax = (e) => {
+            const t = e.touches && e.touches[0];
+            if (!t) return;
+            parallaxX = t.clientX / window.innerWidth - 0.5;
+            parallaxY = t.clientY / window.innerHeight - 0.5;
+            updateAmbientParallax();
+        };
+        window.addEventListener('touchstart', applyTouchParallax, { passive: true });
+        window.addEventListener('touchmove', applyTouchParallax, { passive: true });
     }
 
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
@@ -490,6 +502,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: .1, rootMargin: '0px 0px -40px 0px' });
     $$('.reveal').forEach(el => revealObs.observe(el));
 
+    // ═══════ TRUST RATINGS — mobilni trak: početak na Facebook (srednji), levo/desno ostale ═══════
+    const trustRatingsRail = document.querySelector('.trust-ratings');
+    const mqTrustRatingsMobile = window.matchMedia('(max-width: 600px)');
+    const centerTrustRatingsOnFacebook = () => {
+        if (!mqTrustRatingsMobile.matches || !trustRatingsRail) return;
+        const fb = trustRatingsRail.querySelector('[data-trust-rail-center]');
+        if (!fb) return;
+        if (trustRatingsRail.scrollWidth <= trustRatingsRail.clientWidth + 2) return;
+        const railRect = trustRatingsRail.getBoundingClientRect();
+        const fbRect = fb.getBoundingClientRect();
+        const fbLeftInRail = fbRect.left - railRect.left + trustRatingsRail.scrollLeft;
+        const target = fbLeftInRail - (trustRatingsRail.clientWidth - fb.offsetWidth) / 2;
+        const maxScroll = trustRatingsRail.scrollWidth - trustRatingsRail.clientWidth;
+        trustRatingsRail.scrollLeft = Math.max(0, Math.min(target, maxScroll));
+    };
+    let trustRatingsResizeTimer;
+    if (trustRatingsRail) {
+        const scheduleCenter = () => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(centerTrustRatingsOnFacebook);
+            });
+        };
+        const railIo = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((en) => {
+                    if (en.isIntersecting && mqTrustRatingsMobile.matches) scheduleCenter();
+                });
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        railIo.observe(trustRatingsRail);
+        window.addEventListener('resize', () => {
+            clearTimeout(trustRatingsResizeTimer);
+            trustRatingsResizeTimer = setTimeout(() => {
+                if (mqTrustRatingsMobile.matches) scheduleCenter();
+            }, 150);
+        });
+    }
+
     // ═══════ TRUST IMMERSIVE PARALLAX & VINE BLOOM ═══════
     const trustSection = document.querySelector('.trust-immersive');
     const trustParallaxImg = document.querySelector('.trust-parallax-img');
@@ -497,12 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (trustSection && !reduceMotion) {
         // Parallax background via GSAP ScrollTrigger
-        if (
-            trustParallaxImg &&
-            typeof gsap !== 'undefined' &&
-            typeof ScrollTrigger !== 'undefined' &&
-            finePointer
-        ) {
+        if (trustParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             gsap.to(trustParallaxImg, {
                 yPercent: 15,
                 ease: 'none',
@@ -609,12 +655,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (resSection && !reduceMotion) {
         // Parallax background via GSAP
-        if (
-            resParallaxImg &&
-            typeof gsap !== 'undefined' &&
-            typeof ScrollTrigger !== 'undefined' &&
-            finePointer
-        ) {
+        if (resParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
             gsap.to(resParallaxImg, {
                 yPercent: 12,
                 ease: 'none',
