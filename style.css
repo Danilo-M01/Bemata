@@ -995,6 +995,15 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
     .collage-item,.ci-2{grid-row:auto;aspect-ratio:1;min-height:0}
     .ci-2 .collage-img{min-height:0;height:100%}
     .ci-3{grid-column:1/-1;aspect-ratio:16/10;min-height:0}
+    /* „Iz naše kuhinje“ — pomak slike nagore da sendvič u kadru bude vidljiviji na telefonu */
+    .ci-3 .collage-img{
+        object-position:center 10%;
+        transform:translateY(-6%);
+        height:118%;
+        min-height:118%;
+        width:100%;
+    }
+    .ci-3:hover .collage-img{transform:translateY(-6%) scale(1.04)}
     .about-visual{gap:16px}
     .hero-buttons{flex-direction:column;width:100%}
     .hero-buttons .btn{width:100%;justify-content:center;max-width:260px}
