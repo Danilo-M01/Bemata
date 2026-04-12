@@ -64,6 +64,7 @@
     --f-head: 'Playfair Display', Georgia, serif;
     --f-body: 'Poppins', -apple-system, sans-serif;
     --f-script: 'Dancing Script', cursive;
+    --f-display: var(--f-head);
 }
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -72,6 +73,7 @@ html{
     font-size:16px;
     -webkit-text-size-adjust:100%;
     text-size-adjust:100%;
+    overflow-anchor:none;
 }
 body{font-family:var(--f-body);background:var(--cream);color:var(--text-body);line-height:1.65;overflow-x:hidden}
 body.no-scroll{overflow:hidden}
@@ -578,6 +580,7 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
     padding:8px 8px 12px 6px;
     margin:0 auto;
     -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
     scrollbar-width:thin;
     scrollbar-color:rgba(255,255,255,.35) transparent;
     border-radius:var(--r-md);
@@ -988,8 +991,11 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
     .form-row{grid-template-columns:1fr}
     .reservation-info{grid-template-columns:1fr}
     .footer-grid{grid-template-columns:1fr;gap:28px}
-    .about-collage{grid-template-columns:1fr 1fr}
-    .ci-2{grid-row:auto}
+    .about-collage{grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+    .collage-item,.ci-2{grid-row:auto;aspect-ratio:1;min-height:0}
+    .ci-2 .collage-img{min-height:0;height:100%}
+    .ci-3{grid-column:1/-1;aspect-ratio:16/10;min-height:0}
+    .about-visual{gap:16px}
     .hero-buttons{flex-direction:column;width:100%}
     .hero-buttons .btn{width:100%;justify-content:center;max-width:260px}
     .reservation-form{padding:24px}
@@ -1299,12 +1305,46 @@ html.lenis, html.lenis body{height:auto}
     .tb{transform:scale(.7)}
 }
 @media(max-width:600px){
-    .trust-immersive{padding:80px 0 60px}
-    .trust-grid{grid-template-columns:1fr;gap:14px}
-    .trust-ratings{flex-direction:column;align-items:center}
+    .trust-immersive{padding:72px 0 52px;min-height:0}
+    .trust-im-title{font-size:clamp(1.5rem,6vw,2rem)!important;line-height:1.12}
+    .trust-im-subtitle{font-size:.88rem;line-height:1.65;padding:0 10px;max-width:34rem}
+    .trust-ratings{
+        display:flex;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        justify-content:flex-start;
+        align-items:stretch;
+        gap:12px;
+        margin:24px calc(50% - 50vw) 32px;
+        width:100vw;
+        max-width:100vw;
+        padding:6px max(16px,env(safe-area-inset-left)) 16px max(16px,env(safe-area-inset-right));
+        box-sizing:border-box;
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        scroll-snap-type:x mandatory;
+        scrollbar-width:none;
+    }
+    .trust-ratings::-webkit-scrollbar{display:none}
+    .trust-rating-badge{
+        flex:0 0 min(82vw,300px);
+        scroll-snap-align:center;
+        min-height:0;
+        padding:14px 18px;
+        border-radius:var(--r-md);
+    }
+    .trust-grid{grid-template-columns:1fr;gap:16px;margin-bottom:40px}
     .trust-vine{width:50px;opacity:.6!important}
     .trust-bubbles .tb{display:none}
-    .trust-card{padding:20px 18px 16px}
+    .trust-card{padding:20px 16px 16px;border-radius:var(--r-md)}
+    .trust-card-quote blockquote{font-size:.9rem;line-height:1.68}
+    .trust-card--featured .trust-card-quote blockquote{padding-left:0;font-size:.92rem}
+    .trust-quote-icon{position:static;display:block;margin:0 0 6px;opacity:.4}
+    .trust-card-author{flex-wrap:wrap;gap:10px;margin-top:16px;padding-top:14px}
+    .trust-card-stars{width:100%;text-align:left;margin-top:2px;font-size:.75rem}
+    .trust-bloom-cta{padding:28px 8px 0}
+    .trust-bloom-cta .btn{width:100%;max-width:300px}
+    .trb-score{font-size:1.55rem}
 }
 
 /* ═══════════ ORGANIC FINALE CONNECTOR ═══════════ */

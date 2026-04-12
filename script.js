@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer: fine)').matches;
+    /* Lenis + ScrollTrigger na touch-first uređajima pravi skokove; hover+miš = desktop. (Na nekim Windows touch laptopovima `pointer: coarse` i `fine` mogu oba biti true — zato hover.) */
+    const preferLenisPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const useLenis = !reduceMotion && typeof Lenis !== 'undefined' && preferLenisPointer;
 
     let lenis = null;
     let lastScrollY = 0;
@@ -53,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.contains('no-scroll') ? lenis.stop() : lenis.start();
     };
 
-    if (!reduceMotion && typeof Lenis !== 'undefined') {
+    if (useLenis) {
         lenis = new Lenis({
             duration: 1.55,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -105,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
+        ScrollTrigger.config({ ignoreMobileResize: true });
         if (lenis) {
             ScrollTrigger.scrollerProxy(document.documentElement, {
                 scrollTop(value) {
@@ -217,37 +221,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ═══════ SEARCH ═══════
     const openSearch = () => {
+        if (!searchOverlay) return;
         searchOverlay.classList.add('active');
         document.body.classList.add('no-scroll');
-        setTimeout(() => searchInput.focus(), 300);
+        setTimeout(() => searchInput?.focus(), 300);
     };
     const closeSearch = () => {
+        if (!searchOverlay) return;
         searchOverlay.classList.remove('active');
         document.body.classList.remove('no-scroll');
-        searchInput.value = '';
+        if (searchInput) searchInput.value = '';
     };
-    searchBtn.addEventListener('click', openSearch);
-    searchClose.addEventListener('click', closeSearch);
-    searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
+    if (searchBtn) searchBtn.addEventListener('click', openSearch);
+    if (searchClose) searchClose.addEventListener('click', closeSearch);
+    if (searchOverlay) searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
     $$('.search-suggestions a').forEach(a => a.addEventListener('click', closeSearch));
 
     // ═══════ MOBILE MENU ═══════
-    const openMobile = () => { mobileMenu.classList.add('active'); document.body.classList.add('no-scroll'); };
-    const closeMobile = () => { mobileMenu.classList.remove('active'); document.body.classList.remove('no-scroll'); };
-    menuBtn.addEventListener('click', openMobile);
-    mobileClose.addEventListener('click', closeMobile);
-    mobileMenuBg.addEventListener('click', closeMobile);
+    const openMobile = () => {
+        if (!mobileMenu) return;
+        mobileMenu.classList.add('active');
+        document.body.classList.add('no-scroll');
+    };
+    const closeMobile = () => {
+        if (!mobileMenu) return;
+        mobileMenu.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    };
+    if (menuBtn) menuBtn.addEventListener('click', openMobile);
+    if (mobileClose) mobileClose.addEventListener('click', closeMobile);
+    if (mobileMenuBg) mobileMenuBg.addEventListener('click', closeMobile);
     $$('.mobile-link').forEach(l => l.addEventListener('click', closeMobile));
 
     // ═══════ MODAL ═══════
-    const openModal = () => { reservationModal.classList.add('active'); document.body.classList.add('no-scroll'); };
-    const closeModal = () => { reservationModal.classList.remove('active'); document.body.classList.remove('no-scroll'); };
-    floatingReserve.addEventListener('click', openModal);
-    modalClose.addEventListener('click', closeModal);
-    reservationModal.addEventListener('click', e => { if (e.target === reservationModal) closeModal(); });
+    const openModal = () => {
+        if (!reservationModal) return;
+        reservationModal.classList.add('active');
+        document.body.classList.add('no-scroll');
+    };
+    const closeModal = () => {
+        if (!reservationModal) return;
+        reservationModal.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    };
+    if (floatingReserve) floatingReserve.addEventListener('click', openModal);
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (reservationModal) reservationModal.addEventListener('click', e => { if (e.target === reservationModal) closeModal(); });
 
     // ═══════ FORMS ═══════
     const showNotif = () => {
+        if (!notification) return;
         notification.classList.add('show');
         setTimeout(() => notification.classList.remove('show'), 4000);
     };
@@ -477,7 +500,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             trustParallaxImg &&
             typeof gsap !== 'undefined' &&
-            typeof ScrollTrigger !== 'undefined'
+            typeof ScrollTrigger !== 'undefined' &&
+            finePointer
         ) {
             gsap.to(trustParallaxImg, {
                 yPercent: 15,
@@ -498,8 +522,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const branches = vine.querySelectorAll('.tv-branch');
             const trunkLens = [];
             const branchLens = [];
-            trunks.forEach(p => { const len = p.getTotalLength(); trunkLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            branches.forEach(p => { const len = p.getTotalLength(); branchLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
+            trunks.forEach((p) => {
+                const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 2000;
+                trunkLens.push(len);
+                p.style.strokeDasharray = len;
+                p.style.strokeDashoffset = len;
+            });
+            branches.forEach((p) => {
+                const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 400;
+                branchLens.push(len);
+                p.style.strokeDasharray = len;
+                p.style.strokeDashoffset = len;
+            });
             trustVineData.set(vine, { trunks, branches, trunkLens, branchLens });
         });
 
@@ -578,7 +612,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             resParallaxImg &&
             typeof gsap !== 'undefined' &&
-            typeof ScrollTrigger !== 'undefined'
+            typeof ScrollTrigger !== 'undefined' &&
+            finePointer
         ) {
             gsap.to(resParallaxImg, {
                 yPercent: 12,
@@ -684,13 +719,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const countObs = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) {
-                const el = e.target, target = parseInt(el.dataset.count, 10);
+                const el = e.target;
+                const target = Number.parseInt(el.dataset.count, 10);
+                if (!Number.isFinite(target) || target < 0) {
+                    countObs.unobserve(el);
+                    return;
+                }
                 let cur = 0;
                 const inc = target / 50;
                 const plus = target > 1 ? '+' : '';
                 const timer = setInterval(() => {
                     cur += inc;
-                    if (cur >= target) { cur = target; clearInterval(timer); }
+                    if (cur >= target) {
+                        cur = target;
+                        clearInterval(timer);
+                    }
                     el.textContent = Math.floor(cur) + plus;
                 }, 35);
                 countObs.unobserve(el);
