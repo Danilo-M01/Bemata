@@ -664,7 +664,7 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
 .service-body{padding:28px}
 .service-body h3{font-family:var(--f-head);font-size:1.3rem;font-weight:600;color:var(--text-dark);margin-bottom:10px}
 .service-body p{font-size:.88rem;color:var(--text-muted);line-height:1.7;font-weight:300;margin-bottom:16px}
-.partner-row{display:flex;gap:8px;flex-wrap:wrap}
+.partner-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .partner-pill{padding:8px 18px;font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-pill);color:var(--text-body);transition:var(--t);cursor:pointer}
 .partner-pill:hover{border-color:var(--green-light);background:var(--green-soft)}
 
