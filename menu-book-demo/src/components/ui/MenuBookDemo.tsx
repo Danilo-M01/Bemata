@@ -1,39 +1,28 @@
-import { useMemo } from 'react';
 import { MenuBook } from './MenuBook';
 
-function menuPageUrl(index1Based: number): string {
-  const n = String(index1Based).padStart(2, '0');
-  const base = import.meta.env.BASE_URL;
-  const root = base.endsWith('/') ? base : `${base}/`;
-  return `${root}menu/${n}.png`;
-}
-
-const PAGE_COUNT = 11;
-
 export function MenuBookDemo() {
-  const pages = useMemo(
-    () => Array.from({ length: PAGE_COUNT }, (_, i) => menuPageUrl(i + 1)),
-    []
-  );
-
   return (
-    <div className="min-h-dvh bg-gradient-to-b from-[#252320] via-[#1c1b19] to-[#141312] py-10 md:py-14">
-      <header className="mb-6 px-4 text-center">
-        <p className="mb-2 font-sans text-[0.65rem] uppercase tracking-[0.35em] text-white/35">
-          Bemata · lab
+    <div
+      style={{
+        minHeight: '100dvh',
+        background: 'linear-gradient(180deg, #1f1d1b 0%, #181715 35%, #111010 100%)',
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <header style={{ textAlign: 'center', padding: '28px 16px 0' }}>
+        <p style={{ fontSize: '0.6rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.22)', marginBottom: '8px' }}>
+          Bemata · Restoran
         </p>
-        <h1 className="font-editorial text-3xl font-medium text-white/90 md:text-4xl">
-          3D meni knjiga
+        <h1 style={{ fontFamily: "'Georgia', serif", fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', fontWeight: 400, color: 'rgba(255,255,255,0.82)', letterSpacing: '0.03em', margin: 0 }}>
+          Naš Meni
         </h1>
-        <p className="mx-auto mt-3 max-w-xl font-sans text-sm font-light text-white/50">
-          Slike:{' '}
-          <code className="rounded bg-white/10 px-1.5 py-0.5 text-[0.75rem] text-white/70">
-            public/menu/01.png … 11.png
-          </code>
-        </p>
+        <div style={{ width: '40px', height: '1px', background: 'linear-gradient(90deg, transparent, #c4a24e, transparent)', margin: '10px auto 0', opacity: 0.35 }} />
       </header>
 
-      <MenuBook pages={pages} className="pb-12" />
+      <MenuBook />
     </div>
   );
 }
