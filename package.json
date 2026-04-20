@@ -2,7 +2,9 @@
   "name": "bemata-static-site",
   "private": true,
   "description": "Statički sajt — na Vercelu postavi Root Directory na koren ovog repozitorijuma (.)",
-  "scripts": {},
+  "scripts": {
+    "build": "echo 'No build required' && exit 0"
+  },
   "dependencies": {
     "gsap": "^3.15.0",
     "three": "^0.184.0"
