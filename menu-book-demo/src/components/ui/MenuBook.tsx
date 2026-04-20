@@ -241,7 +241,7 @@ export function MenuBook() {
       </div>
 
       <p className="gm-hint">
-        {isMobile ? 'Prevuci stranu prstom ← →' : 'Prevuci stranu ili klikni · Strelice ← →'}
+        {isMobile ? 'Prevuci prstom ili tapni na ivicu za listanje ← →' : 'Prevuci stranu ili klikni · Strelice ← →'}
       </p>
     </div>
   );
