@@ -25,9 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer: fine)').matches;
     const anyCoarsePointer = window.matchMedia('(any-pointer: coarse)').matches;
+    const saveDataEnabled = Boolean(navigator.connection && navigator.connection.saveData);
+    const lowCpuDevice = (navigator.hardwareConcurrency || 8) <= 4;
     /* Lenis + ScrollTrigger na touch-first uređajima pravi skokove; hover+miš = desktop. (Na nekim Windows touch laptopovima `pointer: coarse` i `fine` mogu oba biti true — zato hover.) */
     const preferLenisPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const useLenis = !reduceMotion && typeof Lenis !== 'undefined' && preferLenisPointer;
+    if (!reduceMotion && (saveDataEnabled || lowCpuDevice)) {
+        document.documentElement.classList.add('lite-animations');
+    }
 
     let lenis = null;
     let lastScrollY = 0;
@@ -143,8 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseY = 0;
     let ringX = 0;
     let ringY = 0;
+    let cursorRunning = true;
 
-    const cursorDarkBgSel = '.hero, .menu-section, .trust-immersive';
+    const cursorDarkBgSel = '.hero, .trust-immersive';
 
     if (finePointer && !reduceMotion && cursorDot && cursorRing) {
         document.documentElement.classList.add('immersive-cursor');
@@ -157,11 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const onDark = t && t.closest && t.closest(cursorDarkBgSel);
             document.documentElement.classList.toggle('cursor-on-dark', Boolean(onDark));
         });
+        document.addEventListener('visibilitychange', () => { cursorRunning = !document.hidden; });
         const renderCursor = () => {
-            ringX += (mouseX - ringX) * 0.14;
-            ringY += (mouseY - ringY) * 0.14;
-            cursorRing.style.left = `${ringX}px`;
-            cursorRing.style.top = `${ringY}px`;
+            if (cursorRunning) {
+                ringX += (mouseX - ringX) * 0.14;
+                ringY += (mouseY - ringY) * 0.14;
+                cursorRing.style.left = `${ringX}px`;
+                cursorRing.style.top = `${ringY}px`;
+            }
             requestAnimationFrame(renderCursor);
         };
         renderCursor();
@@ -268,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuBtn) menuBtn.addEventListener('click', openMobile);
     if (mobileClose) mobileClose.addEventListener('click', closeMobile);
     if (mobileMenuBg) mobileMenuBg.addEventListener('click', closeMobile);
-    $$('.mobile-link').forEach(l => l.addEventListener('click', closeMobile));
+    $$('#mobileMenu a[href^="#"]').forEach(l => l.addEventListener('click', closeMobile));
 
     // ═══════ MODAL ═══════
     const openModal = () => {
@@ -295,103 +304,105 @@ document.addEventListener('DOMContentLoaded', () => {
     if (reservationForm) reservationForm.addEventListener('submit', handleSubmit);
     if (modalForm) modalForm.addEventListener('submit', e => { handleSubmit(e); closeModal(); });
 
-    // ═══════ MENU TABS + DIET FILTER + VERTICAL SCROLL (2 kolone) ═══════
-    const menuTabs = $$('.menu-tab');
-    const menuCards = $$('#menuGrid .menu-card');
-    const menuDietBar = $('menuDietBar');
-    const menuDietBtns = $$('.menu-diet-btn');
+    // ═══════ MENU TABS + DIET FILTER (legacy grid — preskoči ako je 3D meni) ═══════
     const menuGridWrap = $('menuGridWrap');
-    const menuScrollHint = $('menuScrollHint');
+    const menuCards = $$('#menuGrid .menu-card');
+    if (menuGridWrap && menuCards.length) {
+        const menuTabs = $$('.menu-tab');
+        const menuDietBar = $('menuDietBar');
+        const menuDietBtns = $$('.menu-diet-btn');
+        const menuScrollHint = $('menuScrollHint');
 
-    let activeCategory = 'starters';
-    let activeDiet = 'all';
+        let activeCategory = 'starters';
+        let activeDiet = 'all';
 
-    const getCardKinds = card =>
-        (card.dataset.kinds || '').trim().split(/\s+/).filter(Boolean);
+        const getCardKinds = card =>
+            (card.dataset.kinds || '').trim().split(/\s+/).filter(Boolean);
 
-    const updateMenuScrollHint = () => {
-        const el = menuGridWrap;
-        if (!el) return;
-        const canScroll = el.scrollHeight > el.clientHeight + 4;
-        if (menuScrollHint) menuScrollHint.style.display = canScroll ? '' : 'none';
-    };
+        const updateMenuScrollHint = () => {
+            const el = menuGridWrap;
+            if (!el) return;
+            const canScroll = el.scrollHeight > el.clientHeight + 4;
+            if (menuScrollHint) menuScrollHint.style.display = canScroll ? '' : 'none';
+        };
 
-    const applyMenuVisibility = () => {
-        let idx = 0;
-        menuCards.forEach(card => {
-            const cat = card.dataset.category;
-            const inCat = cat === activeCategory;
-            let passDiet = true;
-            if (inCat && (activeCategory === 'starters' || activeCategory === 'mains')) {
-                const isGroup = card.classList.contains('menu-card--group');
-                if (activeDiet === 'all') passDiet = true;
-                else if (isGroup) passDiet = false;
-                else {
-                    const kinds = getCardKinds(card);
-                    passDiet = kinds.includes(activeDiet);
+        const applyMenuVisibility = () => {
+            let idx = 0;
+            menuCards.forEach(card => {
+                const cat = card.dataset.category;
+                const inCat = cat === activeCategory;
+                let passDiet = true;
+                if (inCat && (activeCategory === 'starters' || activeCategory === 'mains')) {
+                    const isGroup = card.classList.contains('menu-card--group');
+                    if (activeDiet === 'all') passDiet = true;
+                    else if (isGroup) passDiet = false;
+                    else {
+                        const kinds = getCardKinds(card);
+                        passDiet = kinds.includes(activeDiet);
+                    }
                 }
-            }
-            const show = inCat && passDiet;
-            if (show) {
-                card.style.display = '';
-                card.style.animation = 'none';
-                card.offsetHeight;
-                card.style.animation = `fadeUp .45s ${idx * .06}s both`;
-                idx++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        if (menuGridWrap) menuGridWrap.scrollTop = 0;
-        requestAnimationFrame(updateMenuScrollHint);
-    };
+                const show = inCat && passDiet;
+                if (show) {
+                    card.style.display = '';
+                    card.style.animation = 'none';
+                    card.offsetHeight;
+                    card.style.animation = `fadeUp .45s ${idx * .06}s both`;
+                    idx++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            if (menuGridWrap) menuGridWrap.scrollTop = 0;
+            requestAnimationFrame(updateMenuScrollHint);
+        };
 
-    menuTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const cat = tab.dataset.category;
-            menuTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            activeCategory = cat;
-            if (cat === 'starters' || cat === 'mains') {
-                menuDietBar?.classList.add('is-visible');
-                if (cat === 'mains') {
-                    menuDietBar?.classList.add('mains-tab');
-                    if (activeDiet === 'dodaci') {
-                        activeDiet = 'all';
-                        menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === 'all'));
+        menuTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const cat = tab.dataset.category;
+                menuTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeCategory = cat;
+                if (cat === 'starters' || cat === 'mains') {
+                    menuDietBar?.classList.add('is-visible');
+                    if (cat === 'mains') {
+                        menuDietBar?.classList.add('mains-tab');
+                        if (activeDiet === 'dodaci') {
+                            activeDiet = 'all';
+                            menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === 'all'));
+                        }
+                    } else {
+                        menuDietBar?.classList.remove('mains-tab');
                     }
                 } else {
+                    menuDietBar?.classList.remove('is-visible');
                     menuDietBar?.classList.remove('mains-tab');
+                    activeDiet = 'all';
+                    menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === 'all'));
                 }
-            } else {
-                menuDietBar?.classList.remove('is-visible');
-                menuDietBar?.classList.remove('mains-tab');
-                activeDiet = 'all';
-                menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === 'all'));
-            }
-            applyMenuVisibility();
+                applyMenuVisibility();
+            });
         });
-    });
 
-    menuDietBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const d = btn.dataset.diet;
-            activeDiet = d;
-            menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === d));
-            applyMenuVisibility();
+        menuDietBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const d = btn.dataset.diet;
+                activeDiet = d;
+                menuDietBtns.forEach(b => b.classList.toggle('active', b.dataset.diet === d));
+                applyMenuVisibility();
+            });
         });
-    });
 
-    if (menuGridWrap && typeof ResizeObserver !== 'undefined') {
-        new ResizeObserver(updateMenuScrollHint).observe(menuGridWrap);
+        if (typeof ResizeObserver !== 'undefined') {
+            new ResizeObserver(updateMenuScrollHint).observe(menuGridWrap);
+        }
+        window.addEventListener('resize', updateMenuScrollHint);
+
+        if (lenis) {
+            menuGridWrap.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+        }
+
+        applyMenuVisibility();
     }
-    window.addEventListener('resize', updateMenuScrollHint);
-
-    if (menuGridWrap && lenis) {
-        menuGridWrap.addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
-    }
-
-    applyMenuVisibility();
 
     // ═══════ PARALLAX DIVIDERS + VINE ROOTS ═══════
     const parallaxDividers = $$('.parallax-divider');
@@ -546,203 +557,82 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ═══════ TRUST IMMERSIVE PARALLAX & VINE BLOOM ═══════
+    // ═══════ UNIFIED VINE + PARALLAX SYSTEM ═══════
+    // All vine groups are registered here and drawn in ONE scroll handler
+    const vineGroups = [];  // { section, vineData, trunkSel, branchSel, branchStart, branchRange, applyTransform }
+
+    const initVineGroup = (cfg) => {
+        const { section, vines, trunkSel, branchSel, branchStart, branchRange, applyTransform, rightClass } = cfg;
+        if (!section || !vines.length || reduceMotion) return;
+        const vineData = new Map();
+        vines.forEach(vine => {
+            const trunks = vine.querySelectorAll(trunkSel);
+            const branches = vine.querySelectorAll(branchSel);
+            const trunkLens = [], branchLens = [];
+            trunks.forEach(p => { const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 2000; trunkLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
+            branches.forEach(p => { const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 400; branchLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
+            vineData.set(vine, { trunks, branches, trunkLens, branchLens });
+        });
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => e.target.classList.toggle('vine-visible', e.isIntersecting));
+        }, { threshold: 0.02 });
+        vines.forEach(v => obs.observe(v));
+        vineGroups.push({ section, vineData, branchStart: branchStart || 0.15, branchRange: branchRange || 0.6, applyTransform: applyTransform || false, rightClass: rightClass || '', shiftAmount: cfg.shiftAmount || 20 });
+    };
+
+    // Trust
     const trustSection = document.querySelector('.trust-immersive');
     const trustParallaxImg = document.querySelector('.trust-parallax-img');
-    const trustVines = $$('.trust-vine');
-
-    if (trustSection && !reduceMotion) {
-        // Parallax background via GSAP ScrollTrigger
-        if (trustParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            gsap.to(trustParallaxImg, {
-                yPercent: 15,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: trustSection,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 0.5,
-                }
-            });
-        }
-
-        // Vine drawing setup — same system as existing vine-deco
-        const trustVineData = new Map();
-        trustVines.forEach(vine => {
-            const trunks = vine.querySelectorAll('.tv-trunk');
-            const branches = vine.querySelectorAll('.tv-branch');
-            const trunkLens = [];
-            const branchLens = [];
-            trunks.forEach((p) => {
-                const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 2000;
-                trunkLens.push(len);
-                p.style.strokeDasharray = len;
-                p.style.strokeDashoffset = len;
-            });
-            branches.forEach((p) => {
-                const len = typeof p.getTotalLength === 'function' ? p.getTotalLength() : 400;
-                branchLens.push(len);
-                p.style.strokeDasharray = len;
-                p.style.strokeDashoffset = len;
-            });
-            trustVineData.set(vine, { trunks, branches, trunkLens, branchLens });
-        });
-
-        // Vine visibility + scroll-driven drawing
-        const trustVineObs = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                e.target.classList.toggle('vine-visible', e.isIntersecting);
-            });
-        }, { threshold: 0.02 });
-        trustVines.forEach(v => trustVineObs.observe(v));
-
-        // Scroll-driven vine drawing in the existing scroll loop
-        const drawTrustVines = () => {
-            const viewH = window.innerHeight;
-            trustVineData.forEach((data, vine) => {
-                if (!vine.classList.contains('vine-visible')) return;
-                const rect = trustSection.getBoundingClientRect();
-                const rawProgress = (viewH - rect.top) / (viewH + rect.height);
-                const progress = Math.max(0, Math.min(1, rawProgress));
-                data.trunks.forEach((p, i) => { p.style.strokeDashoffset = data.trunkLens[i] * (1 - progress); });
-                const branchDraw = Math.max(0, Math.min(1, (progress - 0.15) / 0.6));
-                data.branches.forEach((p, i) => { p.style.strokeDashoffset = data.branchLens[i] * (1 - branchDraw); });
-                vine.style.transform = vine.classList.contains('trust-vine--right')
-                    ? `scaleX(-1) translate3d(0,${(progress - 0.5) * 20}px,0)`
-                    : `translate3d(0,${(progress - 0.5) * 20}px,0)`;
-            });
-        };
-        if (lenis) lenis.on('scroll', drawTrustVines);
-        else window.addEventListener('scroll', drawTrustVines, { passive: true });
-        requestAnimationFrame(drawTrustVines);
+    if (trustSection && trustParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !reduceMotion) {
+        gsap.to(trustParallaxImg, { yPercent: 15, ease: 'none', scrollTrigger: { trigger: trustSection, start: 'top bottom', end: 'bottom top', scrub: 0.5 } });
     }
+    initVineGroup({ section: trustSection, vines: [...$$('.trust-vine')], trunkSel: '.tv-trunk', branchSel: '.tv-branch', branchStart: 0.15, branchRange: 0.6, applyTransform: true, rightClass: 'trust-vine--right', shiftAmount: 20 });
 
-    // ═══════ ORGANIC FINALE CONNECTOR VINES ═══════
-    const finaleEl = document.getElementById('organicFinale');
-    const finaleVines = $$('.finale-vine');
-    if (finaleEl && !reduceMotion) {
-        const finaleVineData = new Map();
-        finaleVines.forEach(vine => {
-            const trunks = vine.querySelectorAll('.fv-trunk');
-            const branches = vine.querySelectorAll('.fv-branch');
-            const trunkLens = [], branchLens = [];
-            trunks.forEach(p => { const len = p.getTotalLength(); trunkLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            branches.forEach(p => { const len = p.getTotalLength(); branchLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            finaleVineData.set(vine, { trunks, branches, trunkLens, branchLens });
-        });
+    // Finale
+    initVineGroup({ section: document.getElementById('organicFinale'), vines: [...$$('.finale-vine')], trunkSel: '.fv-trunk', branchSel: '.fv-branch', branchStart: 0.2, branchRange: 0.5 });
 
-        const finaleVineObs = new IntersectionObserver(entries => {
-            entries.forEach(e => e.target.classList.toggle('vine-visible', e.isIntersecting));
-        }, { threshold: 0.02 });
-        finaleVines.forEach(v => finaleVineObs.observe(v));
-
-        const drawFinaleVines = () => {
-            const viewH = window.innerHeight;
-            finaleVineData.forEach((data, vine) => {
-                if (!vine.classList.contains('vine-visible')) return;
-                const rect = finaleEl.getBoundingClientRect();
-                const rawProgress = (viewH - rect.top) / (viewH + rect.height);
-                const progress = Math.max(0, Math.min(1, rawProgress));
-                data.trunks.forEach((p, i) => { p.style.strokeDashoffset = data.trunkLens[i] * (1 - progress); });
-                const branchDraw = Math.max(0, Math.min(1, (progress - 0.2) / 0.5));
-                data.branches.forEach((p, i) => { p.style.strokeDashoffset = data.branchLens[i] * (1 - branchDraw); });
-            });
-        };
-        if (lenis) lenis.on('scroll', drawFinaleVines);
-        else window.addEventListener('scroll', drawFinaleVines, { passive: true });
-        requestAnimationFrame(drawFinaleVines);
-    }
-
-    // ═══════ RESERVATION PARALLAX & VINE BLOOM ═══════
+    // Reservation
     const resSection = document.querySelector('.reservation--parallax');
     const resParallaxImg = document.querySelector('.reservation-parallax-img');
-    const resVines = $$('.res-vine');
-
-    if (resSection && !reduceMotion) {
-        // Parallax background via GSAP
-        if (resParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            gsap.to(resParallaxImg, {
-                yPercent: 12,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: resSection,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 0.6,
-                }
-            });
-        }
-
-        // Reservation vine drawing
-        const resVineData = new Map();
-        resVines.forEach(vine => {
-            const trunks = vine.querySelectorAll('.rv-trunk');
-            const branches = vine.querySelectorAll('.rv-branch');
-            const trunkLens = [], branchLens = [];
-            trunks.forEach(p => { const len = p.getTotalLength(); trunkLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            branches.forEach(p => { const len = p.getTotalLength(); branchLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            resVineData.set(vine, { trunks, branches, trunkLens, branchLens });
-        });
-
-        const resVineObs = new IntersectionObserver(entries => {
-            entries.forEach(e => e.target.classList.toggle('vine-visible', e.isIntersecting));
-        }, { threshold: 0.02 });
-        resVines.forEach(v => resVineObs.observe(v));
-
-        const drawResVines = () => {
-            const viewH = window.innerHeight;
-            resVineData.forEach((data, vine) => {
-                if (!vine.classList.contains('vine-visible')) return;
-                const rect = resSection.getBoundingClientRect();
-                const rawProgress = (viewH - rect.top) / (viewH + rect.height);
-                const progress = Math.max(0, Math.min(1, rawProgress));
-                data.trunks.forEach((p, i) => { p.style.strokeDashoffset = data.trunkLens[i] * (1 - progress); });
-                const branchDraw = Math.max(0, Math.min(1, (progress - 0.12) / 0.55));
-                data.branches.forEach((p, i) => { p.style.strokeDashoffset = data.branchLens[i] * (1 - branchDraw); });
-                vine.style.transform = vine.classList.contains('res-vine--right')
-                    ? `scaleX(-1) translate3d(0,${(progress - 0.5) * 18}px,0)`
-                    : `translate3d(0,${(progress - 0.5) * 18}px,0)`;
-            });
-        };
-        if (lenis) lenis.on('scroll', drawResVines);
-        else window.addEventListener('scroll', drawResVines, { passive: true });
-        requestAnimationFrame(drawResVines);
+    if (resSection && resParallaxImg && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && !reduceMotion) {
+        gsap.to(resParallaxImg, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: resSection, start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
     }
+    initVineGroup({ section: resSection, vines: [...$$('.res-vine')], trunkSel: '.rv-trunk', branchSel: '.rv-branch', branchStart: 0.12, branchRange: 0.55, applyTransform: true, rightClass: 'res-vine--right', shiftAmount: 18 });
 
-    // ═══════ FOOTER VINE DRAWING ═══════
-    const footerEl = document.querySelector('.footer--organic');
-    const footerVines = $$('.footer-vine');
-    if (footerEl && !reduceMotion) {
-        const footerVineData = new Map();
-        footerVines.forEach(vine => {
-            const trunks = vine.querySelectorAll('.ftv-trunk');
-            const branches = vine.querySelectorAll('.ftv-branch');
-            const trunkLens = [], branchLens = [];
-            trunks.forEach(p => { const len = p.getTotalLength(); trunkLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            branches.forEach(p => { const len = p.getTotalLength(); branchLens.push(len); p.style.strokeDasharray = len; p.style.strokeDashoffset = len; });
-            footerVineData.set(vine, { trunks, branches, trunkLens, branchLens });
-        });
+    // Footer
+    initVineGroup({ section: document.querySelector('.footer--organic'), vines: [...$$('.footer-vine')], trunkSel: '.ftv-trunk', branchSel: '.ftv-branch', branchStart: 0.2, branchRange: 0.5 });
 
-        const footerVineObs = new IntersectionObserver(entries => {
-            entries.forEach(e => e.target.classList.toggle('vine-visible', e.isIntersecting));
-        }, { threshold: 0.02 });
-        footerVines.forEach(v => footerVineObs.observe(v));
-
-        const drawFooterVines = () => {
+    // ONE unified scroll handler for ALL vine groups
+    if (vineGroups.length && !reduceMotion) {
+        let vineTicking = false;
+        const drawAllVines = () => {
             const viewH = window.innerHeight;
-            footerVineData.forEach((data, vine) => {
-                if (!vine.classList.contains('vine-visible')) return;
-                const rect = footerEl.getBoundingClientRect();
-                const rawProgress = (viewH - rect.top) / (viewH + rect.height);
-                const progress = Math.max(0, Math.min(1, rawProgress));
-                data.trunks.forEach((p, i) => { p.style.strokeDashoffset = data.trunkLens[i] * (1 - progress); });
-                const branchDraw = Math.max(0, Math.min(1, (progress - 0.2) / 0.5));
-                data.branches.forEach((p, i) => { p.style.strokeDashoffset = data.branchLens[i] * (1 - branchDraw); });
-            });
+            for (let g = 0; g < vineGroups.length; g++) {
+                const { section, vineData, branchStart, branchRange, applyTransform, rightClass, shiftAmount } = vineGroups[g];
+                const sRect = section.getBoundingClientRect();
+                // Skip sections far off-screen
+                if (sRect.bottom < -200 || sRect.top > viewH + 200) continue;
+                const rawP = (viewH - sRect.top) / (viewH + sRect.height);
+                const progress = rawP < 0 ? 0 : rawP > 1 ? 1 : rawP;
+                vineData.forEach((data, vine) => {
+                    if (!vine.classList.contains('vine-visible')) return;
+                    for (let i = 0; i < data.trunks.length; i++) data.trunks[i].style.strokeDashoffset = data.trunkLens[i] * (1 - progress);
+                    const bd = (progress - branchStart) / branchRange;
+                    const branchDraw = bd < 0 ? 0 : bd > 1 ? 1 : bd;
+                    for (let i = 0; i < data.branches.length; i++) data.branches[i].style.strokeDashoffset = data.branchLens[i] * (1 - branchDraw);
+                    if (applyTransform) {
+                        const shift = (progress - 0.5) * shiftAmount;
+                        vine.style.transform = (rightClass && vine.classList.contains(rightClass))
+                            ? `scaleX(-1) translate3d(0,${shift}px,0)` : `translate3d(0,${shift}px,0)`;
+                    }
+                });
+            }
+            vineTicking = false;
         };
-        if (lenis) lenis.on('scroll', drawFooterVines);
-        else window.addEventListener('scroll', drawFooterVines, { passive: true });
-        requestAnimationFrame(drawFooterVines);
+        const requestVineUpdate = () => { if (!vineTicking) { vineTicking = true; requestAnimationFrame(drawAllVines); } };
+        if (lenis) lenis.on('scroll', requestVineUpdate);
+        else window.addEventListener('scroll', requestVineUpdate, { passive: true });
+        requestAnimationFrame(drawAllVines);
     }
 
     // Add trust cards to cursor hover selector
@@ -788,42 +678,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: .5 });
     $$('.mini-stat-num').forEach(el => countObs.observe(el));
 
-    // ═══════ RESERVATION AMBIENCE — ista logika kao ImagePlayer (prompt): samo setInterval + menjanje src ═══════
+    // ═══════ RESERVATION AMBIENCE — pauses when not visible ═══════
     const ambiencePlayer = $('reservationAmbiencePlayer');
     const ambienceImg = $('reservationAmbienceImg');
     if (ambiencePlayer && ambienceImg) {
-        const images = (ambiencePlayer.dataset.images || '')
-            .split(',')
-            .map(s => s.trim())
-            .filter(Boolean);
+        const images = (ambiencePlayer.dataset.images || '').split(',').map(s => s.trim()).filter(Boolean);
         const intervalMs = Math.max(200, parseInt(ambiencePlayer.dataset.interval || '500', 10) || 500);
         const loop = ambiencePlayer.dataset.loop !== 'false';
-
-        if (images.length === 0) {
-            ambienceImg.removeAttribute('src');
-            ambienceImg.alt = '';
-        } else {
-            images.forEach(src => {
-                const im = new Image();
-                im.src = src;
-            });
+        if (images.length === 0) { ambienceImg.removeAttribute('src'); ambienceImg.alt = ''; }
+        else {
+            images.forEach(src => { const im = new Image(); im.src = src; });
             ambienceImg.src = images[0];
-            let idx = 0;
-
-            if (images.length > 1 && !reduceMotion) {
-                const timer = setInterval(() => {
-                    let next = idx + 1;
-                    if (next >= images.length) {
-                        if (!loop) {
-                            clearInterval(timer);
-                            return;
-                        }
-                        next = 0;
-                    }
-                    idx = next;
-                    ambienceImg.src = images[idx];
-                }, intervalMs);
-            }
+            let idx = 0, ambienceTimer = null, ambienceVisible = false;
+            const startAmbience = () => { if (ambienceTimer || images.length < 2 || reduceMotion) return; ambienceTimer = setInterval(() => { let next = idx + 1; if (next >= images.length) { if (!loop) { clearInterval(ambienceTimer); ambienceTimer = null; return; } next = 0; } idx = next; ambienceImg.src = images[idx]; }, intervalMs); };
+            const stopAmbience = () => { if (ambienceTimer) { clearInterval(ambienceTimer); ambienceTimer = null; } };
+            const ambienceObs = new IntersectionObserver(entries => { entries.forEach(e => { ambienceVisible = e.isIntersecting; if (ambienceVisible) startAmbience(); else stopAmbience(); }); }, { rootMargin: '100px' });
+            ambienceObs.observe(ambiencePlayer);
         }
     }
 

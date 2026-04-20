@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <script>
-    (function () {
-        if (location.protocol === 'file:') return;
-        var b = document.createElement('base');
-        b.href = '/';
-        document.head.insertBefore(b, document.head.firstChild);
-    })();
-    </script>
+
     <title>BEMATA | Super Food Restaurant</title>
     <link rel="icon" href="bemata-logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +11,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu-book-embed/bemata-menu-book.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@200;300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -83,19 +77,23 @@
                 <button class="mobile-close" id="mobileClose">&times;</button>
             </div>
             <nav class="mobile-nav">
-                <a href="#home" class="mobile-link" data-index="01">Home</a>
-                <a href="#about" class="mobile-link" data-index="02">O Nama</a>
-                <a href="#menu" class="mobile-link" data-index="03">Naš Meni</a>
-                <a href="#services" class="mobile-link" data-index="04">Usluge</a>
-                <a href="#principles" class="mobile-link" data-index="05">Super Food</a>
-                <a href="#trust" class="mobile-link" data-index="05b">Poverenje</a>
-                <a href="#reservation" class="mobile-link" data-index="06">Rezervacija</a>
-                <a href="#contact" class="mobile-link" data-index="08">Kontakt</a>
+                <div class="mobile-link mobile-link--group" data-index="01">
+                    <div class="mobile-link-text">
+                        <a class="mobile-link-main" href="#about">O nama</a>
+                        <div class="mobile-link-sub">
+                            <a class="mobile-sublink" href="#principles">Super food</a>
+                            <a class="mobile-sublink" href="#trust">Poverenje</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="#services" class="mobile-link" data-index="02">Usluge</a>
+                <a href="#reservation" class="mobile-link" data-index="03">Rezervacije</a>
+                <a href="#contact" class="mobile-link" data-index="04">Kontakt</a>
             </nav>
             <div class="mobile-menu-footer">
                 <div class="mobile-socials">
-                    <a href="#">Instagram</a>
-                    <a href="#">Facebook</a>
+                    <a href="https://www.instagram.com/bemata.meals/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://www.facebook.com/bemata.meals" target="_blank" rel="noopener noreferrer">Facebook</a>
                 </div>
             </div>
         </div>
@@ -131,13 +129,7 @@
     <!-- ═══════════ HEADER ═══════════ -->
     <header class="header" id="header">
         <nav class="nav container">
-            <a href="#home" class="nav-home" title="Home">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                <span>Home</span>
-            </a>
+            <div class="nav-spacer" aria-hidden="true"></div>
             <a href="#home" class="nav-logo-wrap">
                 <img src="bemata-logo.svg" alt="Bemata" class="nav-logo-img" width="140" height="88">
             </a>
@@ -272,18 +264,17 @@
 
     <!-- ═══════════ MENU ═══════════ -->
     <section class="menu-section" id="menu">
-        <div class="section-bg-texture tex-wood"></div>
+        <div class="section-bg-texture tex-menu-brand"></div>
         <div class="menu-corner mc-tr"></div>
         <div class="menu-corner mc-bl"></div>
-        <!-- Organic vine roots (light for dark bg) -->
-        <svg class="vine-deco vine-deco--left vine-deco--menu" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="vine-deco vine-deco--left" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
             <path class="vine-trunk" d="M60 0 C70 90 25 200 60 300 S95 400 40 520 C15 620 75 720 65 800" />
             <path class="vine-branch" d="M60 300 C90 290 120 298 120 305" />
             <path class="vine-branch" d="M40 520 C70 530 120 522 120 515" />
             <circle class="vine-node" cx="60" cy="300" r="4" />
             <circle class="vine-node" cx="40" cy="520" r="5" />
         </svg>
-        <svg class="vine-deco vine-deco--right vine-deco--menu" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="vine-deco vine-deco--right" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
             <path class="vine-trunk" d="M60 50 C50 140 100 230 70 350 S25 470 80 580 C105 670 55 750 60 800" />
             <path class="vine-branch" d="M70 350 C40 340 0 348 0 355" />
             <path class="vine-branch" d="M80 580 C50 590 0 582 0 575" />
@@ -292,146 +283,15 @@
         </svg>
         <div class="container">
             <div class="section-header reveal">
-                <span class="section-tag tag-light">NAŠ MENI</span>
-                <h2 class="section-title title-light"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Uživanje za čula</span></span></h2>
-                <div class="section-divider div-light"><span></span><span></span><span></span></div>
+                <span class="section-tag">NAŠ MENI</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Uživanje za čula</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
             </div>
 
-            <div class="menu-tabs reveal">
-                <button class="menu-tab active" data-category="starters">Predjela</button>
-                <button class="menu-tab" data-category="mains">Glavna Jela</button>
-                <button class="menu-tab" data-category="protein">Proteinski 💪</button>
-                <button class="menu-tab" data-category="desserts">Deserti</button>
-                <button class="menu-tab" data-category="drinks">Napici</button>
+            <div class="menu-book-host reveal">
+                <div id="menu-book-root" class="menu-book-root"></div>
             </div>
 
-            <div class="menu-diet-bar reveal is-visible" id="menuDietBar" role="group" aria-label="Podsekcije menija">
-                <button type="button" class="menu-diet-btn active" data-diet="all">Sve</button>
-                <button type="button" class="menu-diet-btn" data-diet="classic">Klasično</button>
-                <button type="button" class="menu-diet-btn" data-diet="vegetarian">Vegetarijansko</button>
-                <button type="button" class="menu-diet-btn" data-diet="vegan">Vegansko</button>
-                <button type="button" class="menu-diet-btn" data-diet="dodaci">Dodaci</button>
-            </div>
-
-            <div class="menu-grid-wrap reveal" id="menuGridWrap" data-lenis-prevent-touch>
-                <div class="menu-grid" id="menuGrid">
-                <div class="menu-card menu-card--group reveal" data-category="starters"><div class="menu-card-content"><div class="menu-card-top"><h4>Supe i potaži</h4></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci classic"><div class="menu-card-content"><div class="menu-card-top"><h4>Pileća supa</h4><span class="menu-price">390 <small>rsd</small></span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Paradajz čorba</h4><span class="menu-price">480 <small>rsd</small></span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci classic vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Potaž dana</h4><span class="menu-price">440 <small>rsd</small></span></div><p class="menu-desc">Pitajte osoblje za današnji potaž</p></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="starters"><div class="menu-card-content"><div class="menu-card-top"><h4>Umaci i manja jela</h4></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Kuver</h4><span class="menu-price">195 <small>rsd</small></span></div><p class="menu-desc">Domaće pločice od heljde sa domaćim humusom</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Grilovani kozji sir</h4><span class="menu-price">596 <small>rsd</small></span></div><p class="menu-desc">Grilovani stari kozji sir sa rukolom i cherry paradajzom</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Tzatziki umak</h4><span class="menu-price">413 <small>rsd</small></span></div><p class="menu-desc">Domaći tzatziki, salsa nar, dehidrirana heljda</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="starters"><div class="menu-card-content"><div class="menu-card-top"><h4>Prilozi i salate</h4></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Batat iz rerne</h4><span class="menu-price">465 <small>rsd</small></span></div><p class="menu-desc">Batat krompir, veganski majonez na bazi orašastih plodova</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Miks zelenih salata</h4><span class="menu-price">395 <small>rsd</small></span></div><p class="menu-desc">Rukola, bejbi spanać, iceberg, badem i aceto dresing</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Šarena salata</h4><span class="menu-price">495 <small>rsd</small></span></div><p class="menu-desc">Avokado, krastavac, paradajz, kukuruz</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="dodaci vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Salata sa kozjim sirom</h4><span class="menu-price">525 <small>rsd</small></span></div><p class="menu-desc">Paradajz, krastavac, masline, kozji sir</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="starters"><div class="menu-card-content"><div class="menu-card-top"><h4>Sendviči</h4></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="classic"><div class="menu-card-content"><div class="menu-card-top"><h4>Sendvič piletina</h4><span class="menu-price">740 <small>rsd</small></span></div><p class="menu-desc">Hleb spelta, piletina, kozji sir, miks salata</p></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="vegetarian"><div class="menu-card-content"><div class="menu-card-top"><h4>Sendvič sezonsko voće</h4><span class="menu-price">740 <small>rsd</small></span></div><p class="menu-desc">Zemička spelte, veganska rikota, med i sezonsko voće</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="starters"><div class="menu-card-content"><div class="menu-card-top"><h4>Obrok salate</h4></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="classic"><div class="menu-card-content"><div class="menu-card-top"><h4>Pileća salata</h4><span class="menu-price">1195 <small>rsd</small></span></div><p class="menu-desc">Pileći file, edamame, cherry paradajz, kupus, šargarepa, krutoni od spelte, dresing od badema</p></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Cezar salata</h4><span class="menu-price">885 <small>rsd</small></span></div><p class="menu-desc">Iceberg miks, matovilac, tofu, veganski parmezan, dresing na bazi indijskog oraha. <em>Na meniju: moguć dodatak piletina.</em></p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Batat leblebija salata</h4><span class="menu-price">845 <small>rsd</small></span></div><p class="menu-desc">Batat krompir, kuvane leblebije, rukola, cherry paradajz, tahini dresing</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Falafel salata sa humusima</h4><span class="menu-price">1115 <small>rsd</small></span></div><p class="menu-desc">Domaći humusi, miks salata iceberg, rukola i matovilac, cherry paradajz, domaći falafel</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="starters" data-kinds="vegan"><div class="menu-card-content"><div class="menu-card-top"><h4>Golden karfiol salata</h4><span class="menu-price">845 <small>rsd</small></span></div><p class="menu-desc">Miks salata sa pečenim kurkuma karfiolom i leblebijom, crveno sočivo, cherry paradajz, mladi luk, miso dresing</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <div class="menu-card menu-card--group reveal" data-category="mains" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Klasična glavna jela</h4></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Piletina u crvenom sosu</h4><span class="menu-price">1605 <small>rsd</small></span></div><p class="menu-desc">Suvidirana piletina sa origano začinom, marinirani šampinjoni, domaći pelat, sos od bosiljka</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Giros sa pilećim batakom</h4><span class="menu-price">1095 <small>rsd</small></span></div><p class="menu-desc">Tortilja od ovsa, pileći batak, crveni kupus, tzatziki sa grčkim jogurtom, pečeni batat pomfrit</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Činija piletina</h4><span class="menu-price">1695 <small>rsd</small></span></div><p class="menu-desc">Pileći file, avokado, kinoa, kozji sir</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Ramstek</h4><span class="menu-price">2295 <small>rsd</small></span></div><p class="menu-desc">Juneći ramstek sa musom od batat krompira i spanaćem sa belim lukom</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Tuna Verde</h4><span class="menu-price">2125 <small>rsd</small></span></div><p class="menu-desc">Tuna u kockama marinirana citrusnim sokom, kremasti spanać, kus kus</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Piletina kurkuma</h4><span class="menu-price">1585 <small>rsd</small></span></div><p class="menu-desc">Suvidirana piletina sa kurkuma začinom, mus od brokolija, integralna riža</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Losos Vitality</h4><span class="menu-price">1895 <small>rsd</small></span></div><p class="menu-desc">Grilovani file lososa, integralna riža, salsa sa paradajzom, krastavcem i maslinama</p></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="classic" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Zudle pesto piletina</h4><span class="menu-price">1445 <small>rsd</small></span></div><p class="menu-desc">Špageti od sirovih tikvica sa domaćim alfredo sosom od orašastih plodova, domaći pesto od bosiljka, pileći file</p></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="mains" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Veganska glavna jela</h4></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="vegan" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kranči tofu</h4><span class="menu-price">1535 <small>rsd</small></span></div><p class="menu-desc">Tofu sir u kranči korici od kukuruznih pahuljica, miso dresing, integralni pirinač, povrće</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="vegan" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Lazanja</h4><span class="menu-price">1485 <small>rsd</small></span></div><p class="menu-desc">Pirinčane kore, domaći pelat, pečurke, sos na bazi orašastih plodova, veganski parmezan</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="vegan" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Vege burger</h4><span class="menu-price">1389 <small>rsd</small></span></div><p class="menu-desc">Burger na bazi pasulja, ovsenih pahuljica i speltinog brašna na nana hlebu, iceberg, ljubičasti luk sa veganskim majonezom</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="mains" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Vegetarijanska glavna jela</h4></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="vegetarian" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Rižoto šumske pečurke</h4><span class="menu-price">1175 <small>rsd</small></span></div><p class="menu-desc">Integralna riža sa bukovačom, lisičarkama, šampinjonima, mladim lukom, vinom i parmezanom</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-                <div class="menu-card reveal" data-category="mains" data-kinds="vegetarian" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Rižoto spanać</h4><span class="menu-price">1170 <small>rsd</small></span></div><p class="menu-desc">Integralna riža, mus od spanaća, kozji sir</p><div class="menu-tags"><span class="mt mt-vgt">Vegetarijansko</span></div></div></div>
-
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Poslastica dana</h4><span class="menu-price">595 <small>rsd</small></span></div><p class="menu-desc">Pitajte osoblje za današnju ponudu</p></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kolač Jafa</h4><span class="menu-price">595 <small>rsd</small></span></div><p class="menu-desc">Indijski orah, badem, pomorandža, kakao, agava, urme</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span><span class="mt mt-sf">Bez šećera</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kolač od šargarepe</h4><span class="menu-price">595 <small>rsd</small></span></div><p class="menu-desc">Kolač od šargarepe i oraha sa vanil kremom na bazi orašastih plodova i želeom od pomorandže</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kolač Vunderduo</h4><span class="menu-price">595 <small>rsd</small></span></div><p class="menu-desc">Čokoladni kolač od indijskog oraha, urmi, badema, banana, kakaa</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Acai činija</h4><span class="menu-price">895 <small>rsd</small></span></div><p class="menu-desc">Acai prah, banana, kokos, domaće bademovo mleko, šumsko voće, chia seme, domaća granola</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Chia puding</h4><span class="menu-price">735 <small>rsd</small></span></div><p class="menu-desc">Chia seme, domaće bademovo mleko, domaći bademov puter, kakao i krem od indijskog oraha</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Palačinke Vunderduo</h4><span class="menu-price">695 <small>rsd</small></span></div><p class="menu-desc">Dve ovsene palačinke, namaz na bazi lešnik putera i vanile, agava sirup</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Palačinke sa nutelom</h4><span class="menu-price">580 <small>rsd</small></span></div><p class="menu-desc">Dve ovsene palačinke sa domaćom veganskom nutelom, posute mrvljenim bademima</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Bemata palačinke</h4><span class="menu-price">715 <small>rsd</small></span></div><p class="menu-desc">Palačinke od jabuka i ovsenih pahuljica sa bademovim mlekom i zdravim veganskim karamel prelivom</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--group reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Torte (1 kg)</h4></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Jafa torta</h4><span class="menu-price">4200 <small>rsd</small></span></div><p class="menu-desc">Porcija 1 kg — poručivanje unapred</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Šargarepa torta</h4><span class="menu-price">4200 <small>rsd</small></span></div><p class="menu-desc">Porcija 1 kg — poručivanje unapred</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="desserts" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Vunderduo torta</h4><span class="menu-price">4200 <small>rsd</small></span></div><p class="menu-desc">Porcija 1 kg — poručivanje unapred</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <!-- ══ NAPICI: Smoothie-evi ══ -->
-                <div class="menu-card menu-card--group reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Smoothie-evi</h4></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Green Detox</h4><span class="menu-price">580 <small>rsd</small></span></div><p class="menu-desc">Spanać, banana, đumbir, limun, chia seme, domaće bademovo mleko</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Berry Blast</h4><span class="menu-price">580 <small>rsd</small></span></div><p class="menu-desc">Borovnica, malina, acai prah, banana, kokosova voda</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Tropical Mango</h4><span class="menu-price">580 <small>rsd</small></span></div><p class="menu-desc">Mango, ananas, banana, kokosovo mleko, kurkuma</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Protein Power</h4><span class="menu-price">680 <small>rsd</small></span></div><p class="menu-desc">Banana, kikiriki puter, ovsene pahuljice, bademovo mleko, kakao, agava</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Beetroot Energy</h4><span class="menu-price">580 <small>rsd</small></span></div><p class="menu-desc">Cvekla, jabuka, đumbir, limun, šargarepa</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <!-- ══ NAPICI: Svežo ceđeni sokovi ══ -->
-                <div class="menu-card menu-card--group reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Svežo ceđeni sokovi</h4></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Pomorandža</h4><span class="menu-price">390 <small>rsd</small></span></div><p class="menu-desc">Svežo ceđena pomorandža (0.25l)</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Grejpfrut</h4><span class="menu-price">430 <small>rsd</small></span></div><p class="menu-desc">Svežo ceđeni grejpfrut (0.25l)</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Limun & đumbir shot</h4><span class="menu-price">290 <small>rsd</small></span></div><p class="menu-desc">Koncentrovani shot od svežeg limuna, đumbira i cayenne bibera (0.06l)</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Šargarepa & jabuka</h4><span class="menu-price">420 <small>rsd</small></span></div><p class="menu-desc">Svežo ceđena šargarepa sa jabukom i đumbirom (0.25l)</p></div></div>
-
-                <!-- ══ NAPICI: Topli napici ══ -->
-                <div class="menu-card menu-card--group reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Topli napici</h4></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Espresso</h4><span class="menu-price">180 <small>rsd</small></span></div><p class="menu-desc">Domaća mešavina arabica zrna</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Espresso dupli</h4><span class="menu-price">230 <small>rsd</small></span></div><p class="menu-desc">Dvostruki espresso</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Domaća kafa</h4><span class="menu-price">180 <small>rsd</small></span></div><p class="menu-desc">Tradicionalno pripremljena, krupno mlevena</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Cappuccino</h4><span class="menu-price">320 <small>rsd</small></span></div><p class="menu-desc">Espresso sa penušavim ovsenim ili bademovim mlekom</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Flat White</h4><span class="menu-price">350 <small>rsd</small></span></div><p class="menu-desc">Dupli espresso sa kremastim mikropeenušavim mlekom</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Golden Latte</h4><span class="menu-price">450 <small>rsd</small></span></div><p class="menu-desc">Ovseno mleko, kurkuma, cimet, đumbir, agava — toplo ili hladno</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Matcha Latte</h4><span class="menu-price">490 <small>rsd</small></span></div><p class="menu-desc">Japanski ceremonijalni matcha, ovseno mleko, agava</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kakao</h4><span class="menu-price">380 <small>rsd</small></span></div><p class="menu-desc">Sirovi kakao prah, ovseno mleko, agava, cimet</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Čaj (biljni / zeleni / crni)</h4><span class="menu-price">250 <small>rsd</small></span></div><p class="menu-desc">Kamilica, nana, zeleni, earl grey, rooibos</p></div></div>
-
-                <!-- ══ NAPICI: Hladni napici ══ -->
-                <div class="menu-card menu-card--group reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Hladni napici</h4></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Domaća limunada</h4><span class="menu-price">380 <small>rsd</small></span></div><p class="menu-desc">Svež limun, nana, agava sirup, gazirana voda, led</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Limunada jagoda & bosiljak</h4><span class="menu-price">420 <small>rsd</small></span></div><p class="menu-desc">Domaća limunada sa svežim jagodama i bosiljkom</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Iced Matcha</h4><span class="menu-price">490 <small>rsd</small></span></div><p class="menu-desc">Hladan matcha latte sa ovsenim mlekom i ledom</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Ice Coffee</h4><span class="menu-price">380 <small>rsd</small></span></div><p class="menu-desc">Espresso, led, bademovo mleko, agava sirup</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Kombucha</h4><span class="menu-price">420 <small>rsd</small></span></div><p class="menu-desc">Domaća fermentisana kombucha (ukus dana)</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <!-- ══ NAPICI: Voda i ostalo ══ -->
-                <div class="menu-card menu-card--group reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Voda i bezalkoholno</h4></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Negazirana voda</h4><span class="menu-price">190 <small>rsd</small></span></div><p class="menu-desc">Rosa / Aqua Viva (0.5l)</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Gazirana voda</h4><span class="menu-price">190 <small>rsd</small></span></div><p class="menu-desc">Knjaz Miloš / Rosa (0.5l)</p></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Bademovo mleko</h4><span class="menu-price">350 <small>rsd</small></span></div><p class="menu-desc">Domaće, sveže pripremljeno bademovo mleko (0.25l)</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card reveal" data-category="drinks" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Ovseno mleko</h4><span class="menu-price">320 <small>rsd</small></span></div><p class="menu-desc">Domaće ovseno mleko (0.25l)</p><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <!-- ══ PROTEINSKI MENI ══ -->
-                <div class="menu-card menu-card--group menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>💪 Proteinski Meni</h4></div><p class="menu-desc" style="margin-top:4px;font-size:.72rem;color:rgba(57,73,171,.7)">Obroci bogati proteinima — nutritivne vrednosti po porciji</p></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Proteinska činija piletina</h4><span class="menu-price">1795 <small>rsd</small></span></div><p class="menu-desc">Pileći file, kinoa, edamame, avokado, spanać, tahini dresing</p><div class="menu-macro-row"><span class="macro-pill m-prot">45g proteina</span><span class="macro-pill m-carb">52g UH</span><span class="macro-pill m-kcal">620 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Power Bowl losos</h4><span class="menu-price">2095 <small>rsd</small></span></div><p class="menu-desc">Grilovani losos, integralna riža, brokoli, leblebije, dresing od limuna</p><div class="menu-macro-row"><span class="macro-pill m-prot">42g proteina</span><span class="macro-pill m-carb">48g UH</span><span class="macro-pill m-kcal">580 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Tofu protein salata</h4><span class="menu-price">1295 <small>rsd</small></span></div><p class="menu-desc">Marinirani tofu, kinoa, edamame, avokado, šargarepa, sezam, miso dresing</p><div class="menu-macro-row"><span class="macro-pill m-prot">38g proteina</span><span class="macro-pill m-carb">42g UH</span><span class="macro-pill m-kcal">510 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Ramstek protein</h4><span class="menu-price">2495 <small>rsd</small></span></div><p class="menu-desc">Juneći ramstek, batat mus, spanać sa belim lukom, pečene tikvice</p><div class="menu-macro-row"><span class="macro-pill m-prot">52g proteina</span><span class="macro-pill m-carb">38g UH</span><span class="macro-pill m-kcal">680 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Piletina & kinoa bowl</h4><span class="menu-price">1695 <small>rsd</small></span></div><p class="menu-desc">Grilovani pileći file, kinoa, edamame, cherry paradajz, avokado, dresing od badema</p><div class="menu-macro-row"><span class="macro-pill m-prot">48g proteina</span><span class="macro-pill m-carb">55g UH</span><span class="macro-pill m-kcal">640 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Tuna steak protein</h4><span class="menu-price">2295 <small>rsd</small></span></div><p class="menu-desc">Tuna steak, integralna riža, edamame, pečeni brokoli, soja-đumbir dresing</p><div class="menu-macro-row"><span class="macro-pill m-prot">46g proteina</span><span class="macro-pill m-carb">44g UH</span><span class="macro-pill m-kcal">560 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Vege protein bowl</h4><span class="menu-price">1395 <small>rsd</small></span></div><p class="menu-desc">Leblebija, crveno sočivo, tofu, kinoa, spanać, pečena paprika, tahini dresing</p><div class="menu-macro-row"><span class="macro-pill m-prot">35g proteina</span><span class="macro-pill m-carb">58g UH</span><span class="macro-pill m-kcal">520 kcal</span></div><div class="menu-tags"><span class="mt mt-protein">Proteinski</span><span class="mt mt-veg">Veganski</span></div></div></div>
-
-                <!-- ══ PROTEINSKI DODACI ══ -->
-                <div class="menu-card menu-card--group menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>💊 Proteinski dodaci</h4></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra piletina (150g)</h4><span class="menu-price">450 <small>rsd</small></span></div><p class="menu-desc">Grilovani pileći file kao dodatak na bilo koje jelo</p><div class="menu-macro-row"><span class="macro-pill m-prot">+35g proteina</span><span class="macro-pill m-kcal">+165 kcal</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra losos (120g)</h4><span class="menu-price">620 <small>rsd</small></span></div><p class="menu-desc">Grilovani file lososa kao dodatak</p><div class="menu-macro-row"><span class="macro-pill m-prot">+28g proteina</span><span class="macro-pill m-kcal">+240 kcal</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra tofu (150g)</h4><span class="menu-price">320 <small>rsd</small></span></div><p class="menu-desc">Marinirani tofu, pečen u tiganju</p><div class="menu-macro-row"><span class="macro-pill m-prot">+18g proteina</span><span class="macro-pill m-kcal">+145 kcal</span></div><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra edamame (100g)</h4><span class="menu-price">280 <small>rsd</small></span></div><p class="menu-desc">Kuvani edamame sa morskom solju</p><div class="menu-macro-row"><span class="macro-pill m-prot">+12g proteina</span><span class="macro-pill m-kcal">+120 kcal</span></div><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra kinoa (150g)</h4><span class="menu-price">250 <small>rsd</small></span></div><p class="menu-desc">Kuvana kinoa kao dodatak</p><div class="menu-macro-row"><span class="macro-pill m-prot">+8g proteina</span><span class="macro-pill m-carb">+32g UH</span><span class="macro-pill m-kcal">+185 kcal</span></div><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                <div class="menu-card menu-card--protein reveal" data-category="protein" style="display:none"><div class="menu-card-content"><div class="menu-card-top"><h4>Extra avokado (½)</h4><span class="menu-price">290 <small>rsd</small></span></div><p class="menu-desc">Pola svežeg avokada kao prilog</p><div class="menu-macro-row"><span class="macro-pill m-prot">+2g proteina</span><span class="macro-pill m-kcal">+160 kcal</span></div><div class="menu-tags"><span class="mt mt-veg">Veganski</span></div></div></div>
-                </div>
-            </div>
-            <p class="menu-scroll-hint" id="menuScrollHint">Skrolujte nadole za više jela</p>
         </div>
     </section>
 
@@ -629,8 +489,8 @@
                     </div>
                     </div>
                     <div class="info-card"><div class="info-icon">🕐</div><h4>Radno vreme</h4><div class="hours-list"><div class="hour-row"><span>Pon — Pet</span><span class="hour-dots"></span><span>08 — 22h</span></div><div class="hour-row"><span>Subota</span><span class="hour-dots"></span><span>09 — 23h</span></div><div class="hour-row"><span>Nedelja</span><span class="hour-dots"></span><span>09 — 21h</span></div></div></div>
-                    <div class="info-card"><div class="info-icon">📍</div><h4>Lokacija</h4><p>Vojvode Šupljikca 42<br>Vračar, Beograd</p></div>
-                    <div class="info-card"><div class="info-icon">📞</div><h4>Kontakt</h4><p>+381 11 123 4567<br>info@bemata.rs</p></div>
+                    <div class="info-card"><div class="info-icon">📍</div><h4>Lokacija</h4><p>Uroša Martinovića, Beograd, Srbija</p></div>
+                    <div class="info-card"><div class="info-icon">📞</div><h4>Kontakt</h4><p>+381 62 558558<br>office@bemata.rs</p></div>
                 </div>
                 <form class="reservation-form reveal" id="reservationForm">
                     <div class="form-row"><div class="form-group"><label>Ime i prezime</label><input type="text" placeholder="Vaše ime" required></div><div class="form-group"><label>Telefon</label><input type="tel" placeholder="+381 ..." required></div></div>
@@ -652,9 +512,9 @@
                 <img src="bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
             </div>
             <div class="footer-grid">
-                <div class="footer-col"><h4>Navigacija</h4><a href="#home">Home</a><a href="#about">O Nama</a><a href="#menu">Naš Meni</a><a href="#services">Usluge</a><a href="#trust">Poverenje</a><a href="#reservation">Rezervacija</a></div>
-                <div class="footer-col"><h4>Kontakt</h4><p>Vojvode Šupljikca 42<br>Vračar, Beograd</p><p>+381 11 123 4567</p><p>info@bemata.rs</p></div>
-                <div class="footer-col"><h4>Pratite nas</h4><div class="footer-socials"><a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span>Facebook</span></a></div></div>
+                <div class="footer-col"><h4>Navigacija</h4><a href="#about">O nama</a><a href="#services">Usluge</a><a href="#reservation">Rezervacije</a><a href="#contact">Kontakt</a></div>
+                <div class="footer-col"><h4>Kontakt</h4><p>Uroša Martinovića, Beograd, Srbija</p><p>+381 62 558558</p><p>office@bemata.rs</p></div>
+                <div class="footer-col"><h4>Pratite nas</h4><div class="footer-socials"><a href="https://www.instagram.com/bemata.meals/" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.facebook.com/bemata.meals" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span>Facebook</span></a></div></div>
             </div>
             <div class="footer-bottom"><p>&copy; 2026 Bemata Super Food | All Rights Reserved</p></div>
         </div>
@@ -669,5 +529,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
+    <script src="menu-book-embed/bemata-menu-book.js"></script>
 </body>
 </html>
