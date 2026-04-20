@@ -188,7 +188,7 @@ export function MenuBook() {
             minHeight={300}
             maxHeight={dimensions.height}
             showCover={true}
-            mobileScrollSupport={false}
+            mobileScrollSupport={true}
             usePortrait={isMobile}
             startPage={0}
             drawShadow={true}
