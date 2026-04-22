@@ -1,0 +1,288 @@
+.ketering-page {
+  background: linear-gradient(180deg, #f8f5ef 0%, #fff 45%, #f3f7f2 100%);
+  color: var(--text-dark);
+}
+
+.ketering-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(28, 43, 35, 0.08);
+}
+
+.ketering-header-row {
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ketering-logo {
+  width: 112px;
+  height: auto;
+  display: block;
+}
+
+.ketering-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.ketering-nav a {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+}
+
+.ketering-nav a:hover {
+  color: var(--green);
+}
+
+.ketering-hero {
+  position: relative;
+  padding: clamp(86px, 14vw, 140px) 0 clamp(74px, 11vw, 120px);
+  background-image:
+    linear-gradient(110deg, rgba(18, 36, 28, 0.78), rgba(18, 36, 28, 0.45)),
+    url("images/catering-kompanije.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.ketering-hero-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 20%, rgba(183, 210, 165, 0.22), transparent 45%);
+}
+
+.ketering-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+.ketering-hero .section-tag {
+  color: #fff;
+  background: rgba(20, 40, 30, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.ketering-hero h1 {
+  font-family: var(--f-head);
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  line-height: 1.1;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.ketering-hero p {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  max-width: 60ch;
+}
+
+.ketering-hero-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ketering-intro,
+.ketering-types,
+.ketering-gallery,
+.ketering-inquiry {
+  padding: clamp(56px, 8vw, 92px) 0;
+}
+
+.ketering-intro-grid {
+  display: grid;
+  gap: clamp(24px, 5vw, 56px);
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+}
+
+.ketering-intro .section-header {
+  text-align: left;
+  margin-bottom: 26px;
+}
+
+.ketering-intro .section-divider {
+  justify-content: flex-start;
+}
+
+.ketering-intro-text p {
+  margin-bottom: 14px;
+  color: var(--text-light);
+}
+
+.ketering-intro-image-wrap {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(15, 30, 23, 0.2);
+}
+
+.ketering-intro-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ketering-types {
+  background: rgba(226, 237, 227, 0.42);
+}
+
+.ketering-type-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ketering-type-card {
+  background: #fff;
+  border: 1px solid rgba(50, 80, 62, 0.14);
+  border-radius: 20px;
+  padding: 24px 18px;
+  box-shadow: 0 10px 20px rgba(31, 48, 37, 0.06);
+}
+
+.ketering-type-card h3 {
+  margin-bottom: 10px;
+  color: var(--green-dark);
+  font-size: 1.1rem;
+}
+
+.ketering-type-card p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.ketering-gallery-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ketering-gallery-grid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid rgba(50, 80, 62, 0.1);
+  box-shadow: 0 14px 28px rgba(16, 33, 24, 0.12);
+}
+
+.ketering-inquiry {
+  background: linear-gradient(165deg, #173a2a 0%, #224c38 100%);
+}
+
+.ketering-inquiry-grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ketering-contact,
+.ketering-form {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: clamp(22px, 3.4vw, 34px);
+}
+
+.ketering-contact h2 {
+  margin-bottom: 12px;
+}
+
+.ketering-contact p {
+  margin-bottom: 18px;
+  color: var(--text-light);
+}
+
+.ketering-contact ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.ketering-contact a {
+  color: var(--green-dark);
+}
+
+.ketering-form {
+  display: grid;
+  gap: 10px;
+}
+
+.ketering-form label {
+  font-weight: 600;
+  color: var(--green-dark);
+  font-size: 0.9rem;
+}
+
+.ketering-form input,
+.ketering-form textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(50, 80, 62, 0.24);
+  padding: 12px 13px;
+  font: inherit;
+  background: #fff;
+}
+
+.ketering-form textarea {
+  resize: vertical;
+}
+
+@media (max-width: 980px) {
+  .ketering-nav {
+    display: none;
+  }
+
+  .ketering-intro-grid,
+  .ketering-inquiry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ketering-type-grid,
+  .ketering-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ketering-header-row {
+    min-height: 76px;
+  }
+
+  .ketering-logo {
+    width: 96px;
+  }
+
+  .ketering-header .btn {
+    padding: 10px 16px;
+    font-size: 0.68rem;
+  }
+
+  .ketering-hero {
+    padding-top: 72px;
+  }
+
+  .ketering-type-grid,
+  .ketering-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}

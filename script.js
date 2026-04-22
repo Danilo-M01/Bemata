@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuBtn) menuBtn.addEventListener('click', openMobile);
     if (mobileClose) mobileClose.addEventListener('click', closeMobile);
     if (mobileMenuBg) mobileMenuBg.addEventListener('click', closeMobile);
-    $$('#mobileMenu a[href^="#"]').forEach(l => l.addEventListener('click', closeMobile));
+    $$('#mobileMenu a').forEach(l => l.addEventListener('click', closeMobile));
 
     // ═══════ MODAL ═══════
     const openModal = () => {

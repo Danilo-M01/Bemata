@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontakt | Bemata</title>
+  <link rel="icon" href="bemata-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="podstranice.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="subpage-body">
+  <header class="subpage-header">
+    <div class="container subpage-header-row">
+      <a href="index.html#home"><img src="bemata-logo.svg" alt="Bemata" class="subpage-logo"></a>
+      <nav class="subpage-nav">
+        <a href="index.html">Početna</a>
+        <a href="o-nama.html">O nama</a>
+        <a href="usluge.html">Usluge</a>
+        <a href="ketering.html">Ketering</a>
+        <a href="lokacije.html">Lokacije</a>
+      </nav>
+      <a href="index.html" class="btn btn-light btn-sm">Nazad</a>
+    </div>
+  </header>
+
+  <section class="subpage-hero" style="background-image:url('images/ambience-04.webp')">
+    <div class="container subpage-hero-content">
+      <span class="section-tag">KONTAKT</span>
+      <h1>Kontaktirajte nas</h1>
+      <p>Za rezervacije, pitanja i saradnje, naš tim vam stoji na raspolaganju.</p>
+    </div>
+  </section>
+
+  <section class="subpage-main-section">
+    <div class="container subpage-grid">
+      <article class="subpage-card">
+        <h3>Kontakt podaci</h3>
+        <p><strong>Telefon:</strong> +381 62 558 558</p>
+        <p><strong>Email:</strong> office@bemata.rs</p>
+        <p><strong>Adresa:</strong> Uroša Martinovića, Beograd</p>
+      </article>
+      <article class="subpage-card">
+        <h3>Radno vreme</h3>
+        <p>Ponedeljak - Petak: 08:00 - 22:00</p>
+        <p>Subota: 09:00 - 23:00</p>
+        <p>Nedelja: 09:00 - 21:00</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="subpage-main-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">REZERVACIJA</span>
+        <h2 class="section-title">Pošaljite upit</h2>
+        <div class="section-divider"><span></span><span></span><span></span></div>
+      </div>
+      <form class="subpage-form" action="mailto:office@bemata.rs" method="post" enctype="text/plain">
+        <label for="ime">Ime i prezime</label>
+        <input id="ime" name="ime" type="text" required>
+        <label for="telefon">Telefon</label>
+        <input id="telefon" name="telefon" type="tel" required>
+        <label for="poruka">Poruka</label>
+        <textarea id="poruka" name="poruka" rows="4" placeholder="Datum, vreme i broj gostiju"></textarea>
+        <button type="submit" class="btn btn-primary btn-full">Pošalji</button>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="menu-book-embed/bemata-menu-book.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@200;300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="home-slim">
 
     <div class="noise-overlay" aria-hidden="true"></div>
     <div class="cursor-dot" aria-hidden="true"></div>
@@ -79,16 +79,18 @@
             <nav class="mobile-nav">
                 <div class="mobile-link mobile-link--group" data-index="01">
                     <div class="mobile-link-text">
-                        <a class="mobile-link-main" href="#about">O nama</a>
+                        <a class="mobile-link-main" href="o-nama.html">O nama</a>
                         <div class="mobile-link-sub">
-                            <a class="mobile-sublink" href="#principles">Super food</a>
-                            <a class="mobile-sublink" href="#trust">Poverenje</a>
+                            <a class="mobile-sublink" href="o-nama.html#superfood">Super food</a>
+                            <a class="mobile-sublink" href="o-nama.html#poverenje">Poverenje</a>
                         </div>
                     </div>
                 </div>
-                <a href="#services" class="mobile-link" data-index="02">Usluge</a>
-                <a href="#reservation" class="mobile-link" data-index="03">Rezervacije</a>
-                <a href="#contact" class="mobile-link" data-index="04">Kontakt</a>
+                <a href="usluge.html" class="mobile-link" data-index="02">Usluge</a>
+                <a href="ketering.html" class="mobile-link" data-index="03">Ketering</a>
+                <a href="#reservation" class="mobile-link" data-index="04">Rezervacije</a>
+                <a href="kontakt.html" class="mobile-link" data-index="05">Kontakt</a>
+                <a href="lokacije.html" class="mobile-link" data-index="06">Lokacije</a>
             </nav>
             <div class="mobile-menu-footer">
                 <div class="mobile-socials">
@@ -257,7 +259,7 @@
     </section>
 
     <!-- ═══════════ PARALLAX DIVIDER 2 ═══════════ -->
-    <div class="parallax-divider" data-speed="0.5">
+    <div class="parallax-divider home-divider-keep" data-speed="0.5">
         <div class="parallax-img" style="background-image:url('images/parallax-2.png')"></div>
         <div class="parallax-overlay"></div>
     </div>
@@ -292,6 +294,48 @@
                 <div id="menu-book-root" class="menu-book-root"></div>
             </div>
 
+        </div>
+    </section>
+
+    <section class="home-links">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">VIŠE BEMATA</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Izaberite šta vas zanima</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+            <div class="services-grid home-links-grid">
+                <div class="service-card reveal">
+                    <div class="service-visual sv-del">
+                        <img src="images/about-bowls.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>O nama</h3>
+                        <p>Naša priča, super food principi i iskustva gostiju na posebnoj stranici.</p>
+                        <a href="o-nama.html" class="btn btn-primary btn-sm">Pogledajte</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-visual sv-cat">
+                        <img src="images/service-catering.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Usluge</h3>
+                        <p>Pregled usluga, uključujući dostavu hrane i detalje o keteringu.</p>
+                        <a href="usluge.html" class="btn btn-primary btn-sm">Pogledajte</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-visual sv-cat">
+                        <img src="images/catering-dogadjaji.png" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Ketering</h3>
+                        <p>Posebna stranica sa ponudom i upitom za događaje.</p>
+                        <a href="ketering.html" class="btn btn-primary btn-sm">Ketering strana</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -340,7 +384,7 @@
                     <div class="service-body">
                         <h3>Ketering</h3>
                         <p>Naš ketering tim za Vaše događaje pružiće Vam vrhunsku uslugu — kvalitet i ukus po Vašem izboru.</p>
-                        <a href="#reservation" class="btn btn-primary btn-sm">Pročitajte Više</a>
+                        <a href="ketering.html" class="btn btn-primary btn-sm">Pročitajte Više</a>
                     </div>
                 </div>
             </div>
@@ -348,7 +392,7 @@
     </section>
 
     <!-- ═══════════ PARALLAX DIVIDER 4 ═══════════ -->
-    <div class="parallax-divider" data-speed="0.5">
+    <div class="parallax-divider home-divider-keep" data-speed="0.5">
         <div class="parallax-img" style="background-image:url('images/parallax-4.png')"></div>
         <div class="parallax-overlay"></div>
     </div>
@@ -512,7 +556,7 @@
                 <img src="bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
             </div>
             <div class="footer-grid">
-                <div class="footer-col"><h4>Navigacija</h4><a href="#about">O nama</a><a href="#services">Usluge</a><a href="#reservation">Rezervacije</a><a href="#contact">Kontakt</a></div>
+                <div class="footer-col"><h4>Navigacija</h4><a href="o-nama.html">O nama</a><a href="usluge.html">Usluge</a><a href="ketering.html">Ketering</a><a href="#reservation">Rezervacije</a><a href="kontakt.html">Kontakt</a><a href="lokacije.html">Lokacije</a></div>
                 <div class="footer-col"><h4>Kontakt</h4><p>Uroša Martinovića, Beograd, Srbija</p><p>+381 62 558558</p><p>office@bemata.rs</p></div>
                 <div class="footer-col"><h4>Pratite nas</h4><div class="footer-socials"><a href="https://www.instagram.com/bemata.meals/" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.facebook.com/bemata.meals" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span>Facebook</span></a></div></div>
             </div>

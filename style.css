@@ -1556,3 +1556,39 @@ html.lite-animations .trust-fruit{animation-duration:26s;opacity:.18}
     .vine-trunk,.vine-branch,.tv-trunk,.tv-branch,.fv-trunk,.fv-branch,.rv-trunk,.rv-branch,.ftv-trunk,.ftv-branch{stroke-dashoffset:0!important}
     .vine-node,.tv-node,.fv-node,.rv-node,.ftv-node{opacity:.2!important}
 }
+
+/* ═══════ SLIM HOMEPAGE LAYOUT ═══════ */
+body.home-slim #about,
+body.home-slim #services,
+body.home-slim #principles,
+body.home-slim #trust,
+body.home-slim .statement {
+    display: none;
+}
+
+body.home-slim .parallax-divider {
+    display: none;
+}
+
+body.home-slim .parallax-divider.home-divider-keep {
+    display: block;
+}
+
+.home-links {
+    position: relative;
+    padding: 86px 0 34px;
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(124, 192, 142, 0.08) 0%, transparent 48%),
+        radial-gradient(ellipse at 90% 80%, rgba(196, 181, 212, 0.08) 0%, transparent 52%),
+        linear-gradient(170deg, var(--warm-white) 0%, var(--cream) 100%);
+}
+
+.home-links-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 980px) {
+    .home-links-grid {
+        grid-template-columns: 1fr;
+    }
+}
