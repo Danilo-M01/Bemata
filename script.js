@@ -1,3 +1,17 @@
+// Video early-init — počni učitavanje što ranije, ne čekaj loading screen
+(function () {
+    const v = document.getElementById('heroVideo');
+    if (!v) return;
+    // preload=auto je već na elementu; ovo osigurava play čim browser dozvoli
+    v.load();
+    const tryPlay = () => v.play().catch(() => {});
+    v.addEventListener('canplay', tryPlay, { once: true });
+    // Fallback za slučaj da canplay ne okine (npr. iOS Low Data Mode)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && v.paused) tryPlay();
+    });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const $ = id => document.getElementById(id);
@@ -230,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
                 const heroVideo = document.querySelector('.hero-video');
-                if (heroVideo && heroVideo.play) heroVideo.play().catch(() => {});
+                if (heroVideo) heroVideo.play().catch(() => {});
                 requestAnimationFrame(() => {
                     document.querySelector('.hero-reveal')?.classList.add('visible');
                 });
