@@ -1,5 +1,5 @@
 .ketering-page {
-  background: linear-gradient(180deg, #f8f5ef 0%, #fff 45%, #f3f7f2 100%);
+  background: linear-gradient(180deg, #f5ddd6 0%, #fef9f7 45%, #f5ddd6 100%);
   color: var(--text-dark);
 }
 
@@ -9,7 +9,7 @@
   z-index: 40;
   backdrop-filter: blur(14px);
   background: rgba(255, 255, 255, 0.82);
-  border-bottom: 1px solid rgba(28, 43, 35, 0.08);
+  border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
 .ketering-header-row {
@@ -57,7 +57,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 20% 20%, rgba(183, 210, 165, 0.22), transparent 45%);
+  background: radial-gradient(circle at 20% 20%, rgba(89, 171, 159, 0.22), transparent 45%);
 }
 
 .ketering-hero-content {
@@ -68,7 +68,7 @@
 
 .ketering-hero .section-tag {
   color: #fff;
-  background: rgba(20, 40, 30, 0.55);
+  background: rgba(44, 44, 44, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.7);
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -130,7 +130,7 @@
 .ketering-intro-image-wrap {
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 24px 48px rgba(15, 30, 23, 0.2);
+  box-shadow: 0 24px 48px rgba(0,0,0,.15);
 }
 
 .ketering-intro-image {
@@ -141,7 +141,7 @@
 }
 
 .ketering-types {
-  background: rgba(226, 237, 227, 0.42);
+  background: rgba(89, 171, 159, 0.08);
 }
 
 .ketering-type-grid {
@@ -152,10 +152,10 @@
 
 .ketering-type-card {
   background: #fff;
-  border: 1px solid rgba(50, 80, 62, 0.14);
+  border: 1px solid rgba(0,0,0,.08);
   border-radius: 20px;
   padding: 24px 18px;
-  box-shadow: 0 10px 20px rgba(31, 48, 37, 0.06);
+  box-shadow: 0 10px 20px rgba(0,0,0,.06);
 }
 
 .ketering-type-card h3 {
@@ -180,12 +180,12 @@
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 18px;
-  border: 1px solid rgba(50, 80, 62, 0.1);
-  box-shadow: 0 14px 28px rgba(16, 33, 24, 0.12);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 14px 28px rgba(0,0,0,.10);
 }
 
 .ketering-inquiry {
-  background: linear-gradient(165deg, #173a2a 0%, #224c38 100%);
+  background: linear-gradient(165deg, #f5ddd6 0%, #f0d4cb 100%);
 }
 
 .ketering-inquiry-grid {
@@ -196,9 +196,10 @@
 
 .ketering-contact,
 .ketering-form {
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   border-radius: 20px;
   padding: clamp(22px, 3.4vw, 34px);
+  box-shadow: 0 4px 24px rgba(42,34,24,.08);
 }
 
 .ketering-contact h2 {
@@ -237,7 +238,7 @@
 .ketering-form textarea {
   width: 100%;
   border-radius: 12px;
-  border: 1px solid rgba(50, 80, 62, 0.24);
+  border: 1px solid rgba(0,0,0,.15);
   padding: 12px 13px;
   font: inherit;
   background: #fff;
