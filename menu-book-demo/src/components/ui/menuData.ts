@@ -7,6 +7,7 @@ export interface MenuItem {
   name: string;
   desc?: string;
   price: string;
+  macros?: string;
   icons?: string[];
   bold?: boolean;
 }
@@ -14,6 +15,7 @@ export interface MenuItem {
 export interface MenuSection {
   title: string;
   items: MenuItem[];
+  header?: string;
 }
 
 export interface MenuPageData {
@@ -319,7 +321,76 @@ export const menuPages: MenuPageData[] = [
     ],
     footnote: 'DODACI: PROTEINI — pileći file 100g/399, ramstek 100g/1062, tuna 100g/1016, dimljeni losos 100g/593, jaje 1kom/85, parmezan 40g/295, kozji sir 40g/270 | UGLJENI HIDRATI — humus 100g/235, batat kocke 100g/370, avokado pol./290, pesto boranija 100g/425, paradajz 100g/140, integralni pirinač 100g/240, grilovano povrće 100g/225, heljdine pločice 100g/180, hleb heljda 3 parč./125',
   },
-  // ─── PAGE 11: PIĆA ───
+  // ─── PAGE 11: PROTEINSKI JELOVNIK 1 ───
+  {
+    title: 'PROTEINSKI JELOVNIK',
+    sections: [
+      {
+        title: 'Doručak (služimo do 13h)',
+        header: 'C-P-F-Cal',
+        items: [
+          { name: 'PROTEINSKA KAŠA', desc: 'ovsene pahuljice, čija semenke, badem mleko, Whey protein vanile, badem puter, šumsko voće', price: '875', macros: '43-35-14-449', bold: true },
+          { name: 'PROTEINSKA TORTILJA', desc: '3 cela jajeta, jedno belance, grčki jogurt, bejbi spanać, paradajz, parmezan, domaći hleb od heljde', price: '695', macros: '33-37-26-519', bold: true },
+          { name: 'PROTEINSKA KAJGANA', desc: '3 cela jajeta, jedno belance, ajzberg, avokado mus, dimljeni losos, čeri paradajz na hlebu od sočiva', price: '999', macros: '28-37-25-488', bold: true },
+        ],
+      },
+      {
+        title: '',
+        items: [
+          { name: 'PROTEINSKA ČORBA', desc: 'peršun, leblebije, šampinjoni, kim, kurkuma, protein graška', price: '480', macros: '11-13-11-197', bold: true },
+          { name: 'PROTEINSKA PITA', desc: 'pirinčani papir, spanać, kozji sir, tofu, jaje, grčki jogurt', price: '860', macros: '28-29-23-439', bold: true },
+          { name: 'PROTEINSKA TORTILJA SA ĆURETINOM', desc: 'tortilja od sočiva sa namazom grčkog jogurta i domaćeg pesto sosa, ćuretina, batat, paradajz', price: '1180', macros: '43-54-4-432', bold: true },
+        ],
+      },
+      {
+        title: 'Proteinske salate',
+        items: [
+          { name: 'PROTEINSKA SALATA SA PILETINOM', desc: 'piletina, ajzberg, čeri paradajz, celer, sos na bazi grčkog jogurta', price: '1399', macros: '25-53-17-478', bold: true },
+          { name: 'PROTEINSKA SALATA SA ĆURETINOM', desc: 'mlevena ćuretina, batat kocke, parmezan, sos na bazi grčkog jogurta i veganskog majoneza', price: '1399', macros: '44-54-18-575', bold: true },
+        ],
+      },
+    ],
+    footnote: 'MAKRONUTRIJENTI LEGENDA: • C- Ugljeni hidrati • P- Proteini • F- Masti • Cal- Kalorije',
+  },
+  // ─── PAGE 12: PROTEINSKI JELOVNIK 2 ───
+  {
+    title: 'PROTEINSKI JELOVNIK',
+    sections: [
+      {
+        title: 'Glavna jela 150g/250g',
+        header: 'C-P-F-Cal',
+        items: [
+          { name: 'RAMSTEK', price: '1911/2940', macros: '0-32,3-10,5-225\n0-53,8-17,5-375', bold: true },
+          { name: 'PILETINA', price: '535/825', macros: '0-33,8-3,9-180\n0-56,3-6,5-300', bold: true },
+          { name: 'ĆURETINA', price: '880/1388', macros: '0-34,6-1,8-167\n0-57,8-3-276', bold: true },
+          { name: 'LOSOS', price: '1412/2244', macros: '0-33-18,6-309\n0-55-31-515', bold: true },
+          { name: 'TUNA', price: '990/2144', macros: '0,8-36-1,2-158\n1,3-60-2-263', bold: true },
+        ],
+      },
+      {
+        title: 'Prilozi 100g (kuvano)',
+        items: [
+          { name: 'INTEGRALNI PIRINAČ SA PARMEZANOM', price: '335', macros: '23-4,6-6,9-173', bold: true },
+          { name: 'HELJDA ZRNO', price: '216', macros: '19,9-3,4-0,6-92', bold: true },
+          { name: 'BATAT KOCKE', price: '350', macros: '21-2-5,1-135', bold: true },
+          { name: 'AMARANT', price: '480', macros: '19-3,8-1,6-102', bold: true },
+          { name: 'KINOA', price: '556', macros: '21,3-4,1-1,9-120', bold: true },
+          { name: 'SOTIRANI SPANAĆ', price: '440', macros: '2-4-7-95', bold: true },
+          { name: 'PESTO BORANIJA', price: '255', macros: '7,5-2,5-8,2-110', bold: true },
+          { name: 'GRILOVANO POVRĆE', price: '275', macros: '12-2-5,4-100', bold: true },
+        ],
+      },
+      {
+        title: 'Poslastice',
+        items: [
+          { name: 'PROTEINSKI WAFL', desc: 'ovsene pahuljice, jaja, badem mleko, cimet, grčki jogurt, šumsko voće, Whey protein od vanile', price: '999', macros: '55-47-20-597', bold: true },
+          { name: 'PROTEINSKI KOLAČ', desc: 'kolač na bazi indijskog oraha, badema, kakaa, Whey protein vanile, šumsko voće, urme', price: '500', macros: '29-26,3-23,1-438', bold: true },
+          { name: 'PROTEINSKI SMOOTHIE', desc: 'šumsko voće, čija semenke, badem mleko, Whey protein vanile', price: '865', macros: '18-30-10-292', bold: true },
+        ],
+      },
+    ],
+  },
+  // ─── PAGE 13: PIĆA ───
   {
     title: 'PIĆA',
     sections: [

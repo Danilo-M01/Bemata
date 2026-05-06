@@ -48,7 +48,7 @@ const MenuPageContent = React.forwardRef<HTMLDivElement, PageProps>(
 
     // Determine layout: page 1 (Alkoholna) and page 11 (Pića) use two columns
     const isWine = pageIndex === 0;
-    const isDrinks = pageIndex === 10;
+    const isDrinks = pageIndex === 12;
     const twoCol = isTwo || isWine || isDrinks;
 
     return (
@@ -71,8 +71,11 @@ const MenuPageContent = React.forwardRef<HTMLDivElement, PageProps>(
           <div className={`mp-sections ${twoCol ? 'mp-sections-grid' : ''}`}>
             {data.sections.map((section, si) => (
               <div key={si} className="mp-section">
-                {section.title && (
-                  <h3 className="mp-section-title">{section.title}</h3>
+                {(section.title || section.header) && (
+                  <div className="mp-section-header">
+                    {section.title && <h3 className="mp-section-title">{section.title}</h3>}
+                    {section.header && <span className="mp-section-macros-label">{section.header}</span>}
+                  </div>
                 )}
                 <ul className="mp-items">
                   {section.items.map((item, ii) => (
@@ -81,7 +84,10 @@ const MenuPageContent = React.forwardRef<HTMLDivElement, PageProps>(
                         <span className="mp-item-name">{item.name}</span>
                         {item.desc && <span className="mp-item-desc">{item.desc}</span>}
                       </div>
-                      <span className="mp-item-price">{item.price}</span>
+                      <div className="mp-item-right">
+                        <span className="mp-item-price">{item.price}</span>
+                        {item.macros && <span className="mp-item-macros">{item.macros}</span>}
+                      </div>
                     </li>
                   ))}
                 </ul>

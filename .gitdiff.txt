@@ -1,0 +1,482 @@
+diff --git a/index.html b/index.html
+index 717a7a3..62ebda0 100644
+--- a/index.html
++++ b/index.html
+@@ -14,7 +14,7 @@
+     <link rel="stylesheet" href="menu-book-embed/bemata-menu-book.css">
+     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@200;300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+ </head>
+-<body>
++<body class="home-slim">
+ 
+     <div class="noise-overlay" aria-hidden="true"></div>
+     <div class="cursor-dot" aria-hidden="true"></div>
+@@ -79,16 +79,19 @@
+             <nav class="mobile-nav">
+                 <div class="mobile-link mobile-link--group" data-index="01">
+                     <div class="mobile-link-text">
+-                        <a class="mobile-link-main" href="#about">O nama</a>
++                        <a class="mobile-link-main" href="o-nama.html">O nama</a>
+                         <div class="mobile-link-sub">
+-                            <a class="mobile-sublink" href="#principles">Super food</a>
+-                            <a class="mobile-sublink" href="#trust">Poverenje</a>
++                            <a class="mobile-sublink" href="o-nama.html#superfood">Super food</a>
++                            <a class="mobile-sublink" href="o-nama.html#poverenje">Poverenje</a>
+                         </div>
+                     </div>
+                 </div>
+-                <a href="#services" class="mobile-link" data-index="02">Usluge</a>
+-                <a href="#reservation" class="mobile-link" data-index="03">Rezervacije</a>
+-                <a href="#contact" class="mobile-link" data-index="04">Kontakt</a>
++                <a href="#menu" class="mobile-link" data-index="02">Meni</a>
++                <a href="usluge.html" class="mobile-link" data-index="03">Usluge</a>
++                <a href="ketering.html" class="mobile-link" data-index="04">Ketering</a>
++                <a href="#reservation" class="mobile-link" data-index="05">Rezervacije</a>
++                <a href="kontakt.html" class="mobile-link" data-index="06">Kontakt</a>
++                <a href="lokacije.html" class="mobile-link" data-index="07">Lokacije</a>
+             </nav>
+             <div class="mobile-menu-footer">
+                 <div class="mobile-socials">
+@@ -149,7 +152,7 @@
+     <!-- ═══════════ HERO ═══════════ -->
+     <section class="hero" id="home">
+         <div class="hero-bg-layers">
+-            <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="images/hero-bg.webp" aria-hidden="true">
++            <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/hero-bg.webp" aria-hidden="true" id="heroVideo">
+                 <source src="videos/hero.mp4" type="video/mp4">
+                 <source src="videos/hero.webm" type="video/webm">
+             </video>
+@@ -257,7 +260,7 @@
+     </section>
+ 
+     <!-- ═══════════ PARALLAX DIVIDER 2 ═══════════ -->
+-    <div class="parallax-divider" data-speed="0.5">
++    <div class="parallax-divider home-divider-keep" data-speed="0.5">
+         <div class="parallax-img" style="background-image:url('images/parallax-2.png')"></div>
+         <div class="parallax-overlay"></div>
+     </div>
+@@ -295,6 +298,48 @@
+         </div>
+     </section>
+ 
++    <section class="home-links">
++        <div class="container">
++            <div class="section-header reveal">
++                <span class="section-tag">VIŠE BEMATA</span>
++                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Izaberite šta vas zanima</span></span></h2>
++                <div class="section-divider"><span></span><span></span><span></span></div>
++            </div>
++            <div class="services-grid home-links-grid">
++                <div class="service-card reveal">
++                    <div class="service-visual sv-del">
++                        <img src="images/about-bowls.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
++                    </div>
++                    <div class="service-body">
++                        <h3>O nama</h3>
++                        <p>Naša priča, super food principi i iskustva gostiju na posebnoj stranici.</p>
++                        <a href="o-nama.html" class="btn btn-primary btn-sm">Pogledajte</a>
++                    </div>
++                </div>
++                <div class="service-card reveal">
++                    <div class="service-visual sv-cat">
++                        <img src="images/service-catering.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
++                    </div>
++                    <div class="service-body">
++                        <h3>Usluge</h3>
++                        <p>Pregled usluga, uključujući dostavu hrane i detalje o keteringu.</p>
++                        <a href="usluge.html" class="btn btn-primary btn-sm">Pogledajte</a>
++                    </div>
++                </div>
++                <div class="service-card reveal">
++                    <div class="service-visual sv-cat">
++                        <img src="images/catering-dogadjaji.png" alt="" class="service-photo" width="800" height="600" loading="lazy">
++                    </div>
++                    <div class="service-body">
++                        <h3>Ketering</h3>
++                        <p>Posebna stranica sa ponudom i upitom za događaje.</p>
++                        <a href="ketering.html" class="btn btn-primary btn-sm">Ketering strana</a>
++                    </div>
++                </div>
++            </div>
++        </div>
++    </section>
++
+     <!-- ═══════════ PARALLAX DIVIDER 3 ═══════════ -->
+     <div class="parallax-divider" data-speed="0.6">
+         <div class="parallax-img" style="background-image:url('images/parallax-3.png')"></div>
+@@ -340,7 +385,7 @@
+                     <div class="service-body">
+                         <h3>Ketering</h3>
+                         <p>Naš ketering tim za Vaše događaje pružiće Vam vrhunsku uslugu — kvalitet i ukus po Vašem izboru.</p>
+-                        <a href="#reservation" class="btn btn-primary btn-sm">Pročitajte Više</a>
++                        <a href="ketering.html" class="btn btn-primary btn-sm">Pročitajte Više</a>
+                     </div>
+                 </div>
+             </div>
+@@ -348,7 +393,7 @@
+     </section>
+ 
+     <!-- ═══════════ PARALLAX DIVIDER 4 ═══════════ -->
+-    <div class="parallax-divider" data-speed="0.5">
++    <div class="parallax-divider home-divider-keep" data-speed="0.5">
+         <div class="parallax-img" style="background-image:url('images/parallax-4.png')"></div>
+         <div class="parallax-overlay"></div>
+     </div>
+@@ -488,16 +533,58 @@
+                         <img src="images/ambience-01.webp" alt="Bemata — ambijent i hrana" class="reservation-ambience-img" id="reservationAmbienceImg" width="682" height="1024" loading="eager" decoding="async" fetchpriority="high">
+                     </div>
+                     </div>
+-                    <div class="info-card"><div class="info-icon">🕐</div><h4>Radno vreme</h4><div class="hours-list"><div class="hour-row"><span>Pon — Pet</span><span class="hour-dots"></span><span>08 — 22h</span></div><div class="hour-row"><span>Subota</span><span class="hour-dots"></span><span>09 — 23h</span></div><div class="hour-row"><span>Nedelja</span><span class="hour-dots"></span><span>09 — 21h</span></div></div></div>
++                    <div class="info-card"><div class="info-icon">🕐</div><h4>Radno vreme</h4><div class="hours-list"><div class="hour-row"><span>Pon — Sub</span><span class="hour-dots"></span><span>08 — 23h</span></div><div class="hour-row"><span>Nedelja (Kuhinja)</span><span class="hour-dots"></span><span>08 — 22h</span></div><div class="hour-row"><span>Nedelja (Restoran)</span><span class="hour-dots"></span><span>08 — 23h</span></div></div></div>
+                     <div class="info-card"><div class="info-icon">📍</div><h4>Lokacija</h4><p>Uroša Martinovića, Beograd, Srbija</p></div>
+                     <div class="info-card"><div class="info-icon">📞</div><h4>Kontakt</h4><p>+381 62 558558<br>office@bemata.rs</p></div>
+                 </div>
+                 <form class="reservation-form reveal" id="reservationForm">
+                     <div class="form-row"><div class="form-group"><label>Ime i prezime</label><input type="text" placeholder="Vaše ime" required></div><div class="form-group"><label>Telefon</label><input type="tel" placeholder="+381 ..." required></div></div>
+                     <div class="form-row"><div class="form-group"><label>Datum</label><input type="date" required></div><div class="form-group"><label>Vreme</label><input type="time" required></div></div>
+-                    <div class="form-row"><div class="form-group"><label>Broj gostiju</label><select required><option value="" disabled selected>Izaberite</option><option>1 gost</option><option>2 gosta</option><option>3-4 gosta</option><option>5-6 gostiju</option><option>7+</option></select></div><div class="form-group"><label>Tip ishrane</label><select><option value="">Sve</option><option>Vegansko</option><option>Vegetarijansko</option><option>Bez glutena</option><option>Posno</option></select></div></div>
+-                    <div class="form-group full-width"><label>Napomena</label><textarea rows="3" placeholder="Alergije, posebni zahtevi..."></textarea></div>
+-                    <button type="submit" class="btn btn-primary btn-full"><span>Potvrdi Rezervaciju</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
++                    <div class="form-row"><div class="form-group"><label>Broj gostiju</label><select name="guests" required><option value="" disabled selected>Izaberite</option><option>1 gost</option><option>2 gosta</option><option>3 gosta</option><option>4 gosta</option><option>5 gostiju</option><option>6 gostiju</option></select></div><div class="form-group"><label>Tip ishrane</label><select name="diet"><option value="">Sve</option><option>Vegansko</option><option>Vegetarijansko</option><option>Bez glutena</option><option>Posno</option></select></div></div>
++                    
++                    <!-- TABLE MAP -->
++                    <div class="form-group full-width table-map-container">
++                        <label>Izaberite sto (opciono)</label>
++                        <p class="text-xs text-stone-500 mb-2">Kliknite na mapu da izaberete željeni sto.</p>
++                        <div class="table-map-wrapper">
++                            <input type="hidden" name="tableId" id="selectedTableId" value="">
++                            <div class="image-map-wrapper">
++                                <div class="image-map-container" id="restaurantMap">
++                                    <img src="./images/mapa.png" alt="Mapa Stolova" class="map-bg-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 600\'%3E%3Crect width=\'800\' height=\'600\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'400\' y=\'300\' text-anchor=\'middle\' font-size=\'20\' fill=\'%23888\'%3EMapa stolova se učitava... (Proverite putanju images/mapa.png)%3C/text%3E%3C/svg%3E'"/>
++                                    
++                                    <!-- Inside Tables -->
++                                    <div class="map-hotspot" data-table="7" style="bottom: 12%; left: 8%;"><span>7</span></div>
++                                    <div class="map-hotspot" data-table="6" style="bottom: 12%; left: 18%;"><span>6</span></div>
++                                    <div class="map-hotspot" data-table="5" style="bottom: 12%; left: 28%;"><span>5</span></div>
++                                    <div class="map-hotspot" data-table="4" style="bottom: 12%; left: 38%;"><span>4</span></div>
++                                    <div class="map-hotspot" data-table="3" style="bottom: 12%; left: 48%;"><span>3</span></div>
++                                    <div class="map-hotspot" data-table="2" style="bottom: 12%; left: 58%;"><span>2</span></div>
++                                    <div class="map-hotspot" data-table="1" style="bottom: 12%; left: 68%;"><span>1</span></div>
++
++                                    <div class="map-hotspot" data-table="9" style="bottom: 35%; left: 38%;"><span>9</span></div>
++                                    <div class="map-hotspot" data-table="10" style="bottom: 35%; left: 53%;"><span>10</span></div>
++                                    <div class="map-hotspot" data-table="12" style="bottom: 35%; left: 68%;"><span>12</span></div>
++                                    <div class="map-hotspot" data-table="11" style="bottom: 24%; left: 68%;"><span>11</span></div>
++
++                                    <!-- Garden Tables -->
++                                    <div class="map-hotspot" data-table="B01" style="top: 15%; right: 18%;"><span>B01</span></div>
++                                    <div class="map-hotspot" data-table="B09" style="top: 25%; right: 18%;"><span>B09</span></div>
++                                    <div class="map-hotspot" data-table="B02" style="top: 35%; right: 18%;"><span>B02</span></div>
++
++                                    <div class="map-hotspot" data-table="B03" style="bottom: 35%; right: 28%;"><span>B03</span></div>
++                                    <div class="map-hotspot" data-table="B05" style="bottom: 35%; right: 15%;"><span>B05</span></div>
++                                    <div class="map-hotspot" data-table="B07" style="bottom: 35%; right: 2%;"><span>B07</span></div>
++
++                                    <div class="map-hotspot" data-table="B04" style="bottom: 15%; right: 28%;"><span>B04</span></div>
++                                    <div class="map-hotspot" data-table="B06" style="bottom: 15%; right: 15%;"><span>B06</span></div>
++                                    <div class="map-hotspot" data-table="B08" style="bottom: 15%; right: 2%;"><span>B08</span></div>
++                                </div>
++                            </div>
++                        </div>
++                    </div>
++
++                    <div class="form-group full-width"><label>Napomena</label><textarea name="note" rows="3" placeholder="Alergije, posebni zahtevi..."></textarea></div>
++                    <button type="submit" id="submitBtn" class="btn btn-primary btn-full"><span>Potvrdi Rezervaciju</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                 </form>
+             </div>
+         </div>
+@@ -512,7 +599,7 @@
+                 <img src="bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
+             </div>
+             <div class="footer-grid">
+-                <div class="footer-col"><h4>Navigacija</h4><a href="#about">O nama</a><a href="#services">Usluge</a><a href="#reservation">Rezervacije</a><a href="#contact">Kontakt</a></div>
++                <div class="footer-col"><h4>Navigacija</h4><a href="o-nama.html">O nama</a><a href="usluge.html">Usluge</a><a href="ketering.html">Ketering</a><a href="#reservation">Rezervacije</a><a href="kontakt.html">Kontakt</a><a href="lokacije.html">Lokacije</a></div>
+                 <div class="footer-col"><h4>Kontakt</h4><p>Uroša Martinovića, Beograd, Srbija</p><p>+381 62 558558</p><p>office@bemata.rs</p></div>
+                 <div class="footer-col"><h4>Pratite nas</h4><div class="footer-socials"><a href="https://www.instagram.com/bemata.meals/" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.facebook.com/bemata.meals" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span>Facebook</span></a></div></div>
+             </div>
+@@ -523,7 +610,17 @@
+ 
+     <button class="floating-reserve" id="floatingReserve"><span class="floating-icon">📅</span><span class="floating-text">Rezervacija</span></button>
+ 
+-    <div class="notification" id="notification"><div class="notification-content"><span class="notification-icon">✅</span><div><strong>Rezervacija potvrđena!</strong><p>Kontaktiraćemo Vas uskoro.</p></div></div></div>
++    <div class="notification" id="notification"><div class="notification-content"><span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Naš tim će je pregledati uskoro.</p></div></div></div>
++
++    <div class="tracking-bar" id="trackingBar">
++        <div class="tracking-content">
++            <div class="tracking-info">
++                <span class="tracking-dot" id="trackingDot"></span>
++                <span id="trackingText">Provera statusa...</span>
++            </div>
++            <button id="trackingClose" class="tracking-close">OK</button>
++        </div>
++    </div>
+ 
+     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+diff --git a/script.js b/script.js
+index d00cb6c..768d9b8 100644
+--- a/script.js
++++ b/script.js
+@@ -1,3 +1,41 @@
++// Video early-init — počni učitavanje što ranije, ne čekaj loading screen
++(function () {
++    const v = document.getElementById('heroVideo');
++    if (!v) return;
++
++    v.muted = true;
++    v.playsInline = true;
++    v.loop = true;
++
++    const tryPlay = () => {
++        if (!v.paused) return;
++        const playPromise = v.play();
++        if (playPromise && typeof playPromise.catch === 'function') {
++            playPromise.catch(err => {
++                console.log("Autoplay prevented, will retry on interaction or splash finish", err);
++            });
++        }
++    };
++
++    const retryOnInteraction = () => {
++        if (v.paused) tryPlay();
++    };
++    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
++        document.addEventListener(eventName, retryOnInteraction, { once: true, passive: true });
++    });
++
++    if (v.readyState >= 3) {
++        tryPlay();
++    } else {
++        v.addEventListener('canplay', tryPlay, { once: true });
++        v.addEventListener('loadeddata', tryPlay, { once: true });
++    }
++
++    document.addEventListener('visibilitychange', () => {
++        if (!document.hidden && v.paused) tryPlay();
++    });
++})();
++
+ document.addEventListener('DOMContentLoaded', () => {
+ 
+     const $ = id => document.getElementById(id);
+@@ -229,8 +267,21 @@ document.addEventListener('DOMContentLoaded', () => {
+             document.body.classList.remove('no-scroll');
+             setTimeout(() => {
+                 loadingScreen.style.display = 'none';
+-                const heroVideo = document.querySelector('.hero-video');
+-                if (heroVideo && heroVideo.play) heroVideo.play().catch(() => {});
++                const heroVideo = document.getElementById('heroVideo');
++                if (heroVideo) {
++                    const tryVideoPlay = () => {
++                        if (heroVideo.paused) {
++                            const promise = heroVideo.play();
++                            if (promise && typeof promise.catch === 'function') {
++                                promise.catch(() => {});
++                            }
++                        }
++                    };
++                    tryVideoPlay();
++                    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
++                        document.addEventListener(eventName, tryVideoPlay, { once: true, passive: true });
++                    });
++                }
+                 requestAnimationFrame(() => {
+                     document.querySelector('.hero-reveal')?.classList.add('visible');
+                 });
+@@ -277,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
+     if (menuBtn) menuBtn.addEventListener('click', openMobile);
+     if (mobileClose) mobileClose.addEventListener('click', closeMobile);
+     if (mobileMenuBg) mobileMenuBg.addEventListener('click', closeMobile);
+-    $$('#mobileMenu a[href^="#"]').forEach(l => l.addEventListener('click', closeMobile));
++    $$('#mobileMenu a').forEach(l => l.addEventListener('click', closeMobile));
+ 
+     // ═══════ MODAL ═══════
+     const openModal = () => {
+@@ -294,13 +345,184 @@ document.addEventListener('DOMContentLoaded', () => {
+     if (modalClose) modalClose.addEventListener('click', closeModal);
+     if (reservationModal) reservationModal.addEventListener('click', e => { if (e.target === reservationModal) closeModal(); });
+ 
+-    // ═══════ FORMS ═══════
+-    const showNotif = () => {
++    // ═══════ FORMS & TABLE MAP ═══════
++    const showNotif = (msg, isError = false) => {
+         if (!notification) return;
++        const content = notification.querySelector('.notification-content');
++        if (content) {
++            content.innerHTML = isError ? 
++                `<span class="notification-icon">❌</span><div><strong>Greška!</strong><p>${msg}</p></div>` : 
++                `<span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Naš tim će je pregledati uskoro. Status možete pratiti na traci ispod.</p></div>`;
++        }
+         notification.classList.add('show');
+         setTimeout(() => notification.classList.remove('show'), 4000);
+     };
+-    const handleSubmit = e => { e.preventDefault(); showNotif(); e.target.reset(); };
++
++    // ═══════ GUEST TRACKING ═══════
++    const trackingBar = $('trackingBar');
++    const trackingText = $('trackingText');
++    const trackingDot = $('trackingDot');
++    const trackingClose = $('trackingClose');
++    let trackingInterval;
++
++    const updateTrackingUI = (status, info = {}) => {
++        if (!trackingBar) return;
++        
++        trackingBar.classList.add('active');
++        trackingDot.className = 'tracking-dot ' + status;
++        trackingClose.style.display = 'none';
++
++        if (status === 'pending') {
++            trackingText.innerText = 'Rezervacija na čekanju...';
++        } else if (status === 'confirmed') {
++            trackingText.innerHTML = `<span style="color: #10b981">Rezervacija PRIHVAĆENA!</span> Vidimo se ${info.time}`;
++            trackingClose.style.display = 'block';
++            clearInterval(trackingInterval);
++        } else if (status === 'cancelled') {
++            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODKAZANA.</span> Žao nam je, nema mesta.`;
++            trackingClose.style.display = 'block';
++            clearInterval(trackingInterval);
++        }
++    };
++
++    const checkStatus = async () => {
++        const rid = localStorage.getItem('bemata_reservation_id');
++        if (!rid) {
++            if (trackingBar) trackingBar.classList.remove('active');
++            clearInterval(trackingInterval);
++            return;
++        }
++
++        try {
++            const res = await fetch(`http://localhost:3000/api/reservations?id=${rid}`);
++            if (res.ok) {
++                const data = await res.json();
++                updateTrackingUI(data.status, data);
++            } else if (res.status === 404) {
++                localStorage.removeItem('bemata_reservation_id');
++                trackingBar.classList.remove('active');
++            }
++        } catch (e) { console.error('Tracking error', e); }
++    };
++
++    if (trackingClose) {
++        trackingClose.addEventListener('click', () => {
++            localStorage.removeItem('bemata_reservation_id');
++            trackingBar.classList.remove('active');
++        });
++    }
++
++    const initTracking = () => {
++        if (localStorage.getItem('bemata_reservation_id')) {
++            checkStatus();
++            trackingInterval = setInterval(checkStatus, 10000); // Check every 10s
++        }
++    };
++    initTracking();
++
++
++    // Table Map Selection & Availability
++    const mapHotspots = $$('.map-hotspot');
++    const selectedTableInput = $('selectedTableId');
++    const dateInput = document.querySelector('input[type="date"]');
++    
++    if (mapHotspots.length && selectedTableInput) {
++        mapHotspots.forEach(hotspot => {
++            hotspot.addEventListener('click', () => {
++                if (hotspot.classList.contains('booked')) return;
++                
++                mapHotspots.forEach(t => t.classList.remove('selected'));
++                hotspot.classList.add('selected');
++                selectedTableInput.value = hotspot.dataset.table;
++            });
++        });
++    }
++
++    const checkAvailability = async () => {
++        if (!dateInput || !dateInput.value || !mapHotspots.length) return;
++        
++        try {
++            // Reset state
++            mapHotspots.forEach(t => t.classList.remove('booked', 'selected'));
++            if (selectedTableInput) selectedTableInput.value = '';
++
++            const res = await fetch(`http://localhost:3000/api/reservations?date=${dateInput.value}`);
++            if (res.ok) {
++                const bookedTableIds = await res.json();
++                mapHotspots.forEach(hotspot => {
++                    if (bookedTableIds.includes(hotspot.dataset.table)) {
++                        hotspot.classList.add('booked');
++                    }
++                });
++            }
++        } catch (error) {
++            console.error('Error checking availability:', error);
++        }
++    };
++
++    if (dateInput) {
++        dateInput.addEventListener('change', checkAvailability);
++    }
++
++    const handleSubmit = async (e) => {
++        e.preventDefault();
++        const form = e.target;
++        
++        // Validation: must select table
++        if (selectedTableInput && !selectedTableInput.value) {
++            showNotif('Molimo Vas izaberite slobodan sto sa mape.', true);
++            return;
++        }
++
++        const btn = form.querySelector('button[type="submit"]');
++        const originalText = btn.innerHTML;
++        btn.innerHTML = '<span>Slanje...</span>';
++        btn.disabled = true;
++
++        const inputs = form.querySelectorAll('input, select, textarea');
++        const data = {};
++        inputs.forEach(input => {
++            if (input.name) data[input.name] = input.value;
++            // Handle cases where name is missing in old inputs
++            if (!input.name) {
++                if (input.type === 'text' && input.placeholder.includes('ime')) data.name = input.value;
++                if (input.type === 'tel') data.phone = input.value;
++                if (input.type === 'date') data.date = input.value;
++                if (input.type === 'time') data.time = input.value;
++            }
++        });
++
++        try {
++            // Adjust port if needed, 3000 is default Next.js
++            const res = await fetch('http://localhost:3000/api/reservations', {
++                method: 'POST',
++                headers: { 'Content-Type': 'application/json' },
++                body: JSON.stringify(data)
++            });
++
++            const result = await res.json();
++
++            if (res.ok) {
++                if (result.reservation && result.reservation.id) {
++                    localStorage.setItem('bemata_reservation_id', result.reservation.id);
++                    initTracking();
++                }
++                showNotif();
++                form.reset();
++                closeModal();
++                checkAvailability();
++            } else {
++                showNotif(result.error || 'Neuspešno slanje.', true);
++            }
++        } catch (error) {
++            console.error('Error submitting reservation:', error);
++            showNotif('Greška u komunikaciji sa serverom.', true);
++        } finally {
++            btn.innerHTML = originalText;
++            btn.disabled = false;
++        }
++    };
++    
+     if (reservationForm) reservationForm.addEventListener('submit', handleSubmit);
+     if (modalForm) modalForm.addEventListener('submit', e => { handleSubmit(e); closeModal(); });
+ 
