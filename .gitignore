@@ -1,9 +1,11 @@
 node_modules/
 # Nested Next.js repo (separate history); omit from this project root
-web/
+# web/ removed to track it here
+
 .DS_Store
 Thumbs.db
 *.log
 .env
 .env.*
-!.env.example
+web/.env*
+**/.env*

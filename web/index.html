@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>BEMATA | Super Food Restaurant</title>
+    <link rel="icon" href="bemata-logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu-book-embed/bemata-menu-book.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@200;300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="home-slim">
+
+    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
+    <!-- ═══════════ LOADING SCREEN ═══════════ -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-texture"></div>
+        <div class="loading-content">
+            <div class="loading-logo-wrapper">
+                <img src="bemata-logo.svg" alt="Bemata" class="loading-logo-img" width="320" height="201">
+            </div>
+            <div class="avocado-track">
+                <div class="track-line"><div class="track-fill"></div></div>
+                <div class="avocado-wrapper">
+                    <div class="avocado-shadow"></div>
+                    <div class="avocado-bounce"><div class="avocado-spin">🥑</div></div>
+                </div>
+                <div class="track-dots">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+            <p class="loading-text">Priprema vizuelnog iskustva<span class="dots"></span></p>
+            <p class="loading-sub">Super food · pažljivo birani sastojci</p>
+        </div>
+        <div class="loading-decos">
+            <div class="load-leaf l1">🌿</div>
+            <div class="load-leaf l2">🍃</div>
+            <div class="load-leaf l3">🌱</div>
+            <div class="load-leaf l4">🍃</div>
+            <div class="load-leaf l5">🌿</div>
+        </div>
+    </div>
+
+    <!-- ═══════════ SEARCH OVERLAY ═══════════ -->
+    <div class="search-overlay" id="searchOverlay">
+        <button class="search-close" id="searchClose">&times;</button>
+        <div class="search-overlay-content">
+            <h3>Pronađite omiljeno jelo</h3>
+            <div class="search-input-box">
+                <svg class="search-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" placeholder="Pretražite meni, recepte, usluge..." id="searchInput" autocomplete="off">
+            </div>
+            <div class="search-suggestions">
+                <span>Popularno:</span>
+                <a href="#menu">Obrok salate</a>
+                <a href="#menu">Losos Vitality</a>
+                <a href="#menu">Veganski meni</a>
+                <a href="#reservation">Rezervacija</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ MOBILE MENU ═══════════ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-bg" id="mobileMenuBg"></div>
+        <div class="mobile-menu-panel">
+            <div class="mobile-menu-header">
+                <img src="bemata-logo.svg" alt="Bemata" class="mobile-logo-img" width="160" height="100">
+                <button class="mobile-close" id="mobileClose">&times;</button>
+            </div>
+            <nav class="mobile-nav">
+                <div class="mobile-link mobile-link--group" data-index="01">
+                    <div class="mobile-link-text">
+                        <a class="mobile-link-main" href="o-nama.html">O nama</a>
+                        <div class="mobile-link-sub">
+                            <a class="mobile-sublink" href="o-nama.html#superfood">Super food</a>
+                            <a class="mobile-sublink" href="o-nama.html#poverenje">Poverenje</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="#menu" class="mobile-link" data-index="02">Meni</a>
+                <a href="usluge.html" class="mobile-link" data-index="03">Usluge</a>
+                <a href="ketering.html" class="mobile-link" data-index="04">Ketering</a>
+                <a href="#reservation" class="mobile-link" data-index="05">Rezervacije</a>
+                <a href="kontakt.html" class="mobile-link" data-index="06">Kontakt</a>
+                <a href="lokacije.html" class="mobile-link" data-index="07">Lokacije</a>
+            </nav>
+            <div class="mobile-menu-footer">
+                <div class="mobile-socials">
+                    <a href="https://www.instagram.com/bemata.meals/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://www.facebook.com/bemata.meals" target="_blank" rel="noopener noreferrer">Facebook</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ RESERVATION MODAL ═══════════ -->
+    <div class="modal-overlay" id="reservationModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-header">
+                <h3>Brza Rezervacija</h3>
+                <p>Rezervišite sto u par klikova</p>
+            </div>
+            <form class="modal-form" id="modalForm">
+                <div class="modal-form-row">
+                    <input type="text" placeholder="Vaše ime" required>
+                    <input type="tel" placeholder="Telefon" required>
+                </div>
+                <div class="modal-form-row">
+                    <input type="date" required>
+                    <input type="time" required>
+                </div>
+                <select required>
+                    <option value="" disabled selected>Broj gostiju</option>
+                    <option>1 gost</option><option>2 gosta</option>
+                    <option>3-4 gosta</option><option>5-6 gostiju</option><option>7+ gostiju</option>
+                </select>
+                <button type="submit" class="btn btn-primary btn-full">Potvrdi Rezervaciju</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ═══════════ HEADER ═══════════ -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <div class="nav-spacer" aria-hidden="true"></div>
+            <a href="#home" class="nav-logo-wrap">
+                <img src="bemata-logo.svg" alt="Bemata" class="nav-logo-img" width="140" height="88">
+            </a>
+            <div class="nav-right">
+                <button class="nav-search" id="searchBtn" title="Pretraži">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                </button>
+                <button class="nav-menu-btn" id="menuBtn" title="Meni">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero" id="home">
+        <div class="hero-bg-layers">
+            <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/hero-bg.webp" aria-hidden="true" id="heroVideo">
+                <source src="videos/hero.mp4" type="video/mp4">
+                <source src="videos/hero.webm" type="video/webm">
+            </video>
+            <div class="hero-nebula" aria-hidden="true"></div>
+            <div class="hero-atmosphere" id="heroAtmosphere" aria-hidden="true">
+                <span class="hero-bubble b1"></span><span class="hero-bubble b2"></span><span class="hero-bubble b3"></span>
+                <span class="hero-bubble b4"></span><span class="hero-bubble b5"></span><span class="hero-bubble b6"></span>
+                <span class="hero-bubble b7"></span><span class="hero-bubble b8"></span>
+            </div>
+            <div class="hero-photo-scrim"></div>
+            <div class="hero-grain"></div>
+            <div class="hero-gradient"></div>
+            <div class="hero-pattern"></div>
+        </div>
+        <div class="hero-botanicals">
+            <div class="hb hb-1"></div>
+            <div class="hb hb-2"></div>
+            <div class="hb hb-3"></div>
+            <div class="hb hb-4"></div>
+            <div class="hb hb-5"></div>
+            <div class="hb hb-6"></div>
+        </div>
+        <div class="hero-content hero-reveal">
+            <span class="hero-badge">DOBRO DOŠLI</span>
+            <h1 class="hero-title hero-title--kin">
+                <span class="title-line"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Dobrodošli za sto</span></span></span>
+                <span class="title-accent"><span class="text-reveal-wrapper"><span class="text-reveal-inner">gde ima mesta za sve</span></span></span>
+            </h1>
+            <p class="hero-desc">Bemata je mesto gde se jede mirno i bez razmišljanja. Pažljivo birani sastojci, čista hrana i obroci koji prijaju.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">Pogledaj meni</a>
+                <a href="#reservation" class="btn btn-light">Rezerviši sto</a>
+            </div>
+        </div>
+        <div class="hero-scroll" id="heroScroll">
+            <div class="scroll-line"><div class="scroll-dot"></div></div>
+        </div>
+    </section>
+
+    <!-- ═══════════ PARALLAX DIVIDER 1 ═══════════ -->
+    <div class="parallax-divider" data-speed="0.55">
+        <div class="parallax-img" style="background-image:url('images/parallax-1.png')"></div>
+        <div class="parallax-overlay"></div>
+    </div>
+
+    <!-- ═══════════ ABOUT ═══════════ -->
+    <section class="about" id="about">
+        <div class="section-bg-texture tex-linen"></div>
+        <div class="section-mesh" aria-hidden="true"></div>
+        <!-- Organic vine roots -->
+        <svg class="vine-deco vine-deco--left" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M60 0 C65 80 25 180 55 280 S90 380 45 480 C20 580 70 680 60 800" />
+            <path class="vine-branch" d="M55 280 C80 270 120 278 120 285" />
+            <path class="vine-branch" d="M45 480 C75 490 120 482 120 475" />
+            <circle class="vine-node" cx="55" cy="280" r="4" />
+            <circle class="vine-node" cx="45" cy="480" r="5" />
+            <circle class="vine-node" cx="60" cy="140" r="3" />
+        </svg>
+        <svg class="vine-deco vine-deco--right" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M60 0 C55 100 95 200 65 320 S30 440 75 560 C100 660 50 740 60 800" />
+            <path class="vine-branch" d="M65 320 C40 310 0 318 0 325" />
+            <path class="vine-branch" d="M75 560 C45 570 0 562 0 555" />
+            <circle class="vine-node" cx="65" cy="320" r="4" />
+            <circle class="vine-node" cx="75" cy="560" r="5" />
+        </svg>
+        <div class="section-watermark section-watermark-logo" aria-hidden="true"><img src="bemata-logo.svg" alt=""></div>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">O NAMA</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Naša Priča</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <p class="about-lead">Danas je lako jesti bilo šta. Brzo. Usput. Bez razmišljanja. Ali posle toga… znaš kako ide.</p>
+                    <p>Zato smo napravili Bematu. Mesto gde ne moraš da razmišljaš da li je izbor dobar. Gde su sastojci pažljivo birani. I gde hrana jednostavno prija.</p>
+                    <p>Dođeš. Sedneš. Jedeš. I osećaš se dobro posle.</p>
+                    <div class="about-actions">
+                        <a href="#menu" class="btn btn-primary btn-sm">Naš Meni</a>
+                        <a href="#principles" class="btn btn-ghost btn-sm">Super Food →</a>
+                    </div>
+                </div>
+                <div class="about-visual reveal">
+                    <div class="about-collage">
+                        <div class="collage-item ci-1">
+                            <img src="images/about-bowls.webp" alt="Balansirani obroci" class="collage-img" width="800" height="1200" loading="lazy">
+                            <span class="collage-caption">Super food</span>
+                        </div>
+                        <div class="collage-item ci-2">
+                            <img src="images/about-food-1.webp" alt="Doručak u Bemati — sveža hrana" class="collage-img" width="1200" height="1600" loading="lazy">
+                            <span class="collage-caption">Sveža jela</span>
+                        </div>
+                        <div class="collage-item ci-3">
+                            <img src="images/about-food-8177.webp" alt="Bemata — trenutak iz naše kuhinje" class="collage-img" width="3024" height="3762" loading="lazy">
+                            <span class="collage-caption">Iz naše kuhinje</span>
+                        </div>
+                    </div>
+                    <div class="about-stats-row">
+                        <div class="mini-stat"><span class="mini-stat-num" data-count="9">0</span><span class="mini-stat-label">Godina</span></div>
+                        <div class="mini-stat"><span class="mini-stat-num" data-count="100">0</span><span class="mini-stat-label">Recepata</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ PARALLAX DIVIDER 2 ═══════════ -->
+    <div class="parallax-divider home-divider-keep" data-speed="0.5">
+        <div class="parallax-img" style="background-image:url('images/parallax-2.png')"></div>
+        <div class="parallax-overlay"></div>
+    </div>
+
+    <!-- ═══════════ MENU ═══════════ -->
+    <section class="menu-section" id="menu">
+        <div class="section-bg-texture tex-menu-brand"></div>
+        <div class="menu-corner mc-tr"></div>
+        <div class="menu-corner mc-bl"></div>
+        <svg class="vine-deco vine-deco--left" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M60 0 C70 90 25 200 60 300 S95 400 40 520 C15 620 75 720 65 800" />
+            <path class="vine-branch" d="M60 300 C90 290 120 298 120 305" />
+            <path class="vine-branch" d="M40 520 C70 530 120 522 120 515" />
+            <circle class="vine-node" cx="60" cy="300" r="4" />
+            <circle class="vine-node" cx="40" cy="520" r="5" />
+        </svg>
+        <svg class="vine-deco vine-deco--right" viewBox="0 0 120 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M60 50 C50 140 100 230 70 350 S25 470 80 580 C105 670 55 750 60 800" />
+            <path class="vine-branch" d="M70 350 C40 340 0 348 0 355" />
+            <path class="vine-branch" d="M80 580 C50 590 0 582 0 575" />
+            <circle class="vine-node" cx="70" cy="350" r="4" />
+            <circle class="vine-node" cx="80" cy="580" r="5" />
+        </svg>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">NAŠ MENI</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Uživanje za čula</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+
+            <div class="menu-book-host reveal">
+                <div id="menu-book-root" class="menu-book-root"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="home-links">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">VIŠE BEMATA</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Izaberite šta vas zanima</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+            <div class="services-grid home-links-grid">
+                <div class="service-card reveal">
+                    <div class="service-visual sv-del">
+                        <img src="images/about-bowls.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>O nama</h3>
+                        <p>Naša priča, super food principi i iskustva gostiju na posebnoj stranici.</p>
+                        <a href="o-nama.html" class="btn btn-primary btn-sm">Pogledajte</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-visual sv-cat">
+                        <img src="images/service-catering.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Usluge</h3>
+                        <p>Pregled usluga, uključujući dostavu hrane i detalje o keteringu.</p>
+                        <a href="usluge.html" class="btn btn-primary btn-sm">Pogledajte</a>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-visual sv-cat">
+                        <img src="images/catering-dogadjaji.png" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Ketering</h3>
+                        <p>Posebna stranica sa ponudom i upitom za događaje.</p>
+                        <a href="ketering.html" class="btn btn-primary btn-sm">Ketering strana</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ PARALLAX DIVIDER 3 ═══════════ -->
+    <div class="parallax-divider" data-speed="0.6">
+        <div class="parallax-img" style="background-image:url('images/parallax-3.png')"></div>
+        <div class="parallax-overlay"></div>
+    </div>
+
+    <!-- ═══════════ SERVICES ═══════════ -->
+    <section class="services" id="services">
+        <div class="section-bg-texture tex-marble"></div>
+        <div class="section-mesh" aria-hidden="true"></div>
+        <div class="section-watermark">naše usluge</div>
+        <!-- Organic vine roots -->
+        <svg class="vine-deco vine-deco--right vine-deco--alt" viewBox="0 0 120 600" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M60 0 C50 70 95 150 70 240 S35 340 80 430 C95 500 55 560 60 600" />
+            <path class="vine-branch" d="M70 240 C40 230 0 238 0 245" />
+            <path class="vine-branch" d="M80 430 C50 440 0 432 0 425" />
+            <circle class="vine-node" cx="70" cy="240" r="5" />
+            <circle class="vine-node" cx="80" cy="430" r="4" />
+        </svg>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">USLUGE</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Naše Usluge</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-visual sv-del">
+                        <img src="images/service-granola.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Dostava hrane</h3>
+                        <p>Poruči Bematu na željenu adresu putem naših partnera.</p>
+                        <div class="partner-row">
+                            <span class="partner-pill">Wolt</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-visual sv-cat">
+                        <img src="images/service-catering.webp" alt="" class="service-photo" width="800" height="600" loading="lazy">
+                    </div>
+                    <div class="service-body">
+                        <h3>Ketering</h3>
+                        <p>Naš ketering tim za Vaše događaje pružiće Vam vrhunsku uslugu — kvalitet i ukus po Vašem izboru.</p>
+                        <a href="ketering.html" class="btn btn-primary btn-sm">Pročitajte Više</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ PARALLAX DIVIDER 4 ═══════════ -->
+    <div class="parallax-divider home-divider-keep" data-speed="0.5">
+        <div class="parallax-img" style="background-image:url('images/parallax-4.png')"></div>
+        <div class="parallax-overlay"></div>
+    </div>
+
+    <!-- ═══════════ PRINCIPLES ═══════════ -->
+    <section class="principles" id="principles">
+        <div class="section-bg-texture tex-leaf"></div>
+        <div class="section-mesh" aria-hidden="true"></div>
+        <!-- Organic vine roots -->
+        <svg class="vine-deco vine-deco--left vine-deco--dense" viewBox="0 0 150 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M75 0 C80 60 30 140 65 220 S105 300 50 400 C20 500 85 580 70 680 S55 750 75 800" />
+            <path class="vine-branch" d="M65 220 C95 210 150 218 150 225" />
+            <path class="vine-branch" d="M50 400 C85 410 150 402 150 395" />
+            <path class="vine-branch" d="M70 680 C100 670 150 678 150 685" />
+            <circle class="vine-node" cx="65" cy="220" r="4" />
+            <circle class="vine-node" cx="50" cy="400" r="6" />
+            <circle class="vine-node" cx="70" cy="680" r="4" />
+            <circle class="vine-node" cx="75" cy="100" r="3" />
+        </svg>
+        <svg class="vine-deco vine-deco--right vine-deco--dense" viewBox="0 0 150 800" preserveAspectRatio="none" aria-hidden="true">
+            <path class="vine-trunk" d="M75 50 C70 130 120 210 85 310 S40 420 90 520 C115 610 60 700 75 800" />
+            <path class="vine-branch" d="M85 310 C55 300 0 308 0 315" />
+            <path class="vine-branch" d="M90 520 C60 530 0 522 0 515" />
+            <circle class="vine-node" cx="85" cy="310" r="5" />
+            <circle class="vine-node" cx="90" cy="520" r="4" />
+        </svg>
+        <div class="molecule-field" id="moleculeField" aria-hidden="true">
+            <span class="mol"></span><span class="mol"></span><span class="mol"></span><span class="mol"></span>
+            <span class="mol"></span><span class="mol"></span><span class="mol"></span><span class="mol"></span>
+            <span class="mol"></span><span class="mol"></span>
+        </div>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag tag-on-green">NAŠI RECEPTI</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Bemata Super Food</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+            </div>
+            <div class="principles-grid">
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 28c2-8 6-14 8-16 2 2 6 8 8 16" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M24 14v18M18 24h12" fill="none" stroke="currentColor" stroke-width="1"/></svg></div><h4>Sirovo</h4><p>U ponudi imamo jela od sirovih namirnica najvišeg kvaliteta.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M18 14l6 10 6-10M18 34l6-10 6 10" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="1.5"/></svg></div><h4>Bez glutena</h4><p>Jela od bezglutenskih namirnica za sve koji paze na ishranu.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 16v16c0 2 2 4 4 4s4-2 4-4V16" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="1.5"/></svg></div><h4>Bez mleka</h4><p>Većina jela bez mlečnih proizvoda. Koristimo kozji sir i grčki jogurt u nekim jelima.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="18" y="18" width="12" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="1.5"/></svg></div><h4>Bez šećera</h4><p>Deserti od voća i orašastih plodova. Jedini zaslađivač — agava sirup.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M24 12c0 0-4 6-4 12s4 12 4 12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M20 18h8M20 30h8" fill="none" stroke="currentColor" stroke-width="1"/></svg></div><h4>Zdrava ulja</h4><p>Ulje od semena grožđa za prženje, hladno ceđeno maslinovo za salate.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="24" cy="26" rx="8" ry="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M18 24c0-4 3-10 6-10s6 6 6 10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div><h4>Naši hlebovi</h4><p>Veganski hlebovi od speltinog i heljdinog brašna, beskvasni, svakodnevno.</p></div>
+                <div class="principle-card reveal"><div class="principle-icon"><svg viewBox="0 0 48 48" width="38" height="38"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="24" cy="28" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M24 16v8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="24" cy="14" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div><h4>Domaći sosevi</h4><p>Dresinzi i sosevi se prave svakodnevno od zdravih namirnica, bez šećera.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ TRUST / TESTIMONIALS — IMMERSIVE PARALLAX ═══════════ -->
+    <section class="trust-immersive" id="trust">
+        <div class="trust-parallax-bg" id="trustParallaxBg">
+            <div class="trust-parallax-img" style="background-image:url('images/parallax-2.png')"></div>
+            <div class="trust-parallax-scrim"></div>
+        </div>
+        <div class="trust-botanicals" id="trustBotanicals" aria-hidden="true">
+            <span class="trust-fruit tf-1">🥑</span>
+            <span class="trust-fruit tf-2">🍓</span>
+            <span class="trust-fruit tf-3">🫐</span>
+            <span class="trust-fruit tf-4">🍋</span>
+            <span class="trust-fruit tf-5">🌿</span>
+            <span class="trust-fruit tf-6">🍃</span>
+            <span class="trust-fruit tf-7">🥝</span>
+            <span class="trust-fruit tf-8">🌱</span>
+            <span class="trust-fruit tf-9">🍊</span>
+            <span class="trust-fruit tf-10">🫒</span>
+            <span class="trust-fruit tf-11">🥬</span>
+            <span class="trust-fruit tf-12">🍇</span>
+        </div>
+        <div class="trust-particles" aria-hidden="true">
+            <span class="tp"></span><span class="tp"></span><span class="tp"></span><span class="tp"></span>
+            <span class="tp"></span><span class="tp"></span><span class="tp"></span><span class="tp"></span>
+        </div>
+        <div class="container trust-container">
+            <div class="section-header reveal">
+                <span class="section-tag trust-im-tag">POVERENJE</span>
+                <h2 class="section-title trust-im-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Reči naših gostiju</span></span></h2>
+                <div class="section-divider div-light"><span></span><span></span><span></span></div>
+                <p class="trust-im-subtitle">Gostima je hrana prirasla srcu — evo šta kažu o Bemati</p>
+            </div>
+            <div class="trust-ratings reveal">
+                <div class="trust-rating-badge"><span class="trb-platform">Google</span><span class="trb-score">4.4</span><span class="trb-stars">★★★★<span class="star-half">★</span></span><span class="trb-count">891 recenzija</span></div>
+                <div class="trust-rating-badge trust-rating-badge--facebook" data-trust-rail-center><span class="trb-platform">Facebook</span><span class="trb-score">4.8</span><span class="trb-stars">★★★★★</span><span class="trb-count">67 recenzija</span></div>
+                <div class="trust-rating-badge"><span class="trb-platform">Foursquare</span><span class="trb-score">8.2</span><span class="trb-stars">★★★★<span class="star-half">★</span></span><span class="trb-count">71 recenzija</span></div>
+            </div>
+            <p class="trust-ratings-hint">Prevuci levo ili desno za Google i Foursquare</p>
+            <div class="trust-grid" id="trustGrid">
+                <figure class="trust-card trust-card--featured reveal"><div class="trust-card-quote"><svg class="trust-quote-icon" viewBox="0 0 24 24" width="28" height="28"><path d="M3 21c3 0 7-1 7-8V5H1v8h4c0 4-2 6-5 7l3 1zm11 0c3 0 7-1 7-8V5h-9v8h4c0 4-2 6-5 7l3 1z" fill="currentColor" opacity=".15"/></svg><blockquote>Svaka poseta Bemati je iskustvo za sebe. Losos Vitality je fantastičan — sveže, ukusno i znate tačno šta jedete. Ambijent je miran i prijatan, osoblje uvek ljubazno.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:320deg"><span>M</span></div><div><strong>Marijana M.</strong><span class="trust-card-src">Google recenzija</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Veganski burger je najbolji u gradu, bez premca. Nana hleb, paštetina od pasulja i veganski majonez — savršenstvo. Dolazimo svake nedelje.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:265deg"><span>A</span></div><div><strong>Aleksandra P.</strong><span class="trust-card-src">Facebook</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Konačno restoran u Beogradu gde je zdrava hrana zaista ukusna. Torta od šargarepe bez šećera — neverovatna. Deca obožavaju palačinke!</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:200deg"><span>K</span></div><div><strong>Katarina D.</strong><span class="trust-card-src">Google recenzija</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Humus sa heljdinim pločicama je savršen uvod u obrok. Rižoto sa šumskim pečurkama je bogat ukusom — integralna riža daje poseban karakter.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:145deg"><span>S</span></div><div><strong>Stefan V.</strong><span class="trust-card-src">Foursquare</span></div><span class="trust-card-stars">★★★★<span class="star-half">★</span></span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Najbolji smoothie-evi u gradu! Green Detox me drži ceo dan. A Acai činija je kao desert koji je zapravo zdrav. Osoblje je uvek nasmejano.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:35deg"><span>J</span></div><div><strong>Jelena R.</strong><span class="trust-card-src">Google recenzija</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Kao neko ko ne jede gluten niti mlečne proizvode — Bemata je oaza. Sve je prilagođeno, ništa ne deluje kao kompromis. Zudle sa pestom — preporuka!</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:180deg"><span>D</span></div><div><strong>Danijela T.</strong><span class="trust-card-src">Facebook</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card trust-card--featured reveal"><div class="trust-card-quote"><svg class="trust-quote-icon" viewBox="0 0 24 24" width="28" height="28"><path d="M3 21c3 0 7-1 7-8V5H1v8h4c0 4-2 6-5 7l3 1zm11 0c3 0 7-1 7-8V5h-9v8h4c0 4-2 6-5 7l3 1z" fill="currentColor" opacity=".15"/></svg><blockquote>Bemata je promenila način na koji razmišljam o hrani. Suvidirana piletina u crvenom sosu je jednako ukusna kao u bilo kom klasičnom restoranu, ali znam da je sve zdravo.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:280deg"><span>O</span></div><div><strong>Olivera K.</strong><span class="trust-card-src">Google recenzija</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Činija piletina sa kinoom i avokadom — savršen proteinski obrok posle treninga. Bemata razume šta znači funkcionalna hrana.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:90deg"><span>N</span></div><div><strong>Nikola S.</strong><span class="trust-card-src">Google recenzija</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+                <figure class="trust-card reveal"><div class="trust-card-quote"><blockquote>Predivno mesto, topla atmosfera. Giros sa pilećim batakom u tortilja od ovsa — genijalna kombinacija. Dolazim minimum 3 puta mesečno.</blockquote></div><figcaption class="trust-card-author"><div class="trust-avatar-ring" style="--hue:350deg"><span>I</span></div><div><strong>Ivana B.</strong><span class="trust-card-src">Facebook</span></div><span class="trust-card-stars">★★★★★</span></figcaption></figure>
+            </div>
+            <div class="trust-bloom-cta reveal" id="trustBloomCta">
+                <p class="trust-bloom-text">Pridružite se <strong>1000+</strong> zadovoljnih gostiju</p>
+                <a href="#reservation" class="btn btn-primary">Rezervišite sto</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ STATEMENT ═══════════ -->
+    <section class="statement">
+        <div class="statement-bg"></div>
+        <div class="statement-leaves"></div>
+        <div class="container">
+            <div class="statement-content reveal">
+                <span class="statement-tag">FUNKCIONALAN I ZDRAV OBROK</span>
+                <h2 class="statement-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Bitan je kvalitet,</span></span><br><span class="text-reveal-wrapper"><span class="text-reveal-inner"><em>ne kvantitet</em></span></span></h2>
+                <p>Kreativna upotreba super-namirnica u svim našim jelima.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ RESERVATION ═══════════ -->
+    <section class="reservation" id="reservation">
+        <div class="section-bg-texture tex-warm"></div>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">REZERVACIJA</span>
+                <h2 class="section-title"><span class="text-reveal-wrapper"><span class="text-reveal-inner">Rezervišite Sto</span></span></h2>
+                <div class="section-divider"><span></span><span></span><span></span></div>
+                <p class="section-subtitle">Rado Vas očekujemo — izaberite termin i prepustite nama ostalo</p>
+            </div>
+            <div class="reservation-grid">
+                <div class="reservation-info reveal">
+                    <div class="reservation-ambience-border">
+                    <div class="reservation-ambience-wrap" id="reservationAmbiencePlayer"
+                        role="region"
+                        aria-label="Ambijent i jela, rotirajuće slike"
+                        data-images="images/ambience-01.webp,images/ambience-02.webp,images/ambience-03.webp,images/ambience-04.webp,images/ambience-05.webp,images/ambience-06.webp,images/ambience-07.webp,images/ambience-08.webp,images/ambience-09.webp,images/ambience-10.webp,images/ambience-11.webp,images/ambience-12.webp,images/ambience-13.webp,images/ambience-14.webp,images/ambience-15.webp,images/ambience-16.webp,images/ambience-17.webp"
+                        data-interval="650"
+                        data-loop="true">
+                        <img src="images/ambience-01.webp" alt="Bemata — ambijent i hrana" class="reservation-ambience-img" id="reservationAmbienceImg" width="682" height="1024" loading="eager" decoding="async" fetchpriority="high">
+                    </div>
+                    </div>
+                    <div class="info-card"><div class="info-icon">🕐</div><h4>Radno vreme</h4><div class="hours-list"><div class="hour-row"><span>Pon — Sub</span><span class="hour-dots"></span><span>08 — 23h</span></div><div class="hour-row"><span>Nedelja (Kuhinja)</span><span class="hour-dots"></span><span>08 — 22h</span></div><div class="hour-row"><span>Nedelja (Restoran)</span><span class="hour-dots"></span><span>08 — 23h</span></div></div></div>
+                    <div class="info-card"><div class="info-icon">📍</div><h4>Lokacija</h4><p>Uroša Martinovića, Beograd, Srbija</p></div>
+                    <div class="info-card"><div class="info-icon">📞</div><h4>Kontakt</h4><p>+381 62 558558<br>office@bemata.rs</p></div>
+                </div>
+                <form class="reservation-form reveal" id="reservationForm">
+                    <div class="form-row"><div class="form-group"><label>Ime i prezime</label><input type="text" placeholder="Vaše ime" required></div><div class="form-group"><label>Telefon</label><input type="tel" placeholder="+381 ..." required></div></div>
+                    <div class="form-row"><div class="form-group"><label>Datum</label><input type="date" required></div><div class="form-group"><label>Vreme</label><input type="time" required></div></div>
+                    <div class="form-row"><div class="form-group"><label>Broj gostiju</label><select name="guests" required><option value="" disabled selected>Izaberite</option><option>1 gost</option><option>2 gosta</option><option>3 gosta</option><option>4 gosta</option><option>5 gostiju</option><option>6 gostiju</option></select></div><div class="form-group"><label>Tip ishrane</label><select name="diet"><option value="">Sve</option><option>Vegansko</option><option>Vegetarijansko</option><option>Bez glutena</option><option>Posno</option></select></div></div>
+                    
+                    <!-- TABLE MAP -->
+                    <div class="form-group full-width table-map-container">
+                        <label>Izaberite sto (opciono)</label>
+                        <p class="text-xs text-stone-500 mb-2">Kliknite na mapu da izaberete željeni sto.</p>
+                        <div class="table-map-wrapper">
+                            <input type="hidden" name="tableId" id="selectedTableId" value="">
+                            <div class="image-map-wrapper">
+                                <div class="image-map-container" id="restaurantMap">
+                                    <img src="./images/mapa.png" alt="Mapa Stolova" class="map-bg-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 600\'%3E%3Crect width=\'800\' height=\'600\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'400\' y=\'300\' text-anchor=\'middle\' font-size=\'20\' fill=\'%23888\'%3EMapa stolova se učitava... (Proverite putanju images/mapa.png)%3C/text%3E%3C/svg%3E'"/>
+                                    
+                                    <!-- Inside Tables -->
+                                    <div class="map-hotspot" data-table="7" style="bottom: 12%; left: 8%;"><span>7</span></div>
+                                    <div class="map-hotspot" data-table="6" style="bottom: 12%; left: 18%;"><span>6</span></div>
+                                    <div class="map-hotspot" data-table="5" style="bottom: 12%; left: 28%;"><span>5</span></div>
+                                    <div class="map-hotspot" data-table="4" style="bottom: 12%; left: 38%;"><span>4</span></div>
+                                    <div class="map-hotspot" data-table="3" style="bottom: 12%; left: 48%;"><span>3</span></div>
+                                    <div class="map-hotspot" data-table="2" style="bottom: 12%; left: 58%;"><span>2</span></div>
+                                    <div class="map-hotspot" data-table="1" style="bottom: 12%; left: 68%;"><span>1</span></div>
+
+                                    <div class="map-hotspot" data-table="9" style="bottom: 35%; left: 38%;"><span>9</span></div>
+                                    <div class="map-hotspot" data-table="10" style="bottom: 35%; left: 53%;"><span>10</span></div>
+                                    <div class="map-hotspot" data-table="12" style="bottom: 35%; left: 68%;"><span>12</span></div>
+                                    <div class="map-hotspot" data-table="11" style="bottom: 24%; left: 68%;"><span>11</span></div>
+
+                                    <!-- Garden Tables -->
+                                    <div class="map-hotspot" data-table="B01" style="top: 15%; right: 18%;"><span>B01</span></div>
+                                    <div class="map-hotspot" data-table="B09" style="top: 25%; right: 18%;"><span>B09</span></div>
+                                    <div class="map-hotspot" data-table="B02" style="top: 35%; right: 18%;"><span>B02</span></div>
+
+                                    <div class="map-hotspot" data-table="B03" style="bottom: 35%; right: 28%;"><span>B03</span></div>
+                                    <div class="map-hotspot" data-table="B05" style="bottom: 35%; right: 15%;"><span>B05</span></div>
+                                    <div class="map-hotspot" data-table="B07" style="bottom: 35%; right: 2%;"><span>B07</span></div>
+
+                                    <div class="map-hotspot" data-table="B04" style="bottom: 15%; right: 28%;"><span>B04</span></div>
+                                    <div class="map-hotspot" data-table="B06" style="bottom: 15%; right: 15%;"><span>B06</span></div>
+                                    <div class="map-hotspot" data-table="B08" style="bottom: 15%; right: 2%;"><span>B08</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width"><label>Napomena</label><textarea name="note" rows="3" placeholder="Alergije, posebni zahtevi..."></textarea></div>
+                    <button type="submit" id="submitBtn" class="btn btn-primary btn-full"><span>Potvrdi Rezervaciju</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="footer" id="contact">
+        <div class="footer-top-line"></div>
+        <div class="footer-texture"></div>
+        <div class="container">
+            <div class="footer-brand-area">
+                <img src="bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
+            </div>
+            <div class="footer-grid">
+                <div class="footer-col"><h4>Navigacija</h4><a href="o-nama.html">O nama</a><a href="usluge.html">Usluge</a><a href="ketering.html">Ketering</a><a href="#reservation">Rezervacije</a><a href="kontakt.html">Kontakt</a><a href="lokacije.html">Lokacije</a></div>
+                <div class="footer-col"><h4>Kontakt</h4><p>Uroša Martinovića, Beograd, Srbija</p><p>+381 62 558558</p><p>office@bemata.rs</p></div>
+                <div class="footer-col"><h4>Pratite nas</h4><div class="footer-socials"><a href="https://www.instagram.com/bemata.meals/" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a><a href="https://www.facebook.com/bemata.meals" class="social-link" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span>Facebook</span></a></div></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Bemata Super Food | All Rights Reserved</p></div>
+        </div>
+        <button class="scroll-top" id="scrollTop" title="↑">↑</button>
+    </footer>
+
+    <button class="floating-reserve" id="floatingReserve"><span class="floating-icon">📅</span><span class="floating-text">Rezervacija</span></button>
+
+    <div class="notification" id="notification"><div class="notification-content"><span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Naš tim će je pregledati uskoro.</p></div></div></div>
+
+    <div class="tracking-bar" id="trackingBar">
+        <div class="tracking-content">
+            <div class="tracking-info">
+                <span class="tracking-dot" id="trackingDot"></span>
+                <span id="trackingText">Provera statusa...</span>
+            </div>
+            <button id="trackingClose" class="tracking-close">OK</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+    <script src="menu-book-embed/bemata-menu-book.js"></script>
+</body>
+</html>
