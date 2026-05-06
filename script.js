@@ -18,7 +18,7 @@
         overlay.innerHTML = '<button type="button" class="hero-video-fallback-button">Pusti video</button>';
         overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:auto;z-index:10;';
         const button = overlay.querySelector('button');
-        button.style.cssText = 'padding:1rem 1.75rem;font-size:1rem;border:none;border-radius:999px;background:rgba(255,255,255,.92);color:#111;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.18);';
+        button.style.cssText = 'padding:1.1rem 2rem;font-size:1rem;border:none;border-radius:999px;background:rgba(255,255,255,.98);color:#111;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.22);font-weight:600;letter-spacing:1px;';
         button.addEventListener('click', () => {
             v.play().catch(() => {});
             overlay.remove();
@@ -27,33 +27,52 @@
     };
 
     const tryPlay = () => {
-        if (!v.paused) return;
-        const playPromise = v.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(err => {
-                console.log("Autoplay prevented, will retry on interaction or splash finish", err);
-                showHeroFallback();
-            });
-        }
+        // Force play even if browser thinks it shouldn't
+        v.play().then(() => {
+            console.log("Hero video started successfully");
+        }).catch(err => {
+            console.log("Autoplay prevented, will retry on interaction", err);
+            // Don't show fallback immediately, wait for user interaction first
+        });
     };
 
     const retryOnInteraction = () => {
-        if (v.paused) tryPlay();
+        if (v.paused) {
+            v.play().then(() => {
+                const fallback = document.querySelector('.hero-video-fallback');
+                if (fallback) fallback.remove();
+            }).catch(() => {});
+        }
     };
-    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+
+    ['click', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
         document.addEventListener(eventName, retryOnInteraction, { once: true, passive: true });
     });
 
     v.addEventListener('error', () => {
-        console.warn('Hero video failed to load or play');
+        console.warn('Hero video failed to load');
         showHeroFallback();
     });
+
+    // Check every second for the first 5 seconds if it's playing
+    let checkCount = 0;
+    const interval = setInterval(() => {
+        if (!v.paused) {
+            clearInterval(interval);
+        } else {
+            tryPlay();
+            checkCount++;
+            if (checkCount > 5) {
+                clearInterval(interval);
+                if (v.paused) showHeroFallback();
+            }
+        }
+    }, 1000);
 
     if (v.readyState >= 3) {
         tryPlay();
     } else {
         v.addEventListener('canplay', tryPlay, { once: true });
-        v.addEventListener('loadeddata', tryPlay, { once: true });
     }
 
     document.addEventListener('visibilitychange', () => {
