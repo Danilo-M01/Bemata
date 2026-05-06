@@ -418,6 +418,18 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
     transform: translate(-50%, -50%);
     z-index: 0;
 }
+.hero-video-fallback {
+    background: rgba(0,0,0,.22);
+}
+.hero-video-fallback-button {
+    font-family: inherit;
+    transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+}
+.hero-video-fallback-button:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.98);
+    box-shadow: 0 22px 70px rgba(0,0,0,.22);
+}
 @media (prefers-reduced-motion:reduce){
     .hero-video{display:none}
 }

@@ -1,3 +1,66 @@
+// Video early-init — počni učitavanje što ranije, ne čekaj loading screen
+(function () {
+    const v = document.getElementById('heroVideo');
+    if (!v) return;
+
+    v.muted = true;
+    v.playsInline = true;
+    v.loop = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.preload = 'auto';
+
+    const showHeroFallback = () => {
+        const hero = document.querySelector('.hero');
+        if (!hero || document.querySelector('.hero-video-fallback')) return;
+        const overlay = document.createElement('div');
+        overlay.className = 'hero-video-fallback';
+        overlay.innerHTML = '<button type="button" class="hero-video-fallback-button">Pusti video</button>';
+        overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:auto;z-index:10;';
+        const button = overlay.querySelector('button');
+        button.style.cssText = 'padding:1rem 1.75rem;font-size:1rem;border:none;border-radius:999px;background:rgba(255,255,255,.92);color:#111;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.18);';
+        button.addEventListener('click', () => {
+            v.play().catch(() => {});
+            overlay.remove();
+        });
+        hero.appendChild(overlay);
+    };
+
+    const tryPlay = () => {
+        if (!v.paused) return;
+        const playPromise = v.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(err => {
+                console.log("Autoplay prevented, will retry on interaction or splash finish", err);
+                showHeroFallback();
+            });
+        }
+    };
+
+    const retryOnInteraction = () => {
+        if (v.paused) tryPlay();
+    };
+    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+        document.addEventListener(eventName, retryOnInteraction, { once: true, passive: true });
+    });
+
+    v.addEventListener('error', () => {
+        console.warn('Hero video failed to load or play');
+        showHeroFallback();
+    });
+
+    if (v.readyState >= 3) {
+        tryPlay();
+    } else {
+        v.addEventListener('canplay', tryPlay, { once: true });
+        v.addEventListener('loadeddata', tryPlay, { once: true });
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && v.paused) tryPlay();
+    });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const $ = id => document.getElementById(id);
@@ -229,8 +292,26 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('no-scroll');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                const heroVideo = document.querySelector('.hero-video');
-                if (heroVideo && heroVideo.play) heroVideo.play().catch(() => {});
+                const heroVideo = document.getElementById('heroVideo');
+                if (heroVideo) {
+                    const tryVideoPlay = () => {
+                        if (heroVideo.paused) {
+                            const promise = heroVideo.play();
+                            if (promise && typeof promise.catch === 'function') {
+                                promise.catch(() => {
+                                    showHeroFallback();
+                                });
+                            }
+                        }
+                    };
+                    tryVideoPlay();
+                    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
+                        document.addEventListener(eventName, tryVideoPlay, { once: true, passive: true });
+                    });
+                    setTimeout(() => {
+                        if (heroVideo.paused) showHeroFallback();
+                    }, 1200);
+                }
                 requestAnimationFrame(() => {
                     document.querySelector('.hero-reveal')?.classList.add('visible');
                 });
@@ -277,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuBtn) menuBtn.addEventListener('click', openMobile);
     if (mobileClose) mobileClose.addEventListener('click', closeMobile);
     if (mobileMenuBg) mobileMenuBg.addEventListener('click', closeMobile);
-    $$('#mobileMenu a[href^="#"]').forEach(l => l.addEventListener('click', closeMobile));
+    $$('#mobileMenu a').forEach(l => l.addEventListener('click', closeMobile));
 
     // ═══════ MODAL ═══════
     const openModal = () => {
@@ -294,13 +375,184 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (reservationModal) reservationModal.addEventListener('click', e => { if (e.target === reservationModal) closeModal(); });
 
-    // ═══════ FORMS ═══════
-    const showNotif = () => {
+    // ═══════ FORMS & TABLE MAP ═══════
+    const showNotif = (msg, isError = false) => {
         if (!notification) return;
+        const content = notification.querySelector('.notification-content');
+        if (content) {
+            content.innerHTML = isError ? 
+                `<span class="notification-icon">❌</span><div><strong>Greška!</strong><p>${msg}</p></div>` : 
+                `<span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Naš tim će je pregledati uskoro. Status možete pratiti na traci ispod.</p></div>`;
+        }
         notification.classList.add('show');
         setTimeout(() => notification.classList.remove('show'), 4000);
     };
-    const handleSubmit = e => { e.preventDefault(); showNotif(); e.target.reset(); };
+
+    // ═══════ GUEST TRACKING ═══════
+    const trackingBar = $('trackingBar');
+    const trackingText = $('trackingText');
+    const trackingDot = $('trackingDot');
+    const trackingClose = $('trackingClose');
+    let trackingInterval;
+
+    const updateTrackingUI = (status, info = {}) => {
+        if (!trackingBar) return;
+        
+        trackingBar.classList.add('active');
+        trackingDot.className = 'tracking-dot ' + status;
+        trackingClose.style.display = 'none';
+
+        if (status === 'pending') {
+            trackingText.innerText = 'Rezervacija na čekanju...';
+        } else if (status === 'confirmed') {
+            trackingText.innerHTML = `<span style="color: #10b981">Rezervacija PRIHVAĆENA!</span> Vidimo se ${info.time}`;
+            trackingClose.style.display = 'block';
+            clearInterval(trackingInterval);
+        } else if (status === 'cancelled') {
+            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODKAZANA.</span> Žao nam je, nema mesta.`;
+            trackingClose.style.display = 'block';
+            clearInterval(trackingInterval);
+        }
+    };
+
+    const checkStatus = async () => {
+        const rid = localStorage.getItem('bemata_reservation_id');
+        if (!rid) {
+            if (trackingBar) trackingBar.classList.remove('active');
+            clearInterval(trackingInterval);
+            return;
+        }
+
+        try {
+            const res = await fetch(`http://localhost:3000/api/reservations?id=${rid}`);
+            if (res.ok) {
+                const data = await res.json();
+                updateTrackingUI(data.status, data);
+            } else if (res.status === 404) {
+                localStorage.removeItem('bemata_reservation_id');
+                trackingBar.classList.remove('active');
+            }
+        } catch (e) { console.error('Tracking error', e); }
+    };
+
+    if (trackingClose) {
+        trackingClose.addEventListener('click', () => {
+            localStorage.removeItem('bemata_reservation_id');
+            trackingBar.classList.remove('active');
+        });
+    }
+
+    const initTracking = () => {
+        if (localStorage.getItem('bemata_reservation_id')) {
+            checkStatus();
+            trackingInterval = setInterval(checkStatus, 10000); // Check every 10s
+        }
+    };
+    initTracking();
+
+
+    // Table Map Selection & Availability
+    const mapHotspots = $$('.map-hotspot');
+    const selectedTableInput = $('selectedTableId');
+    const dateInput = document.querySelector('input[type="date"]');
+    
+    if (mapHotspots.length && selectedTableInput) {
+        mapHotspots.forEach(hotspot => {
+            hotspot.addEventListener('click', () => {
+                if (hotspot.classList.contains('booked')) return;
+                
+                mapHotspots.forEach(t => t.classList.remove('selected'));
+                hotspot.classList.add('selected');
+                selectedTableInput.value = hotspot.dataset.table;
+            });
+        });
+    }
+
+    const checkAvailability = async () => {
+        if (!dateInput || !dateInput.value || !mapHotspots.length) return;
+        
+        try {
+            // Reset state
+            mapHotspots.forEach(t => t.classList.remove('booked', 'selected'));
+            if (selectedTableInput) selectedTableInput.value = '';
+
+            const res = await fetch(`http://localhost:3000/api/reservations?date=${dateInput.value}`);
+            if (res.ok) {
+                const bookedTableIds = await res.json();
+                mapHotspots.forEach(hotspot => {
+                    if (bookedTableIds.includes(hotspot.dataset.table)) {
+                        hotspot.classList.add('booked');
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error checking availability:', error);
+        }
+    };
+
+    if (dateInput) {
+        dateInput.addEventListener('change', checkAvailability);
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        
+        // Validation: must select table
+        if (selectedTableInput && !selectedTableInput.value) {
+            showNotif('Molimo Vas izaberite slobodan sto sa mape.', true);
+            return;
+        }
+
+        const btn = form.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>Slanje...</span>';
+        btn.disabled = true;
+
+        const inputs = form.querySelectorAll('input, select, textarea');
+        const data = {};
+        inputs.forEach(input => {
+            if (input.name) data[input.name] = input.value;
+            // Handle cases where name is missing in old inputs
+            if (!input.name) {
+                if (input.type === 'text' && input.placeholder.includes('ime')) data.name = input.value;
+                if (input.type === 'tel') data.phone = input.value;
+                if (input.type === 'date') data.date = input.value;
+                if (input.type === 'time') data.time = input.value;
+            }
+        });
+
+        try {
+            // Adjust port if needed, 3000 is default Next.js
+            const res = await fetch('http://localhost:3000/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                if (result.reservation && result.reservation.id) {
+                    localStorage.setItem('bemata_reservation_id', result.reservation.id);
+                    initTracking();
+                }
+                showNotif();
+                form.reset();
+                closeModal();
+                checkAvailability();
+            } else {
+                showNotif(result.error || 'Neuspešno slanje.', true);
+            }
+        } catch (error) {
+            console.error('Error submitting reservation:', error);
+            showNotif('Greška u komunikaciji sa serverom.', true);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    };
+    
     if (reservationForm) reservationForm.addEventListener('submit', handleSubmit);
     if (modalForm) modalForm.addEventListener('submit', e => { handleSubmit(e); closeModal(); });
 
