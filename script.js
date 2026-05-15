@@ -1,84 +1,4 @@
-// Video early-init — počni učitavanje što ranije, ne čekaj loading screen
-(function () {
-    const v = document.getElementById('heroVideo');
-    if (!v) return;
-
-    v.muted = true;
-    v.playsInline = true;
-    v.loop = true;
-    v.setAttribute('muted', '');
-    v.setAttribute('playsinline', '');
-    v.preload = 'auto';
-
-    const showHeroFallback = () => {
-        const hero = document.querySelector('.hero');
-        if (!hero || document.querySelector('.hero-video-fallback')) return;
-        const overlay = document.createElement('div');
-        overlay.className = 'hero-video-fallback';
-        overlay.innerHTML = '<button type="button" class="hero-video-fallback-button">Pusti video</button>';
-        overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:auto;z-index:10;';
-        const button = overlay.querySelector('button');
-        button.style.cssText = 'padding:1.1rem 2rem;font-size:1rem;border:none;border-radius:999px;background:rgba(255,255,255,.98);color:#111;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.22);font-weight:600;letter-spacing:1px;';
-        button.addEventListener('click', () => {
-            v.play().catch(() => {});
-            overlay.remove();
-        });
-        hero.appendChild(overlay);
-    };
-
-    const tryPlay = () => {
-        // Force play even if browser thinks it shouldn't
-        v.play().then(() => {
-            console.log("Hero video started successfully");
-        }).catch(err => {
-            console.log("Autoplay prevented, will retry on interaction", err);
-            // Don't show fallback immediately, wait for user interaction first
-        });
-    };
-
-    const retryOnInteraction = () => {
-        if (v.paused) {
-            v.play().then(() => {
-                const fallback = document.querySelector('.hero-video-fallback');
-                if (fallback) fallback.remove();
-            }).catch(() => {});
-        }
-    };
-
-    ['click', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
-        document.addEventListener(eventName, retryOnInteraction, { once: true, passive: true });
-    });
-
-    v.addEventListener('error', () => {
-        console.warn('Hero video failed to load');
-        showHeroFallback();
-    });
-
-    // Check every second for the first 5 seconds if it's playing
-    let checkCount = 0;
-    const interval = setInterval(() => {
-        if (!v.paused) {
-            clearInterval(interval);
-        } else {
-            tryPlay();
-            checkCount++;
-            if (checkCount > 5) {
-                clearInterval(interval);
-                if (v.paused) showHeroFallback();
-            }
-        }
-    }, 1000);
-
-    if (v.readyState >= 3) {
-        tryPlay();
-    } else {
-        v.addEventListener('canplay', tryPlay, { once: true });
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && v.paused) tryPlay();
-    });
-})();
+// Removed redundant JS video initialization. Native HTML5 autoplay is much more stable.
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -311,26 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('no-scroll');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                const heroVideo = document.getElementById('heroVideo');
-                if (heroVideo) {
-                    const tryVideoPlay = () => {
-                        if (heroVideo.paused) {
-                            const promise = heroVideo.play();
-                            if (promise && typeof promise.catch === 'function') {
-                                promise.catch(() => {
-                                    showHeroFallback();
-                                });
-                            }
-                        }
-                    };
-                    tryVideoPlay();
-                    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
-                        document.addEventListener(eventName, tryVideoPlay, { once: true, passive: true });
-                    });
-                    setTimeout(() => {
-                        if (heroVideo.paused) showHeroFallback();
-                    }, 1200);
-                }
+                // Video loading is now handled strictly by native HTML5 autoplay.
                 requestAnimationFrame(() => {
                     document.querySelector('.hero-reveal')?.classList.add('visible');
                 });
@@ -443,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`http://localhost:3000/api/reservations?id=${rid}`);
+            const res = await fetch(`/api/reservations?id=${rid}`);
             if (res.ok) {
                 const data = await res.json();
                 updateTrackingUI(data.status, data);
@@ -495,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mapHotspots.forEach(t => t.classList.remove('booked', 'selected'));
             if (selectedTableInput) selectedTableInput.value = '';
 
-            const res = await fetch(`http://localhost:3000/api/reservations?date=${dateInput.value}`);
+            const res = await fetch(`/api/reservations?date=${dateInput.value}`);
             if (res.ok) {
                 const bookedTableIds = await res.json();
                 mapHotspots.forEach(hotspot => {
@@ -543,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Adjust port if needed, 3000 is default Next.js
-            const res = await fetch('http://localhost:3000/api/reservations', {
+            const res = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
