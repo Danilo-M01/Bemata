@@ -16,6 +16,26 @@ const nextConfig: NextConfig = {
         source: "/",
         destination: "/index.html",
       },
+      {
+        source: "/o-nama",
+        destination: "/o-nama.html",
+      },
+      {
+        source: "/ketering",
+        destination: "/ketering.html",
+      },
+      {
+        source: "/usluge",
+        destination: "/usluge.html",
+      },
+      {
+        source: "/kontakt",
+        destination: "/kontakt.html",
+      },
+      {
+        source: "/lokacije",
+        destination: "/lokacije.html",
+      }
     ];
   },
 };
