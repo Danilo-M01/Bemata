@@ -224,7 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ═══════ LOADING ═══════
-    document.body.classList.add('no-scroll');
+    if (loadingScreen) {
+        document.body.classList.add('no-scroll');
+    }
     const start = Date.now();
     const MIN_SPLASH_MS = 3000;
     const LOAD_FAILSAFE_MS = 10000;
