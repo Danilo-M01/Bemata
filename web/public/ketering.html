@@ -140,7 +140,7 @@
                         <li><strong>Lokacija:</strong> Uroša Martinovića, Beograd</li>
                     </ul>
                 </div>
-                <form class="ketering-form" action="mailto:office@bemata.rs" method="post" enctype="text/plain">
+                <form class="ketering-form" id="keteringForm">
                     <label for="name">Ime i prezime</label>
                     <input id="name" name="ime" type="text" required>
 
@@ -161,5 +161,15 @@
             </div>
         </section>
     </main>
+
+    <div class="notification" id="notification">
+        <div class="notification-content"><span class="notification-icon">✅</span>
+            <div><strong>Upit je poslat!</strong>
+                <p>Naš tim će Vam se uskoro javiti.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/script.js?v=2.2"></script>
 </body>
 </html>

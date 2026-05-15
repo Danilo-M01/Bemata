@@ -949,4 +949,48 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') { closeSearch(); closeMobile(); closeModal(); }
     });
 
+    // ═══════ KETERING FORM ═══════
+    const keteringForm = document.getElementById('keteringForm');
+    const keteringNotification = document.getElementById('notification');
+    if (keteringForm) {
+        keteringForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = keteringForm.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Slanje...";
+            }
+
+            const formData = new FormData(keteringForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/ketering', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (res.ok) {
+                    keteringForm.reset();
+                    if (keteringNotification) {
+                        keteringNotification.innerHTML = `<div class="notification-content"><span class="notification-icon">✅</span><div><strong>Upit uspešno poslat!</strong><p>Naš tim će Vam se javiti u najkraćem roku.</p></div></div>`;
+                        keteringNotification.classList.add('show');
+                        setTimeout(() => keteringNotification.classList.remove('show'), 5000);
+                    }
+                } else {
+                    alert('Došlo je do greške prilikom slanja. Molimo pokušajte ponovo.');
+                }
+            } catch (err) {
+                console.error('Ketering submit error:', err);
+                alert('Greška na mreži. Pokušajte ponovo.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "Pošaljite upit";
+                }
+            }
+        });
+    }
+
 });
