@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <!-- Početna strana - Rezervacije, Jelovnik, Osnova restorana -->
+    <url>
+        <loc>https://www.bemata.org/</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Ketering - Ključno za B2B i proslave -->
+    <url>
+        <loc>https://www.bemata.org/ketering.html</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Usluge - Dostava i specifične ponude restorana -->
+    <url>
+        <loc>https://www.bemata.org/usluge.html</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Lokacije - Veoma bitno za lokalni SEO (Local Pack) -->
+    <url>
+        <loc>https://www.bemata.org/lokacije.html</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Kontakt - Rezervacije i informacije -->
+    <url>
+        <loc>https://www.bemata.org/kontakt.html</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- O nama - Poverenje i brending -->
+    <url>
+        <loc>https://www.bemata.org/o-nama.html</loc>
+        <lastmod>2026-05-15</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+</urlset>
