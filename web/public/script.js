@@ -995,4 +995,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ═══════ CONTACT FORM ═══════
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Slanje...";
+            }
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/ketering', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...data, type: 'kontakt' })
+                });
+                
+                if (res.ok) {
+                    contactForm.reset();
+                    if (keteringNotification) {
+                        keteringNotification.innerHTML = `<div class="notification-content"><span class="notification-icon">✅</span><div><strong>Upit uspešno poslat!</strong><p>Naš tim će Vam se javiti u najkraćem roku.</p></div></div>`;
+                        keteringNotification.classList.add('show');
+                        setTimeout(() => keteringNotification.classList.remove('show'), 5000);
+                    }
+                } else {
+                    alert('Došlo je do greške prilikom slanja. Molimo pokušajte ponovo.');
+                }
+            } catch (err) {
+                console.error('Contact submit error:', err);
+                alert('Greška na mreži. Pokušajte ponovo.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "Pošalji";
+                }
+            }
+        });
+    }
+
 });

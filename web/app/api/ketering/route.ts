@@ -10,18 +10,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ime, telefon i email su obavezni.' }, { status: 400 });
     }
 
-    // Construct the Telegram message
+    // Construct the Telegram message based on type
+    const isContact = data.type === 'kontakt';
+    const title = isContact ? '📩 <b>NOVA PORUKA (KONTAKT)</b> 📩' : '🍽️ <b>NOVI UPIT ZA KETERING</b> 🍽️';
+    
     const message = `
-🍽️ <b>NOVI UPIT ZA KETERING</b> 🍽️
+${title}
 
-👤 <b>Ime:</b> ${data.ime}
-📞 <b>Telefon:</b> ${data.telefon}
+👤 <b>Ime:</b> ${data.ime || data.name}
+📞 <b>Telefon:</b> ${data.telefon || data.phone}
 ✉️ <b>Email:</b> ${data.email}
-🎯 <b>Događaj:</b> ${data.dogadjaj || 'Nije navedeno'}
-👥 <b>Broj gostiju:</b> ${data.broj_gostiju || 'Nije navedeno'}
+${!isContact ? `🎯 <b>Događaj:</b> ${data.dogadjaj || 'Nije navedeno'}` : ''}
+${!isContact ? `👥 <b>Broj gostiju:</b> ${data.broj_gostiju || 'Nije navedeno'}` : ''}
 
 📝 <b>Poruka/Napomena:</b>
-${data.poruka || 'Nema dodatne poruke.'}
+${data.poruka || data.message || 'Nema dodatne poruke.'}
     `.trim();
 
     // Send to Telegram using existing bot
