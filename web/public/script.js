@@ -2,6 +2,20 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- CRITICAL FAILSAFE ---
+    // If any JS error occurs downstream or the load event fails, force remove the splash screen.
+    const forceRemoveSplash = () => {
+        const ls = document.getElementById('loadingScreen');
+        if (ls && ls.style.display !== 'none') {
+            ls.classList.add('fade-out');
+            document.body.classList.remove('no-scroll');
+            setTimeout(() => { ls.style.display = 'none'; }, 500);
+        }
+    };
+    setTimeout(forceRemoveSplash, 8000); // 8 second absolute maximum wait time
+    window.addEventListener('error', forceRemoveSplash);
+    // -------------------------
+
     const $ = id => document.getElementById(id);
     const $$ = sel => document.querySelectorAll(sel);
 
