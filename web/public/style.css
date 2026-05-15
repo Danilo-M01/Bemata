@@ -844,9 +844,8 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
 .statement{padding:100px 0;position:relative;overflow:hidden}
 .statement-bg{
     position:absolute;inset:0;
-    background:
-        linear-gradient(135deg, rgba(26,48,36,.92) 0%, rgba(24,42,32,.94) 45%, rgba(36,61,46,.92) 100%),
-        url("images/statement-menu.webp") center center / cover no-repeat;
+    background: linear-gradient(to right, rgba(23, 23, 23, 0.95) 0%, rgba(23, 23, 23, 0.7) 100%),
+        url("/images/statement-menu.webp?v=2") center center / cover no-repeat;
 }
 .statement-leaves{
     position:absolute;inset:0;z-index:1;
