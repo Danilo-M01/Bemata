@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`/api/reservations?id=${rid}`);
+            const res = await fetch(`/api/reservations?id=${rid}&_t=${Date.now()}`);
             if (res.ok) {
                 const data = await res.json();
                 updateTrackingUI(data.status, data);
@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mapHotspots.forEach(t => t.classList.remove('booked', 'selected'));
             if (selectedTableInput) selectedTableInput.value = '';
 
-            const res = await fetch(`/api/reservations?date=${dateInput.value}`);
+            const res = await fetch(`/api/reservations?date=${dateInput.value}&_t=${Date.now()}`);
             if (res.ok) {
                 const bookedTableIds = await res.json();
                 mapHotspots.forEach(hotspot => {

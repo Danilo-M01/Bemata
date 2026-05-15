@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { sendTelegramNotification } from '@/lib/telegram';
 
 // Initialize Supabase client
+export const dynamic = 'force-dynamic';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -124,7 +125,6 @@ export async function POST(request: Request) {
 
     // Send Telegram Notification
     try {
-      const adminLink = 'https://bemata.org/admin';
       const loginLink = 'https://bemata.org/admin/login';
       const message = `
 ⏳ <b>Imate novu rezervaciju!</b>
@@ -139,7 +139,6 @@ export async function POST(request: Request) {
 📝 <b>Napomena:</b> ${body.note || '/'}
 
 ━━━━━━━━━━━━━━━━━━
-👉 <a href="${adminLink}">OTVORI DASHBOARD</a>
 👉 <a href="${loginLink}">DIREKTAN LOGIN</a>
 `;
       await sendTelegramNotification(message);
