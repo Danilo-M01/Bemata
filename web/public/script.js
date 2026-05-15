@@ -327,12 +327,38 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (status === 'confirmed') {
             trackingText.innerHTML = `<span style="color: #10b981">Rezervacija PRIHVAĆENA!</span> Vidimo se ${info.time}`;
             trackingClose.style.display = 'block';
-            clearInterval(trackingInterval);
+            handleAutoCleanup();
         } else if (status === 'cancelled') {
-            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODKAZANA.</span> Žao nam je, nema mesta.`;
+            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODBIJENA.</span> Nažalost nema mesta.`;
             trackingClose.style.display = 'block';
-            clearInterval(trackingInterval);
+            handleAutoCleanup();
         }
+    };
+
+    const handleAutoCleanup = () => {
+        clearInterval(trackingInterval);
+        // Set a timestamp if not already set, to hide after 5 mins
+        if (!localStorage.getItem('bemata_tracking_finished')) {
+            localStorage.setItem('bemata_tracking_finished', Date.now());
+        }
+        
+        const finishedAt = parseInt(localStorage.getItem('bemata_tracking_finished'));
+        const now = Date.now();
+        const FIVE_MINUTES = 5 * 60 * 1000;
+        
+        if (now - finishedAt > FIVE_MINUTES) {
+            cleanupTracking();
+        } else {
+            // Schedule cleanup for remaining time
+            setTimeout(cleanupTracking, FIVE_MINUTES - (now - finishedAt));
+        }
+    };
+
+    const cleanupTracking = () => {
+        localStorage.removeItem('bemata_reservation_id');
+        localStorage.removeItem('bemata_tracking_finished');
+        if (trackingBar) trackingBar.classList.remove('active');
+        clearInterval(trackingInterval);
     };
 
     const checkStatus = async () => {
@@ -349,23 +375,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 updateTrackingUI(data.status, data);
             } else if (res.status === 404) {
-                localStorage.removeItem('bemata_reservation_id');
-                trackingBar.classList.remove('active');
+                cleanupTracking();
             }
         } catch (e) { console.error('Tracking error', e); }
     };
 
     if (trackingClose) {
-        trackingClose.addEventListener('click', () => {
-            localStorage.removeItem('bemata_reservation_id');
-            trackingBar.classList.remove('active');
-        });
+        trackingClose.addEventListener('click', cleanupTracking);
     }
 
     const initTracking = () => {
         if (localStorage.getItem('bemata_reservation_id')) {
             checkStatus();
-            trackingInterval = setInterval(checkStatus, 10000); // Check every 10s
+            trackingInterval = setInterval(checkStatus, 5000); // Check every 5s
         }
     };
     initTracking();
@@ -418,11 +440,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const form = e.target;
         
-        // Validation: must select table
+        // Table selection is now optional
+        /*
         if (selectedTableInput && !selectedTableInput.value) {
             showNotif('Molimo Vas izaberite slobodan sto sa mape.', true);
             return;
         }
+        */
 
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.innerHTML;

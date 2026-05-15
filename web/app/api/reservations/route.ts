@@ -119,20 +119,23 @@ export async function POST(request: Request) {
 
     // Send Telegram Notification
     try {
-      const adminLink = 'http://localhost:3000/admin/rezervacije'; // In production this would be the real domain
+      const adminLink = 'https://bemata.org/admin';
+      const loginLink = 'https://bemata.org/admin/login';
       const message = `
-⏳ <b>Imate novu rezervaciju, čeka na potvrdu</b>
+⏳ <b>Imate novu rezervaciju!</b>
 ━━━━━━━━━━━━━━━━━━
 
 👤 <b>Ime:</b> ${body.name}
 📞 <b>Telefon:</b> ${body.phone}
 📅 <b>Datum:</b> ${body.date} u ${body.time}
 👥 <b>Gosti:</b> ${body.guests}
-🪑 <b>Sto:</b> ${body.tableId || 'Nije izabran'}
+🪑 <b>Sto:</b> ${body.tableId || 'nije ostavio ili nije naveo'}
 🥦 <b>Ishrana:</b> ${body.diet || 'Sve'}
 📝 <b>Napomena:</b> ${body.note || '/'}
 
-👉 <a href="${adminLink}">KLIKNI OVDE DA POTVRDIŠ</a>
+━━━━━━━━━━━━━━━━━━
+👉 <a href="${adminLink}">OTVORI DASHBOARD</a>
+👉 <a href="${loginLink}">DIREKTAN LOGIN</a>
 `;
       await sendTelegramNotification(message);
     } catch (telegramError) {

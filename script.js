@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (content) {
             content.innerHTML = isError ? 
                 `<span class="notification-icon">❌</span><div><strong>Greška!</strong><p>${msg}</p></div>` : 
-                `<span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Naš tim će je pregledati uskoro. Status možete pratiti na traci ispod.</p></div>`;
+                `<span class="notification-icon">✅</span><div><strong>Rezervacija poslata!</strong><p>Molimo Vas sacekajte na sajtu ili prosetajte pa proverite kasnije status Vase rezervacije na traci ispod.</p></div>`;
         }
         notification.classList.add('show');
         setTimeout(() => notification.classList.remove('show'), 4000);
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
             trackingClose.style.display = 'block';
             clearInterval(trackingInterval);
         } else if (status === 'cancelled') {
-            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODKAZANA.</span> Žao nam je, nema mesta.`;
+            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija NIJE PRIHVAĆENA.</span> Žao nam je, trenutno nema slobodnih mesta.`;
             trackingClose.style.display = 'block';
             clearInterval(trackingInterval);
         }
@@ -419,10 +419,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = e.target;
         
         // Validation: must select table
+        /* 
         if (selectedTableInput && !selectedTableInput.value) {
             showNotif('Molimo Vas izaberite slobodan sto sa mape.', true);
             return;
         }
+        */
 
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.innerHTML;
