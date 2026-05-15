@@ -1012,6 +1012,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════ MIN DATE ═══════
-    const today = new Date().toISOString().split('T')[0];
     $$('input[type="date"]').forEach(i => i.setAttribute('min', today));
 });

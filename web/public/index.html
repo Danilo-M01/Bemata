@@ -17,16 +17,31 @@
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@200;300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <script>
-        // Absolute failsafe: remove loading screen after 8s no matter what happens to external scripts.
-        setTimeout(() => {
+        // --- ABSOLUTE GLOBAL FAILSAFE ---
+        // Ensures the site is visible and interactive even if scripts fail or load slowly.
+        window.FORCE_REVEAL = () => {
             const ls = document.getElementById('loadingScreen');
             if (ls && ls.style.display !== 'none') {
-                ls.style.opacity = '0';
+                ls.classList.add('fade-out');
                 document.body.classList.remove('no-scroll');
-                setTimeout(() => { ls.style.display = 'none'; }, 500);
+                setTimeout(() => { ls.style.display = 'none'; }, 800);
             }
-        }, 8000);
+            // Force reveal all hidden elements if GSAP fails
+            document.querySelectorAll('.reveal, .hero-reveal').forEach(el => {
+                el.classList.add('visible');
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            console.warn("Bemata: Failsafe triggered. Site revealed manually.");
+        };
+        setTimeout(window.FORCE_REVEAL, 7500); 
     </script>
+    <style>
+        /* Emergency fallback: If JS is completely disabled or fails before 8s */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal { transition: opacity 0.8s ease, transform 0.8s ease; }
+        }
+    </style>
 </head>
 
 <body class="home-slim">
@@ -96,7 +111,7 @@
         <div class="mobile-menu-bg" id="mobileMenuBg"></div>
         <div class="mobile-menu-panel">
             <div class="mobile-menu-header">
-                <img src="bemata-logo.svg" alt="Bemata" class="mobile-logo-img" width="160" height="100">
+                <img src="/bemata-logo.svg" alt="Bemata" class="mobile-logo-img" width="160" height="100">
                 <button class="mobile-close" id="mobileClose">&times;</button>
             </div>
             <nav class="mobile-nav">
@@ -163,7 +178,7 @@
         <nav class="nav container">
             <div class="nav-spacer" aria-hidden="true"></div>
             <a href="#home" class="nav-logo-wrap">
-                <img src="bemata-logo.svg" alt="Bemata" class="nav-logo-img" width="140" height="88">
+                <img src="/bemata-logo.svg" alt="Bemata" class="nav-logo-img" width="140" height="88">
             </a>
             <div class="nav-right">
                 <button class="nav-search" id="searchBtn" title="Pretraži">
@@ -184,10 +199,10 @@
     <!-- ═══════════ HERO ═══════════ -->
     <section class="hero" id="home">
         <div class="hero-bg-layers">
-            <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/images/hero-bg.webp?v=2"
+            <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="/images/hero-bg.webp?v=3"
                 aria-hidden="true" id="heroVideo">
-                <source src="/videos/hero.mp4" type="video/mp4">
-                <source src="/videos/hero.webm" type="video/webm">
+                <source src="/videos/hero.mp4?v=2" type="video/mp4">
+                <source src="/videos/hero.webm?v=2" type="video/webm">
             </video>
             <div class="hero-nebula" aria-hidden="true"></div>
             <div class="hero-atmosphere" id="heroAtmosphere" aria-hidden="true">
@@ -258,7 +273,7 @@
             <circle class="vine-node" cx="65" cy="320" r="4" />
             <circle class="vine-node" cx="75" cy="560" r="5" />
         </svg>
-        <div class="section-watermark section-watermark-logo" aria-hidden="true"><img src="bemata-logo.svg" alt="">
+        <div class="section-watermark section-watermark-logo" aria-hidden="true"><img src="/bemata-logo.svg" alt="">
         </div>
         <div class="container">
             <div class="section-header reveal">
@@ -927,7 +942,7 @@
         <div class="footer-texture"></div>
         <div class="container">
             <div class="footer-brand-area">
-                <img src="bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
+                <img src="/bemata-logo.svg" alt="Bemata" class="footer-logo-img" width="280" height="176">
             </div>
             <div class="footer-grid">
                 <div class="footer-col">
@@ -987,8 +1002,8 @@
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="/script.js?v=2.0"></script>
-    <script src="/menu-book-embed/bemata-menu-book.js"></script>
+    <script src="/script.js?v=2.1"></script>
+    <script src="/menu-book-embed/bemata-menu-book.js?v=2.1"></script>
 </body>
 
 </html>

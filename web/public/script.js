@@ -3,17 +3,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- CRITICAL FAILSAFE ---
-    // If any JS error occurs downstream or the load event fails, force remove the splash screen.
-    const forceRemoveSplash = () => {
-        const ls = document.getElementById('loadingScreen');
-        if (ls && ls.style.display !== 'none') {
-            ls.classList.add('fade-out');
-            document.body.classList.remove('no-scroll');
-            setTimeout(() => { ls.style.display = 'none'; }, 500);
-        }
-    };
-    setTimeout(forceRemoveSplash, 8000); // 8 second absolute maximum wait time
-    window.addEventListener('error', forceRemoveSplash);
+    // If any JS error occurs downstream or the load event fails, use the global force reveal.
+    window.addEventListener('error', () => {
+        if (typeof window.FORCE_REVEAL === 'function') window.FORCE_REVEAL();
+    });
     // -------------------------
 
     const $ = id => document.getElementById(id);
@@ -233,29 +226,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // ═══════ LOADING ═══════
     document.body.classList.add('no-scroll');
     const start = Date.now();
-    const MIN_SPLASH_MS = 3600;
-    const LOAD_FAILSAFE_MS = 12000;
+    const MIN_SPLASH_MS = 3000;
+    const LOAD_FAILSAFE_MS = 10000;
 
-    const finishSplash = () => {
+    window.finishSplash = () => {
         if (!loadingScreen || loadingScreen.dataset.splashDone === '1') return;
         loadingScreen.dataset.splashDone = '1';
+        
         const wait = Math.max(0, MIN_SPLASH_MS - (Date.now() - start));
         setTimeout(() => {
             loadingScreen.classList.add('fade-out');
             document.body.classList.remove('no-scroll');
+            syncLenisScrollLock();
+
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                // Video loading is now handled strictly by native HTML5 autoplay.
-                requestAnimationFrame(() => {
-                    document.querySelector('.hero-reveal')?.classList.add('visible');
-                });
-                syncLenisScrollLock();
+                
+                // Reveal Hero
+                document.querySelectorAll('.hero-reveal').forEach(el => el.classList.add('visible'));
+                
+                // Trigger ScrollTrigger refresh
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh();
+                } else {
+                    // Fallback for reveals if GSAP is missing
+                    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+                }
             }, 800);
         }, wait);
     };
 
-    window.addEventListener('load', finishSplash);
-    setTimeout(finishSplash, LOAD_FAILSAFE_MS);
+    window.addEventListener('load', window.finishSplash);
+    setTimeout(window.finishSplash, LOAD_FAILSAFE_MS);
 
     // ═══════ SCROLL EVENTS ═══════
     /* Header / floating — Lenis lenis.on('scroll') ili fallback window scroll iznad */
@@ -948,6 +950,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════ MIN DATE ═══════
-    const today = new Date().toISOString().split('T')[0];
     $$('input[type="date"]').forEach(i => i.setAttribute('min', today));
 });
