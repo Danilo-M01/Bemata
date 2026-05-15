@@ -949,6 +949,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') { closeSearch(); closeMobile(); closeModal(); }
     });
 
-    // ═══════ MIN DATE ═══════
-    $$('input[type="date"]').forEach(i => i.setAttribute('min', today));
 });

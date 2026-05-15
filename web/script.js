@@ -1,86 +1,13 @@
-// Video early-init — počni učitavanje što ranije, ne čekaj loading screen
-(function () {
-    const v = document.getElementById('heroVideo');
-    if (!v) return;
-
-    v.muted = true;
-    v.playsInline = true;
-    v.loop = true;
-    v.setAttribute('muted', '');
-    v.setAttribute('playsinline', '');
-    v.preload = 'auto';
-
-    const showHeroFallback = () => {
-        const hero = document.querySelector('.hero');
-        if (!hero || document.querySelector('.hero-video-fallback')) return;
-        const overlay = document.createElement('div');
-        overlay.className = 'hero-video-fallback';
-        overlay.innerHTML = '<button type="button" class="hero-video-fallback-button">Pusti video</button>';
-        overlay.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:auto;z-index:10;';
-        const button = overlay.querySelector('button');
-        button.style.cssText = 'padding:1.1rem 2rem;font-size:1rem;border:none;border-radius:999px;background:rgba(255,255,255,.98);color:#111;cursor:pointer;box-shadow:0 20px 60px rgba(0,0,0,.22);font-weight:600;letter-spacing:1px;';
-        button.addEventListener('click', () => {
-            v.play().catch(() => {});
-            overlay.remove();
-        });
-        hero.appendChild(overlay);
-    };
-
-    const tryPlay = () => {
-        // Force play even if browser thinks it shouldn't
-        v.play().then(() => {
-            console.log("Hero video started successfully");
-        }).catch(err => {
-            console.log("Autoplay prevented, will retry on interaction", err);
-            // Don't show fallback immediately, wait for user interaction first
-        });
-    };
-
-    const retryOnInteraction = () => {
-        if (v.paused) {
-            v.play().then(() => {
-                const fallback = document.querySelector('.hero-video-fallback');
-                if (fallback) fallback.remove();
-            }).catch(() => {});
-        }
-    };
-
-    ['click', 'pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(eventName => {
-        document.addEventListener(eventName, retryOnInteraction, { once: true, passive: true });
-    });
-
-    v.addEventListener('error', () => {
-        console.warn('Hero video failed to load');
-        showHeroFallback();
-    });
-
-    // Check every second for the first 5 seconds if it's playing
-    let checkCount = 0;
-    const interval = setInterval(() => {
-        if (!v.paused) {
-            clearInterval(interval);
-        } else {
-            tryPlay();
-            checkCount++;
-            if (checkCount > 5) {
-                clearInterval(interval);
-                if (v.paused) showHeroFallback();
-            }
-        }
-    }, 1000);
-
-    if (v.readyState >= 3) {
-        tryPlay();
-    } else {
-        v.addEventListener('canplay', tryPlay, { once: true });
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && v.paused) tryPlay();
-    });
-})();
+// Removed redundant JS video initialization. Native HTML5 autoplay is much more stable.
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- CRITICAL FAILSAFE ---
+    // If any JS error occurs downstream or the load event fails, use the global force reveal.
+    window.addEventListener('error', () => {
+        if (typeof window.FORCE_REVEAL === 'function') window.FORCE_REVEAL();
+    });
+    // -------------------------
 
     const $ = id => document.getElementById(id);
     const $$ = sel => document.querySelectorAll(sel);
@@ -299,48 +226,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // ═══════ LOADING ═══════
     document.body.classList.add('no-scroll');
     const start = Date.now();
-    const MIN_SPLASH_MS = 3600;
-    const LOAD_FAILSAFE_MS = 12000;
+    const MIN_SPLASH_MS = 3000;
+    const LOAD_FAILSAFE_MS = 10000;
 
-    const finishSplash = () => {
+    window.finishSplash = () => {
         if (!loadingScreen || loadingScreen.dataset.splashDone === '1') return;
         loadingScreen.dataset.splashDone = '1';
+        
         const wait = Math.max(0, MIN_SPLASH_MS - (Date.now() - start));
         setTimeout(() => {
             loadingScreen.classList.add('fade-out');
             document.body.classList.remove('no-scroll');
+            syncLenisScrollLock();
+
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                const heroVideo = document.getElementById('heroVideo');
-                if (heroVideo) {
-                    const tryVideoPlay = () => {
-                        if (heroVideo.paused) {
-                            const promise = heroVideo.play();
-                            if (promise && typeof promise.catch === 'function') {
-                                promise.catch(() => {
-                                    showHeroFallback();
-                                });
-                            }
-                        }
-                    };
-                    tryVideoPlay();
-                    ['click', 'pointerdown', 'keydown', 'touchstart'].forEach(eventName => {
-                        document.addEventListener(eventName, tryVideoPlay, { once: true, passive: true });
-                    });
-                    setTimeout(() => {
-                        if (heroVideo.paused) showHeroFallback();
-                    }, 1200);
+                
+                // Reveal Hero
+                document.querySelectorAll('.hero-reveal').forEach(el => el.classList.add('visible'));
+                
+                // Trigger ScrollTrigger refresh
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh();
+                } else {
+                    // Fallback for reveals if GSAP is missing
+                    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
                 }
-                requestAnimationFrame(() => {
-                    document.querySelector('.hero-reveal')?.classList.add('visible');
-                });
-                syncLenisScrollLock();
             }, 800);
         }, wait);
     };
 
-    window.addEventListener('load', finishSplash);
-    setTimeout(finishSplash, LOAD_FAILSAFE_MS);
+    window.addEventListener('load', window.finishSplash);
+    setTimeout(window.finishSplash, LOAD_FAILSAFE_MS);
 
     // ═══════ SCROLL EVENTS ═══════
     /* Header / floating — Lenis lenis.on('scroll') ili fallback window scroll iznad */
@@ -426,12 +343,38 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (status === 'confirmed') {
             trackingText.innerHTML = `<span style="color: #10b981">Rezervacija PRIHVAĆENA!</span> Vidimo se ${info.time}`;
             trackingClose.style.display = 'block';
-            clearInterval(trackingInterval);
+            handleAutoCleanup();
         } else if (status === 'cancelled') {
-            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODKAZANA.</span> Žao nam je, nema mesta.`;
+            trackingText.innerHTML = `<span style="color: #ef4444">Rezervacija ODBIJENA.</span> Nažalost nema mesta.`;
             trackingClose.style.display = 'block';
-            clearInterval(trackingInterval);
+            handleAutoCleanup();
         }
+    };
+
+    const handleAutoCleanup = () => {
+        clearInterval(trackingInterval);
+        // Set a timestamp if not already set, to hide after 5 mins
+        if (!localStorage.getItem('bemata_tracking_finished')) {
+            localStorage.setItem('bemata_tracking_finished', Date.now());
+        }
+        
+        const finishedAt = parseInt(localStorage.getItem('bemata_tracking_finished'));
+        const now = Date.now();
+        const FIVE_MINUTES = 5 * 60 * 1000;
+        
+        if (now - finishedAt > FIVE_MINUTES) {
+            cleanupTracking();
+        } else {
+            // Schedule cleanup for remaining time
+            setTimeout(cleanupTracking, FIVE_MINUTES - (now - finishedAt));
+        }
+    };
+
+    const cleanupTracking = () => {
+        localStorage.removeItem('bemata_reservation_id');
+        localStorage.removeItem('bemata_tracking_finished');
+        if (trackingBar) trackingBar.classList.remove('active');
+        clearInterval(trackingInterval);
     };
 
     const checkStatus = async () => {
@@ -443,28 +386,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch(`http://localhost:3000/api/reservations?id=${rid}`);
+            const res = await fetch(`/api/reservations?id=${rid}`);
             if (res.ok) {
                 const data = await res.json();
                 updateTrackingUI(data.status, data);
             } else if (res.status === 404) {
-                localStorage.removeItem('bemata_reservation_id');
-                trackingBar.classList.remove('active');
+                cleanupTracking();
             }
         } catch (e) { console.error('Tracking error', e); }
     };
 
     if (trackingClose) {
-        trackingClose.addEventListener('click', () => {
-            localStorage.removeItem('bemata_reservation_id');
-            trackingBar.classList.remove('active');
-        });
+        trackingClose.addEventListener('click', cleanupTracking);
     }
 
     const initTracking = () => {
         if (localStorage.getItem('bemata_reservation_id')) {
             checkStatus();
-            trackingInterval = setInterval(checkStatus, 10000); // Check every 10s
+            trackingInterval = setInterval(checkStatus, 5000); // Check every 5s
         }
     };
     initTracking();
@@ -495,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mapHotspots.forEach(t => t.classList.remove('booked', 'selected'));
             if (selectedTableInput) selectedTableInput.value = '';
 
-            const res = await fetch(`http://localhost:3000/api/reservations?date=${dateInput.value}`);
+            const res = await fetch(`/api/reservations?date=${dateInput.value}`);
             if (res.ok) {
                 const bookedTableIds = await res.json();
                 mapHotspots.forEach(hotspot => {
@@ -513,15 +452,21 @@ document.addEventListener('DOMContentLoaded', () => {
         dateInput.addEventListener('change', checkAvailability);
     }
 
+    // Set min date to today for all date inputs
+    const today = new Date().toISOString().split('T')[0];
+    $$('input[type="date"]').forEach(el => el.setAttribute('min', today));
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
         
-        // Validation: must select table
+        // Table selection is now optional
+        /*
         if (selectedTableInput && !selectedTableInput.value) {
             showNotif('Molimo Vas izaberite slobodan sto sa mape.', true);
             return;
         }
+        */
 
         const btn = form.querySelector('button[type="submit"]');
         const originalText = btn.innerHTML;
@@ -532,18 +477,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {};
         inputs.forEach(input => {
             if (input.name) data[input.name] = input.value;
-            // Handle cases where name is missing in old inputs
-            if (!input.name) {
-                if (input.type === 'text' && input.placeholder.includes('ime')) data.name = input.value;
-                if (input.type === 'tel') data.phone = input.value;
-                if (input.type === 'date') data.date = input.value;
-                if (input.type === 'time') data.time = input.value;
-            }
         });
 
         try {
             // Adjust port if needed, 3000 is default Next.js
-            const res = await fetch('http://localhost:3000/api/reservations', {
+            const res = await fetch('/api/reservations', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -1011,6 +949,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') { closeSearch(); closeMobile(); closeModal(); }
     });
 
-    // ═══════ MIN DATE ═══════
-    $$('input[type="date"]').forEach(i => i.setAttribute('min', today));
 });

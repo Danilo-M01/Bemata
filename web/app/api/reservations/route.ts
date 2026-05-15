@@ -55,8 +55,13 @@ export async function GET(request: Request) {
 
     // If not admin, ONLY return a list of booked table IDs (for availability checking)
     if (!isAdmin) {
-      const bookedTables = reservations?.map((r: any) => r.tableId).filter(Boolean) || [];
-      return NextResponse.json(bookedTables);
+      // If the request specifically asks for availability (has a date param)
+      if (date) {
+        const bookedTables = reservations?.map((r: any) => r.tableId).filter(Boolean) || [];
+        return NextResponse.json(bookedTables);
+      }
+      // Otherwise, reject access to the full list
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Admin gets full data
