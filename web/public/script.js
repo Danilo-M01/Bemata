@@ -436,6 +436,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dateInput.addEventListener('change', checkAvailability);
     }
 
+    // Set min date to today for all date inputs
+    const today = new Date().toISOString().split('T')[0];
+    $$('input[type="date"]').forEach(el => el.setAttribute('min', today));
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
@@ -457,13 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {};
         inputs.forEach(input => {
             if (input.name) data[input.name] = input.value;
-            // Handle cases where name is missing in old inputs
-            if (!input.name) {
-                if (input.type === 'text' && input.placeholder.includes('ime')) data.name = input.value;
-                if (input.type === 'tel') data.phone = input.value;
-                if (input.type === 'date') data.date = input.value;
-                if (input.type === 'time') data.time = input.value;
-            }
         });
 
         try {
