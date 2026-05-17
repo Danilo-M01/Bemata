@@ -131,7 +131,7 @@ export async function POST(request: Request) {
 
     // Send Telegram Notification
     try {
-      const loginLink = 'https://bemata.rs/admin/login';
+      const loginLink = 'https://www.bemata.org/admin';
       const message = `
 ⏳ <b>Imate novu rezervaciju!</b>
 ━━━━━━━━━━━━━━━━━━
