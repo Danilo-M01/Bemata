@@ -39,9 +39,15 @@ export async function GET(request: Request) {
       .select('*')
       .order('created_at', { ascending: false });
 
+    const todayStr = new Date().toISOString().split('T')[0];
+
     // Public map should only see reservations that are NOT cancelled
     if (!isAdmin) {
       query = query.neq('status', 'cancelled');
+    } else {
+      // Admin optimization: only load pending OR active/future reservations
+      // This prevents the payload from growing indefinitely with past data
+      query = query.or(`status.eq.pending,date.gte.${todayStr}`);
     }
 
     if (date) {

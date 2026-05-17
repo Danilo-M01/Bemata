@@ -58,7 +58,9 @@ export default function DashboardPage() {
 
   const today = new Date().toISOString().split('T')[0];
   
-  const pendingReservations = reservations.filter(r => r.status === 'pending');
+  const pendingReservations = [...reservations]
+    .filter(r => r.status === 'pending')
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
   const todayReservations = reservations.filter(r => r.date === today && r.status === 'confirmed');
   const futureReservations = reservations.filter(r => r.date > today && r.status === 'confirmed').sort((a, b) => {
     if (a.date !== b.date) return a.date.localeCompare(b.date);

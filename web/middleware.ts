@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   
-  if (path.startsWith('/admin/rezervacije')) {
+  if (path.startsWith('/admin') && path !== '/admin/login') {
     const isAdmin = request.cookies.get('admin_token')?.value === 'bemata_admin_secret';
     if (!isAdmin) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
