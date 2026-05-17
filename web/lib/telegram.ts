@@ -1,6 +1,6 @@
 export async function sendTelegramNotification(message: string) {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN || "8648901926:AAGuAkDRbq9pFpfDRR23RUW1ftaBIRYlmpo";
+  const chatId = process.env.TELEGRAM_CHAT_ID || "8763112449";
 
   if (!botToken || !chatId) {
     console.warn("Telegram bot token or chat ID is missing. Notification not sent.");

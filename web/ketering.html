@@ -127,7 +127,8 @@
                         <li><strong>Lokacija:</strong> Uroša Martinovića, Beograd</li>
                     </ul>
                 </div>
-                <form class="ketering-form" action="mailto:office@bemata.rs" method="post" enctype="text/plain">
+                <form id="keteringForm" class="ketering-form">
+                    <div id="keteringNotification" style="display: none; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center;"></div>
                     <label for="name">Ime i prezime</label>
                     <input id="name" name="ime" type="text" required>
 
@@ -148,5 +149,55 @@
             </div>
         </section>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const keteringForm = document.getElementById('keteringForm');
+            const notification = document.getElementById('keteringNotification');
+
+            if (keteringForm) {
+                keteringForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const btn = keteringForm.querySelector('button[type="submit"]');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = 'Slanje...';
+                    btn.disabled = true;
+                    notification.style.display = 'none';
+
+                    const formData = new FormData(keteringForm);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const res = await fetch('/api/ketering', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+
+                        const result = await res.json();
+
+                        if (res.ok) {
+                            notification.style.display = 'block';
+                            notification.style.backgroundColor = '#d1fae5';
+                            notification.style.color = '#065f46';
+                            notification.innerHTML = 'Uspešno poslat upit! Javićemo se uskoro.';
+                            keteringForm.reset();
+                        } else {
+                            throw new Error(result.error || 'Greška pri slanju upita.');
+                        }
+                    } catch (error) {
+                        console.error('Error submitting catering:', error);
+                        notification.style.display = 'block';
+                        notification.style.backgroundColor = '#fee2e2';
+                        notification.style.color = '#b91c1c';
+                        notification.innerHTML = error.message || 'Greška u komunikaciji sa serverom.';
+                    } finally {
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
