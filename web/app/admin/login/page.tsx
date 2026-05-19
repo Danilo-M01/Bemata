@@ -22,8 +22,7 @@ export default function LoginPage() {
       });
 
       if (res.ok) {
-        router.push('/admin/rezervacije');
-        router.refresh(); 
+        window.location.href = '/admin/rezervacije';
       } else {
         const data = await res.json();
         setError(data.error || 'Pogrešna lozinka');

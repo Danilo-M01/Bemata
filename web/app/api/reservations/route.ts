@@ -169,15 +169,35 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id, status } = await request.json();
+    const body = await request.json();
+    const { id, ...updates } = body;
 
-    if (!id || !status) {
-      return NextResponse.json({ error: 'Missing id or status' }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+    }
+
+    // Availability Check: If a table is selected, verify it's not already booked for that date
+    if (updates.tableId && updates.date) {
+      const { data: existingReservations, error: checkError } = await supabase
+        .from('reservations')
+        .select('id')
+        .eq('date', updates.date)
+        .eq('tableId', updates.tableId)
+        .neq('id', id) // exclude the current reservation when checking duplicates
+        .neq('status', 'cancelled');
+
+      if (checkError) {
+        throw checkError;
+      }
+
+      if (existingReservations && existingReservations.length > 0) {
+        return NextResponse.json({ error: 'Žao nam je, ovaj sto je već rezervisan za izabrani datum.' }, { status: 409 });
+      }
     }
 
     const { data, error } = await supabase
       .from('reservations')
-      .update({ status })
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
@@ -188,7 +208,40 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true, reservation: data });
   } catch (error) {
-    console.error('Error updating reservation status:', error);
+    console.error('Error updating reservation:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    // Check admin auth
+    const cookieStore = await cookies();
+    const isAdmin = cookieStore.get('admin_token')?.value === 'bemata_admin_secret';
+
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'Missing id parameter' }, { status: 400 });
+    }
+
+    const { error } = await supabase
+      .from('reservations')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
