@@ -43,11 +43,11 @@
         // Ensures the site is visible and interactive even if scripts fail or load slowly.
         window.FORCE_REVEAL = () => {
             const ls = document.getElementById('loadingScreen');
-            if (ls && ls.style.display !== 'none') {
-                ls.classList.add('fade-out');
-                document.body.classList.remove('no-scroll');
-                setTimeout(() => { ls.style.display = 'none'; }, 800);
-            }
+            if (!ls || ls.dataset.splashDone === '1' || ls.style.display === 'none') return;
+            ls.dataset.splashDone = '1';
+            ls.classList.add('fade-out');
+            document.body.classList.remove('no-scroll');
+            setTimeout(() => { ls.style.display = 'none'; }, 800);
             // Force reveal all hidden elements if GSAP fails
             document.querySelectorAll('.reveal, .hero-reveal').forEach(el => {
                 el.classList.add('visible');
@@ -56,7 +56,7 @@
             });
             console.warn("Bemata: Failsafe triggered. Site revealed manually.");
         };
-        setTimeout(window.FORCE_REVEAL, 7500); 
+        setTimeout(window.FORCE_REVEAL, 4500); 
     </script>
     <style>
         /* Emergency fallback: If JS is completely disabled or fails before 8s */
@@ -271,7 +271,7 @@
 
     <!-- ═══════════ PARALLAX DIVIDER 1 ═══════════ -->
     <div class="parallax-divider" data-speed="0.55">
-        <div class="parallax-img" style="background-image:url('/images/parallax-1.png?v=2')"></div>
+        <div class="parallax-img" style="background-image:url('/images/parallax-1.webp?v=3')"></div>
         <div class="parallax-overlay"></div>
     </div>
 
@@ -295,7 +295,7 @@
             <circle class="vine-node" cx="65" cy="320" r="4" />
             <circle class="vine-node" cx="75" cy="560" r="5" />
         </svg>
-        <div class="section-watermark section-watermark-logo" aria-hidden="true"><img src="/bemata-logo.svg" alt="">
+        <div class="section-watermark section-watermark-logo" aria-hidden="true"><img src="/bemata-logo.svg" alt="" loading="lazy" decoding="async">
         </div>
         <div class="container">
             <div class="section-header reveal">
@@ -320,17 +320,17 @@
                     <div class="about-collage">
                         <div class="collage-item ci-1">
                             <img src="/images/about-bowls.webp?v=2" alt="Balansirani obroci" class="collage-img" width="800"
-                                height="1200" loading="lazy">
+                                height="1200" loading="lazy" decoding="async">
                             <span class="collage-caption">Super food</span>
                         </div>
                         <div class="collage-item ci-2">
                             <img src="/images/about-food-1.webp?v=2" alt="Doručak u Bemati — sveža hrana" class="collage-img"
-                                width="1200" height="1600" loading="lazy">
+                                width="1200" height="1600" loading="lazy" decoding="async">
                             <span class="collage-caption">Sveža jela</span>
                         </div>
                         <div class="collage-item ci-3">
                             <img src="/images/about-food-8177.webp?v=2" alt="Bemata — trenutak iz naše kuhinje"
-                                class="collage-img" width="3024" height="3762" loading="lazy">
+                                class="collage-img" width="1200" height="1500" loading="lazy" decoding="async">
                             <span class="collage-caption">Iz naše kuhinje</span>
                         </div>
                     </div>
@@ -347,7 +347,7 @@
 
     <!-- ═══════════ PARALLAX DIVIDER 2 ═══════════ -->
     <div class="parallax-divider home-divider-keep" data-speed="0.5">
-        <div class="parallax-img" style="background-image:url('/images/parallax-2.png?v=2')"></div>
+        <div class="parallax-img" style="background-image:url('/images/parallax-2.webp?v=3')"></div>
         <div class="parallax-overlay"></div>
     </div>
 
@@ -397,7 +397,7 @@
                 <div class="service-card reveal">
                     <div class="service-visual sv-del">
                         <img src="/images/about-bowls.webp?v=2" alt="" class="service-photo" width="800" height="600"
-                            loading="lazy">
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="service-body">
                         <h3>O nama</h3>
@@ -408,7 +408,7 @@
                 <div class="service-card reveal">
                     <div class="service-visual sv-cat">
                         <img src="/images/service-catering.webp?v=2" alt="" class="service-photo" width="800" height="600"
-                            loading="lazy">
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="service-body">
                         <h3>Usluge</h3>
@@ -418,8 +418,8 @@
                 </div>
                 <div class="service-card reveal">
                     <div class="service-visual sv-cat">
-                        <img src="/images/catering-dogadjaji.png?v=2" alt="" class="service-photo" width="800" height="600"
-                            loading="lazy">
+                        <img src="/images/catering-dogadjaji.webp?v=3" alt="" class="service-photo" width="800" height="600"
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="service-body">
                         <h3>Ketering</h3>
@@ -433,7 +433,7 @@
 
     <!-- ═══════════ PARALLAX DIVIDER 3 ═══════════ -->
     <div class="parallax-divider" data-speed="0.6">
-        <div class="parallax-img" style="background-image:url('/images/parallax-3.png?v=2')"></div>
+        <div class="parallax-img" style="background-image:url('/images/parallax-3.webp?v=3')"></div>
         <div class="parallax-overlay"></div>
     </div>
 
@@ -462,7 +462,7 @@
                 <div class="service-card reveal">
                     <div class="service-visual sv-del">
                         <img src="/images/service-granola.webp?v=2" alt="" class="service-photo" width="800" height="600"
-                            loading="lazy">
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="service-body">
                         <h3>Dostava hrane</h3>
@@ -475,7 +475,7 @@
                 <div class="service-card reveal">
                     <div class="service-visual sv-cat">
                         <img src="/images/service-catering.webp?v=2" alt="" class="service-photo" width="800" height="600"
-                            loading="lazy">
+                            loading="lazy" decoding="async">
                     </div>
                     <div class="service-body">
                         <h3>Ketering</h3>
@@ -490,7 +490,7 @@
 
     <!-- ═══════════ PARALLAX DIVIDER 4 ═══════════ -->
     <div class="parallax-divider home-divider-keep" data-speed="0.5">
-        <div class="parallax-img" style="background-image:url('/images/parallax-4.png?v=2')"></div>
+        <div class="parallax-img" style="background-image:url('/images/parallax-4.webp?v=3')"></div>
         <div class="parallax-overlay"></div>
     </div>
 
@@ -611,7 +611,7 @@
     <!-- ═══════════ TRUST / TESTIMONIALS — IMMERSIVE PARALLAX ═══════════ -->
     <section class="trust-immersive" id="trust">
         <div class="trust-parallax-bg" id="trustParallaxBg">
-            <div class="trust-parallax-img" style="background-image:url('/images/parallax-2.png?v=2')"></div>
+            <div class="trust-parallax-img" style="background-image:url('/images/parallax-2.webp?v=3')"></div>
             <div class="trust-parallax-scrim"></div>
         </div>
         <div class="trust-botanicals" id="trustBotanicals" aria-hidden="true">
@@ -804,10 +804,10 @@
                         <div class="reservation-ambience-wrap" id="reservationAmbiencePlayer" role="region"
                             aria-label="Ambijent i jela, rotirajuće slike"
                             data-images="/images/ambience-01.webp?v=2,/images/ambience-02.webp?v=2,/images/ambience-03.webp?v=2,/images/ambience-04.webp?v=2,/images/ambience-05.webp?v=2,/images/ambience-06.webp?v=2,/images/ambience-07.webp?v=2,/images/ambience-08.webp?v=2,/images/ambience-09.webp?v=2,/images/ambience-10.webp?v=2,/images/ambience-11.webp?v=2,/images/ambience-12.webp?v=2,/images/ambience-13.webp?v=2,/images/ambience-14.webp?v=2,/images/ambience-15.webp?v=2,/images/ambience-16.webp?v=2,/images/ambience-17.webp?v=2"
-                            data-interval="650" data-loop="true">
+                            data-interval="800" data-loop="true">
                             <img src="/images/ambience-01.webp?v=2" alt="Bemata — ambijent i hrana"
                                 class="reservation-ambience-img" id="reservationAmbienceImg" width="682" height="1024"
-                                loading="eager" decoding="async" fetchpriority="high">
+                                loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="info-card">
@@ -871,8 +871,11 @@
                             <input type="hidden" name="tableId" id="selectedTableId" value="">
                             <div class="image-map-wrapper">
                                 <div class="image-map-container" id="restaurantMap">
-                                    <img src="/images/mapa.png?v=2" alt="Mapa Stolova" class="map-bg-image"
-                                        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 600\'%3E%3Crect width=\'800\' height=\'600\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'400\' y=\'300\' text-anchor=\'middle\' font-size=\'20\' fill=\'%23888\'%3EMapa stolova se učitava... (Proverite putanju images/mapa.png)%3C/text%3E%3C/svg%3E'" />
+                                    <picture>
+                                        <source srcset="/images/mapa.webp?v=3" type="image/webp">
+                                        <img src="/images/mapa.png?v=2" alt="Mapa Stolova" class="map-bg-image" loading="lazy" decoding="async"
+                                            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 800 600\'%3E%3Crect width=\'800\' height=\'600\' fill=\'%23f0f0f0\'/%3E%3Ctext x=\'400\' y=\'300\' text-anchor=\'middle\' font-size=\'20\' fill=\'%23888\'%3EMapa stolova se učitava...%3C/text%3E%3C/svg%3E'" />
+                                    </picture>
 
                                     <!-- Inside Tables -->
                                     <div class="map-hotspot" data-table="7" style="top: 88.5%; left: 9.5%;">

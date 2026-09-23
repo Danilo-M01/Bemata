@@ -1176,7 +1176,7 @@ button{border:none;outline:none;cursor:pointer;font-family:var(--f-body);backgro
     z-index:9997;
     animation:noiseAnim .22s infinite linear;
 }
-html.immersive-touch .noise-overlay{opacity:.055}
+html.immersive-touch .noise-overlay{animation:none;opacity:.03}
 html.lite-animations .noise-overlay{animation:none;opacity:.02}
 
 @keyframes noiseAnim{
@@ -1315,8 +1315,51 @@ html.lenis, html.lenis body{height:auto}
 .tf-10{right:30%;top:14%;animation-delay:-4.5s}
 .tf-11{left:34%;bottom:16%;animation-delay:-3.5s}
 .tf-12{right:40%;bottom:10%;animation-delay:-5.5s}
-html.immersive-touch .trust-fruit{opacity:.32}
+html.immersive-touch .trust-fruit,
 html.lite-animations .trust-fruit{animation-duration:26s;opacity:.18}
+
+/* ═══════════ LITE PERFORMANCE ADAPTATION ═══════════ */
+html.lite-animations .service-card,
+html.lite-animations .principle-card,
+html.lite-animations .info-card,
+html.lite-animations .mini-stat,
+html.lite-animations .reservation-form,
+html.lite-animations .trust-card,
+html.lite-animations .trust-rating-badge,
+html.lite-animations .menu-tab,
+html.lite-animations .hero-badge {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.lite-animations .service-card,
+html.lite-animations .principle-card,
+html.lite-animations .info-card,
+html.lite-animations .mini-stat {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+html.lite-animations .reservation-form {
+    background: rgba(255, 255, 255, 0.98);
+}
+
+html.lite-animations .trust-card {
+    background: rgba(30, 40, 32, 0.92);
+}
+
+html.lite-animations .trust-rating-badge {
+    background: rgba(30, 40, 32, 0.94);
+}
+
+html.lite-animations .tb {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .tb {
+        display: none !important;
+    }
+}
 
 /* Trust SVG vines — bloom on scroll */
 .trust-vine{position:absolute;top:0;width:120px;height:100%;z-index:2;pointer-events:none;opacity:0;transition:opacity .8s ease}

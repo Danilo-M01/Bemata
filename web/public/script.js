@@ -34,12 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(pointer: fine)').matches;
     const anyCoarsePointer = window.matchMedia('(any-pointer: coarse)').matches;
-    const saveDataEnabled = Boolean(navigator.connection && navigator.connection.saveData);
+    
+    // Adaptive detection for low-spec devices and poor networks
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const saveDataEnabled = Boolean(conn && conn.saveData);
+    const slowConnection = Boolean(conn && (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g' || conn.effectiveType === '3g'));
     const lowCpuDevice = (navigator.hardwareConcurrency || 8) <= 4;
-    /* Lenis + ScrollTrigger na touch-first uređajima pravi skokove; hover+miš = desktop. (Na nekim Windows touch laptopovima `pointer: coarse` i `fine` mogu oba biti true — zato hover.) */
+    const lowMemDevice = Boolean(navigator.deviceMemory && navigator.deviceMemory <= 4);
+    const isWeakDeviceOrNetwork = saveDataEnabled || slowConnection || lowCpuDevice || lowMemDevice;
+
+    /* Lenis + ScrollTrigger na touch-first uređajima pravi skokove; hover+miš = desktop. */
     const preferLenisPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    const useLenis = !reduceMotion && typeof Lenis !== 'undefined' && preferLenisPointer;
-    if (!reduceMotion && (saveDataEnabled || lowCpuDevice)) {
+    const useLenis = !reduceMotion && !isWeakDeviceOrNetwork && typeof Lenis !== 'undefined' && preferLenisPointer;
+    if (!reduceMotion && isWeakDeviceOrNetwork) {
         document.documentElement.classList.add('lite-animations');
     }
 
@@ -82,13 +89,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         requestAnimationFrame(lenisRaf);
 
+        let lenisScrollTicking = false;
         lenis.on('scroll', ({ scroll }) => {
-            const y = scroll;
-            lastScrollY = y;
-            if (header) header.classList.toggle('scrolled', y > 60);
-            if (floatingReserve) floatingReserve.classList.toggle('visible', y > window.innerHeight * 0.5);
-            updateAmbientParallax();
-            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.update();
+            lastScrollY = scroll;
+            if (!lenisScrollTicking) {
+                lenisScrollTicking = true;
+                requestAnimationFrame(() => {
+                    const y = lastScrollY;
+                    if (header) header.classList.toggle('scrolled', y > 60);
+                    if (floatingReserve) floatingReserve.classList.toggle('visible', y > window.innerHeight * 0.5);
+                    updateAmbientParallax();
+                    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.update();
+                    lenisScrollTicking = false;
+                });
+            }
         });
 
         new MutationObserver(syncLenisScrollLock).observe(document.body, {
@@ -97,23 +111,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         syncLenisScrollLock();
     } else {
+        let nativeScrollTicking = false;
         window.addEventListener('scroll', () => {
-            const y = window.scrollY;
-            lastScrollY = y;
-            if (header) header.classList.toggle('scrolled', y > 60);
-            if (floatingReserve) floatingReserve.classList.toggle('visible', y > window.innerHeight * 0.5);
-            updateAmbientParallax();
-            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.update();
-        });
+            lastScrollY = window.scrollY;
+            if (!nativeScrollTicking) {
+                nativeScrollTicking = true;
+                requestAnimationFrame(() => {
+                    const y = lastScrollY;
+                    if (header) header.classList.toggle('scrolled', y > 60);
+                    if (floatingReserve) floatingReserve.classList.toggle('visible', y > window.innerHeight * 0.5);
+                    updateAmbientParallax();
+                    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.update();
+                    nativeScrollTicking = false;
+                });
+            }
+        }, { passive: true });
     }
 
     if (!reduceMotion && finePointer) {
+        let mouseTicking = false;
         window.addEventListener(
             'mousemove',
             (e) => {
-                parallaxX = e.clientX / window.innerWidth - 0.5;
-                parallaxY = e.clientY / window.innerHeight - 0.5;
-                updateAmbientParallax();
+                if (!mouseTicking) {
+                    mouseTicking = true;
+                    requestAnimationFrame(() => {
+                        parallaxX = e.clientX / window.innerWidth - 0.5;
+                        parallaxY = e.clientY / window.innerHeight - 0.5;
+                        updateAmbientParallax();
+                        mouseTicking = false;
+                    });
+                }
             },
             { passive: true }
         );
@@ -121,12 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!reduceMotion && anyCoarsePointer) {
         document.documentElement.classList.add('immersive-touch');
+        let touchTicking = false;
         const applyTouchParallax = (e) => {
             const t = e.touches && e.touches[0];
-            if (!t) return;
-            parallaxX = t.clientX / window.innerWidth - 0.5;
-            parallaxY = t.clientY / window.innerHeight - 0.5;
-            updateAmbientParallax();
+            if (!t || touchTicking) return;
+            touchTicking = true;
+            requestAnimationFrame(() => {
+                parallaxX = t.clientX / window.innerWidth - 0.5;
+                parallaxY = t.clientY / window.innerHeight - 0.5;
+                updateAmbientParallax();
+                touchTicking = false;
+            });
         };
         window.addEventListener('touchstart', applyTouchParallax, { passive: true });
         window.addEventListener('touchmove', applyTouchParallax, { passive: true });
@@ -228,8 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('no-scroll');
     }
     const start = Date.now();
-    const MIN_SPLASH_MS = 3000;
-    const LOAD_FAILSAFE_MS = 10000;
+    const MIN_SPLASH_MS = isWeakDeviceOrNetwork ? 1500 : 2000;
+    const LOAD_FAILSAFE_MS = 3800;
 
     window.finishSplash = () => {
         if (!loadingScreen || loadingScreen.dataset.splashDone === '1') return;
@@ -258,7 +291,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, wait);
     };
 
-    window.addEventListener('load', window.finishSplash);
+    if (document.readyState === 'complete') {
+        window.finishSplash();
+    } else {
+        window.addEventListener('load', window.finishSplash);
+        setTimeout(window.finishSplash, isWeakDeviceOrNetwork ? 2000 : 2600);
+    }
     setTimeout(window.finishSplash, LOAD_FAILSAFE_MS);
 
     // ═══════ SCROLL EVENTS ═══════
@@ -788,7 +826,14 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(e => e.target.classList.toggle('vine-visible', e.isIntersecting));
         }, { threshold: 0.02 });
         vines.forEach(v => obs.observe(v));
-        vineGroups.push({ section, vineData, branchStart: branchStart || 0.15, branchRange: branchRange || 0.6, applyTransform: applyTransform || false, rightClass: rightClass || '', shiftAmount: cfg.shiftAmount || 20 });
+
+        let sectionVisible = false;
+        const sectionObs = new IntersectionObserver(entries => {
+            entries.forEach(e => { sectionVisible = e.isIntersecting; });
+        }, { rootMargin: '180px 0px 180px 0px' });
+        sectionObs.observe(section);
+
+        vineGroups.push({ section, vineData, isVisible: () => sectionVisible, branchStart: branchStart || 0.15, branchRange: branchRange || 0.6, applyTransform: applyTransform || false, rightClass: rightClass || '', shiftAmount: cfg.shiftAmount || 20 });
     };
 
     // Trust
@@ -819,10 +864,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const drawAllVines = () => {
             const viewH = window.innerHeight;
             for (let g = 0; g < vineGroups.length; g++) {
-                const { section, vineData, branchStart, branchRange, applyTransform, rightClass, shiftAmount } = vineGroups[g];
+                const group = vineGroups[g];
+                if (!group.isVisible()) continue;
+                const { section, vineData, branchStart, branchRange, applyTransform, rightClass, shiftAmount } = group;
                 const sRect = section.getBoundingClientRect();
-                // Skip sections far off-screen
-                if (sRect.bottom < -200 || sRect.top > viewH + 200) continue;
                 const rawP = (viewH - sRect.top) / (viewH + sRect.height);
                 const progress = rawP < 0 ? 0 : rawP > 1 ? 1 : rawP;
                 vineData.forEach((data, vine) => {
@@ -894,16 +939,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const ambienceImg = $('reservationAmbienceImg');
     if (ambiencePlayer && ambienceImg) {
         const images = (ambiencePlayer.dataset.images || '').split(',').map(s => s.trim()).filter(Boolean);
-        const intervalMs = Math.max(200, parseInt(ambiencePlayer.dataset.interval || '500', 10) || 500);
+        const intervalMs = Math.max(300, parseInt(ambiencePlayer.dataset.interval || '800', 10) || 800);
         const loop = ambiencePlayer.dataset.loop !== 'false';
         if (images.length === 0) { ambienceImg.removeAttribute('src'); ambienceImg.alt = ''; }
         else {
-            images.forEach(src => { const im = new Image(); im.src = src; });
-            ambienceImg.src = images[0];
+            let preloaded = false;
+            const preloadImagesLazy = () => {
+                if (preloaded || isWeakDeviceOrNetwork) return;
+                preloaded = true;
+                // Preload subsequent images asynchronously after first interaction
+                images.slice(1).forEach(src => { const im = new Image(); im.src = src; });
+            };
+
             let idx = 0, ambienceTimer = null, ambienceVisible = false;
-            const startAmbience = () => { if (ambienceTimer || images.length < 2 || reduceMotion) return; ambienceTimer = setInterval(() => { let next = idx + 1; if (next >= images.length) { if (!loop) { clearInterval(ambienceTimer); ambienceTimer = null; return; } next = 0; } idx = next; ambienceImg.src = images[idx]; }, intervalMs); };
-            const stopAmbience = () => { if (ambienceTimer) { clearInterval(ambienceTimer); ambienceTimer = null; } };
-            const ambienceObs = new IntersectionObserver(entries => { entries.forEach(e => { ambienceVisible = e.isIntersecting; if (ambienceVisible) startAmbience(); else stopAmbience(); }); }, { rootMargin: '100px' });
+            const startAmbience = () => {
+                if (ambienceTimer || images.length < 2 || reduceMotion) return;
+                ambienceTimer = setInterval(() => {
+                    let next = idx + 1;
+                    if (next >= images.length) {
+                        if (!loop) { clearInterval(ambienceTimer); ambienceTimer = null; return; }
+                        next = 0;
+                    }
+                    idx = next;
+                    ambienceImg.src = images[idx];
+                }, intervalMs);
+            };
+            const stopAmbience = () => {
+                if (ambienceTimer) { clearInterval(ambienceTimer); ambienceTimer = null; }
+            };
+            const ambienceObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    ambienceVisible = e.isIntersecting;
+                    if (ambienceVisible) {
+                        preloadImagesLazy();
+                        startAmbience();
+                    } else {
+                        stopAmbience();
+                    }
+                });
+            }, { rootMargin: '250px' });
             ambienceObs.observe(ambiencePlayer);
         }
     }
